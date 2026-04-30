@@ -1,6 +1,6 @@
 # Sistema de Gestión de Planificaciones Docentes
 
-Sistema para que profesores envíen planificaciones mensuales y un moderador (coordinador académico) las apruebe o rechace, con versionado y registro de la versión oficial.
+Sistema para que profesores envíen planificaciones académicas (anuales o cuatrimestrales, según la materia) y un moderador (coordinador académico) las apruebe o rechace, con versionado y registro de la versión oficial.
 
 ## Estructura de la documentación
 

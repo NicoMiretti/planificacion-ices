@@ -4,7 +4,7 @@
 
 | ID | Requerimiento | Prioridad | Origen | CU |
 |---|---|---|---|---|
-| RF-001 | El profesor podrá crear una planificación para un período determinado. | Alta | — | CU-01 |
+| RF-001 | El profesor podrá crear una planificación para un período académico determinado (año o cuatrimestre, según la materia). | Alta | — | CU-01 |
 | RF-002 | El profesor podrá adjuntar el documento de planificación (formato a definir). | Alta | — | CU-01 |
 | RF-003 | El profesor podrá enviar la planificación al moderador. | Alta | — | CU-02 |
 | RF-004 | El sistema generará automáticamente un número de versión correlativo por (profesor, materia, período). | Alta | — | CU-02 |
@@ -20,11 +20,11 @@
 
 # Reglas de Negocio (preliminar)
 
-- **RN-01:** Una sola versión oficial por (profesor, materia, período).
+- **RN-01:** Una sola versión oficial por (profesor, materia, período académico).
 - **RN-02:** Una versión enviada no se puede modificar; se debe enviar una nueva.
 - **RN-03:** Solo el moderador asignado puede aprobar/rechazar.
-- **RN-04:** Una vez aprobada, la planificación oficial no se puede borrar (a confirmar política de modificación).
-- **RN-05:** El período es mensual; fecha límite de envío a definir.
+- **RN-04:** Una vez aprobada, la planificación oficial no se puede borrar (a confirmar política de modificación a mitad de período).
+- **RN-05:** El período académico es **anual** o **cuatrimestral** según la materia. Fecha límite de envío a definir (típicamente antes del inicio del período).
 
 # Requerimientos No Funcionales (preliminar)
 

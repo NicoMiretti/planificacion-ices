@@ -1,7 +1,7 @@
 # Visión del Producto
 
 ## Problema
-Las planificaciones docentes mensuales se entregan, revisan y archivan por canales informales (mail, papel, drive), lo que genera pérdida de versiones, falta de trazabilidad sobre aprobaciones y dificultad para identificar cuál es la planificación oficial vigente.
+Las planificaciones docentes (anuales o cuatrimestrales) se entregan, revisan y archivan por canales informales (mail, papel, drive), lo que genera pérdida de versiones, falta de trazabilidad sobre aprobaciones y dificultad para identificar cuál es la planificación oficial vigente.
 
 ## Propósito
 Centralizar el envío, revisión y aprobación de planificaciones docentes en una única plataforma, con versionado y registro de la versión oficial.
@@ -26,11 +26,11 @@ Centralizar el envío, revisión y aprobación de planificaciones docentes en un
 - Trazabilidad completa de quién aprobó qué y cuándo.
 
 ## Restricciones conocidas
-- Periodicidad mensual.
+- Periodicidad: **anual** o **cuatrimestral** según la materia (a confirmar criterio: ¿lo define el plan de estudios? ¿lo elige el profesor?).
 - Roles: profesor, moderador (a confirmar si hay más).
 - (Pendiente) tecnología, infraestructura, plazos.
 
 ## Supuestos
 - Cada profesor es responsable de sus propias materias.
 - Un moderador puede revisar planificaciones de varios profesores.
-- La versión oficial es **única** por (profesor, materia, período).
+- La versión oficial es **única** por (profesor, materia, período académico).

@@ -11,7 +11,7 @@
 ## 1. Contexto del entrevistado (5 min)
 1. ¿Cuál es tu cargo formal y desde cuándo lo ocupás?
 2. ¿De qué carrera/departamento sos moderador?
-3. ¿Cuántos profesores y cuántas materias revisás por mes (aprox)?
+3. ¿Cuántos profesores y cuántas materias revisás por período (aprox)? ¿Cuántas son anuales y cuántas cuatrimestrales?
 4. ¿Sos el único moderador o hay más? ¿Cómo se reparten el trabajo?
 5. ¿A quién le reportás los resultados de las revisiones?
 
@@ -19,9 +19,11 @@
 
 ### Recepción
 6. ¿Cómo recibís hoy las planificaciones (mail, papel, drive, sistema)?
-7. ¿Hay una fecha límite mensual? ¿Qué pasa si un profesor no la entrega?
-8. ¿Quién te avisa que llegó una planificación nueva?
-9. ¿Cómo sabés que es la primera versión y no una corrección?
+7. ¿Quién define si una materia es anual o cuatrimestral? ¿Está fijado por el plan de estudios o lo decide el profesor/cátedra?
+8. ¿Cuál es la fecha límite de entrega para planificaciones anuales? ¿Y para cada cuatrimestre?
+9. ¿Qué pasa si un profesor entrega después del inicio del período? ¿Puede dictar clase sin planificación aprobada?
+10. ¿Quién te avisa que llegó una planificación nueva?
+11. ¿Cómo sabés que es la primera versión y no una corrección?
 
 ### Revisión
 10. ¿Qué revisás concretamente? (contenidos, formato, carga horaria, bibliografía…)
@@ -39,10 +41,13 @@
 20. ¿Quién más necesita acceder a esa versión oficial (alumnos, secretaría, autoridades)?
 
 ### Excepciones
-21. ¿Qué pasa si el profesor entrega tarde?
-22. ¿Qué pasa si necesita modificar una planificación **ya aprobada** durante el mes?
-23. ¿Hay licencias, suplencias o cambios de profesor a mitad de mes?
-24. ¿Existen materias compartidas por varios profesores? ¿Cómo se planifican?
+21. ¿Qué pasa si el profesor entrega tarde o no entrega?
+22. ¿Qué pasa si necesita modificar una planificación **ya aprobada** durante el año/cuatrimestre? ¿Hay una "versión revisada" o se considera un caso aparte?
+23. Para una materia **cuatrimestral** que se dicta en ambos cuatrimestres, ¿se presenta una planificación por cuatrimestre o sirve la del primero?
+24. Si la materia es **anual**, ¿se revisa o ratifica algo a mitad de año?
+25. ¿Hay licencias, suplencias o cambios de profesor a mitad de período? ¿Quién se hace cargo de la planificación existente?
+26. ¿Existen materias compartidas por varios profesores? ¿Quién firma/envía la planificación?
+27. ¿Qué pasa al cerrar el período? ¿La planificación del año anterior sirve como base para el siguiente (clonado)?
 
 ## 3. Dolores y deseos (10 min)
 25. ¿Qué es lo que **más tiempo** te quita hoy?
