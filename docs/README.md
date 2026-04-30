@@ -10,7 +10,8 @@ docs/
 ├── 01-vision/
 │   ├── vision-del-producto.md      ← propósito, alcance, objetivos
 │   ├── glosario.md                 ← términos del dominio
-│   └── stakeholders.md             ← interesados y necesidades
+│   ├── stakeholders.md             ← interesados y necesidades
+│   └── estructura-planificacion.md ← campos obligatorios de la plantilla
 ├── 02-relevamiento/
 │   ├── guia-entrevista-moderador.md
 │   ├── protocolo-entrevistas.md
