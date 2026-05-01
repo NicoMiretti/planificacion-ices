@@ -100,16 +100,21 @@ def mis_instancias(request):
 @login_required
 def detalle_instancia(request, pk):
     """Detalle de una instancia con sus materias."""
+    from apps.catalogos.models import Carrera
     instancia = get_object_or_404(InstanciaPresentacion, pk=pk)
-    
-    materias = instancia.materias_audiencia()
-    
-    # Si es profesor, filtrar solo sus materias
-    if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
-        materias = materias.filter(profesor_titular=request.user.perfil_profesor)
 
-    # Para profesores: solo sus materias con sus planificaciones
-    # Para revisores/moderadora: todas las materias con las planificaciones de todos
+    materias = instancia.materias_audiencia()
+
+    # Filtrar materias según el rol
+    if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
+        # Profesor: solo sus propias materias
+        materias = materias.filter(profesor_titular=request.user.perfil_profesor)
+    elif request.user.es_coordinador:
+        # Coordinador: solo materias de sus carreras
+        mis_carreras = Carrera.objects.filter(coordinador=request.user)
+        materias = materias.filter(carrera__in=mis_carreras)
+    # Moderadora: ve todas las materias (sin filtro)
+
     planificaciones_por_materia = {}
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
         from apps.planificaciones.models import Planificacion
@@ -121,13 +126,20 @@ def detalle_instancia(request, pk):
         planificaciones_por_materia = {p.materia_id: p for p in qs}
     elif request.user.es_revisor:
         from apps.planificaciones.models import Planificacion
+        # Solo la planificación del profesor titular de cada materia
         qs = Planificacion.objects.filter(
             instancia=instancia,
             materia__in=materias
-        ).prefetch_related('versiones')
-        planificaciones_por_materia = {p.materia_id: p for p in qs}
+        ).select_related('materia__profesor_titular').prefetch_related('versiones')
+        for p in qs:
+            # Si hay varias para la misma materia, preferir la del titular
+            mat_id = p.materia_id
+            if mat_id not in planificaciones_por_materia:
+                planificaciones_por_materia[mat_id] = p
+            elif (p.materia.profesor_titular and
+                  p.profesor == p.materia.profesor_titular):
+                planificaciones_por_materia[mat_id] = p
 
-    # Lista de (materia, planificacion_o_None) para el template
     materias_con_planif = [
         (m, planificaciones_por_materia.get(m.pk))
         for m in materias
