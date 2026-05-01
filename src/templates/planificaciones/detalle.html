@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ planificacion.materia.nombre }} - Planificaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'instancias:mis_instancias' %}">Mis Instancias</a></li>
+            <li class="breadcrumb-item">{{ planificacion.instancia.nombre }}</li>
+            <li class="breadcrumb-item active">{{ planificacion.materia.nombre }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h2>{{ planificacion.materia.nombre }}</h2>
+            <p class="text-muted">
+                {{ planificacion.materia.carrera.nombre }} &mdash; {{ planificacion.materia.anio_cursado }}° año
+                | {{ planificacion.instancia.get_periodo_display }} {{ planificacion.instancia.anio_academico }}
+            </p>
+        </div>
+        {% if planificacion.instancia.acepta_envios %}
+        <a href="{% url 'planificaciones:cargar' planificacion.instancia.pk planificacion.materia.pk %}"
+           class="btn btn-primary">
+            Subir Nueva Versión
+        </a>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert alert-{{ msg.tags }} alert-dismissible fade show" role="alert">
+        {{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if planificacion.tiene_oficial %}
+    <div class="alert alert-success">
+        <strong>Versión Oficial:</strong> v{{ planificacion.version_oficial.numero }}
+        {% if planificacion.version_oficial.fecha_aprobacion %}
+        (aprobada el {{ planificacion.version_oficial.fecha_aprobacion|date:"d/m/Y" }})
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <h4 class="mt-4">Historial de Versiones</h4>
+    <table class="table">
+        <thead class="table-light">
+            <tr>
+                <th>Versión</th>
+                <th>Estado</th>
+                <th>Fecha Envío</th>
+                <th>Tardía</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in versiones %}
+            <tr class="{% if v.estado == 'oficial' %}table-success{% elif v.estado == 'rechazada' or v.estado == 'rechazada_auto' %}table-danger{% endif %}">
+                <td><strong>v{{ v.numero }}</strong></td>
+                <td>
+                    {% if v.estado == 'borrador' %}
+                        <span class="badge bg-secondary">Borrador</span>
+                    {% elif v.estado == 'enviada' %}
+                        <span class="badge bg-primary">Enviada</span>
+                    {% elif v.estado == 'en_revision' %}
+                        <span class="badge bg-warning text-dark">En Revisión</span>
+                    {% elif v.estado == 'rechazada_auto' %}
+                        <span class="badge bg-danger">Rechazada (Auto)</span>
+                    {% elif v.estado == 'rechazada' %}
+                        <span class="badge bg-danger">Rechazada</span>
+                    {% elif v.estado == 'aprobada' %}
+                        <span class="badge bg-info">Aprobada</span>
+                    {% elif v.estado == 'oficial' %}
+                        <span class="badge bg-success">Oficial Vigente</span>
+                    {% elif v.estado == 'reemplazada' %}
+                        <span class="badge bg-light text-dark">Reemplazada</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ v.get_estado_display }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ v.fecha_envio|date:"d/m/Y H:i"|default:"-" }}</td>
+                <td>
+                    {% if v.entrega_tardia %}
+                    <span class="text-danger">Sí ({{ v.dias_atraso }} días)</span>
+                    {% else %}-{% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'planificaciones:descargar' v.pk %}" class="btn btn-sm btn-outline-secondary">
+                        ↓ Descargar
+                    </a>
+                    {% if v.estado == 'borrador' %}
+                    <a href="{% url 'planificaciones:enviar' v.pk %}" class="btn btn-sm btn-primary">
+                        Enviar
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% if v.estado == 'rechazada_auto' and v.campos_faltantes %}
+            <tr class="table-warning">
+                <td colspan="5">
+                    <small><strong>Campos faltantes:</strong>
+                    {% for campo in v.campos_faltantes %}{{ campo }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                    </small>
+                </td>
+            </tr>
+            {% endif %}
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-muted">No hay versiones aún.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

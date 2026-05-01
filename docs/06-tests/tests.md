@@ -15,6 +15,7 @@ docker-compose exec web pytest --cov=apps --cov-report=html
 docker-compose exec web pytest apps/usuarios/tests/ -v
 docker-compose exec web pytest apps/catalogos/tests/ -v
 docker-compose exec web pytest apps/instancias/tests/ -v
+docker-compose exec web pytest apps/planificaciones/tests/ -v
 
 # Un test específico
 docker-compose exec web pytest apps/usuarios/tests/test_usuarios.py::TestUsuarioModel::test_crear_usuario_con_email -v
@@ -159,18 +160,64 @@ Relacionado con: [CU-01 Crear instancia de presentación](04-casos-de-uso/casos-
 
 ### Fase 4 — Planificaciones
 
-### Fase 4 — Planificaciones
+---
 
-| Test Esperado | CU Relacionado |
-|---------------|----------------|
-| `test_crear_planificacion` | CU-07 |
-| `test_subir_archivo_word` | CU-07 |
-| `test_validar_campos_obligatorios` | CU-08, RN-06 |
-| `test_rechazo_automatico_campo_faltante` | CU-08, RN-06 |
-| `test_envio_exitoso` | CU-08 |
-| `test_versionado_correlativo` | CU-08, RF-025 |
-| `test_marca_entrega_tardia` | CU-08, RN-08 |
-| `test_clonar_oficial_previa` | CU-14, RF-026 |
+### 4. Planificaciones (`apps/planificaciones/tests/`)
+
+Relacionado con: [CU-07 Cargar planificación](04-casos-de-uso/casos-de-uso.md#cu-07), [CU-08 Enviar planificación](04-casos-de-uso/casos-de-uso.md#cu-08), [CU-14 Clonar planificación](04-casos-de-uso/casos-de-uso.md#cu-14)
+
+#### TestValidador (sin DB)
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_documento_completo_es_valido` | Documento con los 7 campos pasa la validación | RN-06 |
+| `test_documento_incompleto_no_es_valido` | Documento con campos faltantes falla y lista los faltantes | RN-06 |
+| `test_documento_vacio_falla` | Documento vacío falla con los 7 campos faltantes | RN-06 |
+| `test_nombre_campo_devuelve_string` | `nombre_campo()` retorna texto legible para el usuario | — |
+| `test_variantes_de_campo` | Acepta variantes textuales del mismo campo (sin tilde, sinónimos) | RN-06 |
+
+#### TestPlanificacionModelo
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_crear_planificacion` | Crea planificación para materia/profesor/instancia | CU-07 |
+| `test_unique_together` | No permite duplicar planificación para la misma combinación | RN-09 |
+| `test_siguiente_numero_version_sin_versiones` | Sin versiones, el siguiente número es 1 | RF-025 |
+| `test_siguiente_numero_version_con_versiones` | Con versiones existentes, incrementa correctamente | RF-025 |
+| `test_no_tiene_oficial_inicialmente` | Nueva planificación no tiene versión oficial | — |
+| `test_ultima_version_none_sin_versiones` | Sin versiones, `ultima_version` devuelve None | — |
+
+#### TestVersionFSM
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_estado_inicial_borrador` | Una versión nueva empieza en estado `borrador` | CU-07 |
+| `test_enviar_cambia_estado` | `enviar()` cambia estado a `enviada` y registra fecha | CU-08 |
+| `test_rechazar_automaticamente` | `rechazar_automaticamente()` cambia a `rechazada_auto` y guarda campos faltantes | CU-08, RN-06 |
+| `test_flujo_completo_aprobacion` | Flujo: borrador → enviada → en_revisión → aprobada | CU-02, CU-03 |
+| `test_flujo_rechazo_revisor` | Flujo: borrador → enviada → en_revisión → rechazada | CU-04 |
+
+#### TestEntregaTardia
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_entrega_en_plazo` | Entrega dentro del plazo no se marca como tardía | RN-08 |
+| `test_entrega_tardia` | Entrega fuera del plazo se marca como tardía con días de atraso | RN-08 |
+
+#### TestPlanificacionViews
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_cargar_requiere_login` | Vista `cargar` redirige si no está autenticado | — |
+| `test_detalle_requiere_login` | Vista `detalle` redirige si no está autenticado | — |
+| `test_profesor_accede_a_cargar` | Profesor titular puede ver el formulario de carga | CU-07 |
+| `test_subir_archivo_crea_version` | POST con archivo Word crea un borrador v1 | CU-07 |
+| `test_enviar_version_valida` | Enviar doc con 7 campos → estado `enviada` | CU-08 |
+| `test_enviar_version_invalida_rechaza_auto` | Enviar doc incompleto → estado `rechazada_auto` con campos faltantes | CU-08, RN-06 |
+
+---
+
+## Tests Pendientes (por fase)
 
 ### Fase 5 — Revisiones
 
@@ -194,11 +241,11 @@ Relacionado con: [CU-01 Crear instancia de presentación](04-casos-de-uso/casos-
 | usuarios | 13 | ✅ Completo |
 | catalogos | 18 | ✅ Completo |
 | instancias | 17 | ✅ Completo |
-| planificaciones | 0 | ⏳ Fase 4 |
+| planificaciones | 24 | ✅ Completo |
 | revisiones | 0 | ⏳ Fase 5 |
 | notificaciones | 0 | ⏳ Fase 7 |
 
-**Total actual: 48 tests**
+**Total actual: 72 tests**
 
 ---
 

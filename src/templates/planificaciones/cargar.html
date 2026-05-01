@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Planificación - {{ materia.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'instancias:mis_instancias' %}">Mis Instancias</a></li>
+            <li class="breadcrumb-item">{{ instancia.nombre }}</li>
+            <li class="breadcrumb-item active">Subir planificación</li>
+        </ol>
+    </nav>
+
+    <h2>Subir Planificación</h2>
+    <p class="text-muted">
+        <strong>{{ materia.nombre }}</strong> &mdash;
+        {{ instancia.get_periodo_display }} {{ instancia.anio_academico }}
+    </p>
+
+    {% if plantilla %}
+    <div class="alert alert-info">
+        <strong>Plantilla disponible:</strong>
+        <a href="{{ plantilla.archivo.url }}" class="alert-link">Descargar plantilla de {{ plantilla.institucion }}</a>
+    </div>
+    {% endif %}
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="{{ form.archivo.id_for_label }}" class="form-label fw-bold">
+                        Documento Word
+                    </label>
+                    <input type="file" name="{{ form.archivo.html_name }}"
+                           class="form-control {% if form.archivo.errors %}is-invalid{% endif %}"
+                           accept=".doc,.docx" id="{{ form.archivo.id_for_label }}">
+                    <div class="form-text">{{ form.archivo.help_text }}</div>
+                    {% if form.archivo.errors %}
+                    <div class="invalid-feedback">{{ form.archivo.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Guardar como borrador</button>
+                    <a href="{% if planificacion.pk %}{% url 'planificaciones:detalle' planificacion.pk %}{% else %}{% url 'instancias:mis_instancias' %}{% endif %}"
+                       class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h6 class="text-muted">Campos obligatorios del documento</h6>
+        <ul class="text-muted small">
+            <li>Propósito</li>
+            <li>Fundamentación</li>
+            <li>Contenidos Mínimos</li>
+            <li>Metodología</li>
+            <li>Requisitos para regularizar y promocionar</li>
+            <li>Criterios y formatos de evaluación</li>
+            <li>Bibliografía</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

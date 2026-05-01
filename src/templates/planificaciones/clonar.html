@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Clonar Planificación - {{ materia.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 700px;">
+    <h2>Clonar Planificación Anterior</h2>
+    <p class="text-muted">
+        <strong>{{ materia.nombre }}</strong> &rarr; {{ instancia_destino.nombre }}
+    </p>
+
+    {% if planificaciones_anteriores %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Seleccioná una versión oficial anterior para clonarla como nuevo borrador:</p>
+        <div class="list-group mb-3">
+            {% for planif in planificaciones_anteriores %}
+            <label class="list-group-item list-group-item-action">
+                <input type="radio" name="version_id" value="{{ planif.version_oficial.pk }}" required>
+                {{ planif.instancia.nombre }} ({{ planif.instancia.anio_academico }}) &mdash;
+                v{{ planif.version_oficial.numero }}
+                <span class="text-muted small">(oficial vigente)</span>
+            </label>
+            {% endfor %}
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Clonar como borrador</button>
+            <a href="{% url 'instancias:mis_instancias' %}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+    {% else %}
+    <div class="alert alert-info">
+        No hay planificaciones oficiales anteriores para esta materia.
+    </div>
+    <a href="{% url 'instancias:mis_instancias' %}" class="btn btn-outline-secondary">Volver</a>
+    {% endif %}
+</div>
+{% endblock %}
