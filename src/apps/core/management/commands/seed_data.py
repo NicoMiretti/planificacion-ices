@@ -242,19 +242,19 @@ class Command(BaseCommand):
 
         # ── 2026 ──
         anual_26 = inst(
-            'Planificaciones Anuales 2026', 2026, 'anual',
+            'Anuales', 2026, 'anual',
             apertura=TODAY - timedelta(days=7),
             limite=TODAY + timedelta(days=21),
             carreras=ambas,
         )
         primer_26 = inst(
-            'Planificaciones Primer Cuatrimestre 2026', 2026, '1cuat',
+            '1° Cuatrimestre', 2026, '1cuat',
             apertura=TODAY - timedelta(days=3),
             limite=TODAY + timedelta(days=14),
             carreras=ambas,
         )
         segundo_26 = inst(
-            'Planificaciones Segundo Cuatrimestre 2026', 2026, '2cuat',
+            '2° Cuatrimestre', 2026, '2cuat',
             apertura=TODAY + timedelta(days=60),
             limite=TODAY + timedelta(days=90),
             carreras=ambas,
@@ -262,29 +262,29 @@ class Command(BaseCommand):
 
         # ── 2025 ──
         anual_25 = inst(
-            'Planificaciones Anuales 2025', 2025, 'anual',
+            'Anuales', 2025, 'anual',
             apertura=date(2025, 3, 1), limite=date(2025, 3, 31),
             cerrada=True, carreras=ambas,
         )
         primer_25 = inst(
-            'Planificaciones Primer Cuatrimestre 2025', 2025, '1cuat',
+            '1° Cuatrimestre', 2025, '1cuat',
             apertura=date(2025, 2, 10), limite=date(2025, 2, 28),
             cerrada=True, carreras=ambas,
         )
         segundo_25 = inst(
-            'Planificaciones Segundo Cuatrimestre 2025', 2025, '2cuat',
+            '2° Cuatrimestre', 2025, '2cuat',
             apertura=date(2025, 6, 1), limite=date(2025, 6, 20),
             cerrada=True, carreras=ambas,
         )
 
         # ── 2024 ──
         anual_24 = inst(
-            'Planificaciones Anuales 2024', 2024, 'anual',
+            'Anuales', 2024, 'anual',
             apertura=date(2024, 3, 1), limite=date(2024, 3, 31),
             cerrada=True, carreras=ambas,
         )
         primer_24 = inst(
-            'Planificaciones Primer Cuatrimestre 2024', 2024, '1cuat',
+            '1° Cuatrimestre', 2024, '1cuat',
             apertura=date(2024, 2, 10), limite=date(2024, 2, 28),
             cerrada=True, carreras=ambas,
         )

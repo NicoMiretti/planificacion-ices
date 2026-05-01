@@ -116,12 +116,21 @@ def revisar_version(request, version_id):
     otro_rol = 'coordinador' if user.rol == 'moderadora' else 'moderadora'
     otro_visto = VistoBueno.objects.filter(version=version, rol=otro_rol).first()
 
+    # Rechazos activos en esta versión (para mostrar justificación prominente)
+    rechazos = version.revisiones.filter(tipo=Revision.Tipo.RECHAZAR).order_by('-fecha')
+
+    # ¿La versión ya fue aprobada por ambos?
+    ya_aprobada = version.estado in (Version.Estado.APROBADA, Version.Estado.OFICIAL)
+
     context = {
         'version': version,
         'planificacion': version.planificacion,
-        'revisiones': version.revisiones.all(),
+        'revisiones': version.revisiones.select_related('usuario').order_by('-fecha'),
         'mi_visto': mi_visto,
         'otro_visto': otro_visto,
+        'otro_rol': otro_rol,
+        'rechazos': rechazos,
+        'ya_aprobada': ya_aprobada,
         'form_rechazo': RechazarForm(),
         'form_correccion': CorreccionLeveForm() if user.es_moderadora else None,
     }
