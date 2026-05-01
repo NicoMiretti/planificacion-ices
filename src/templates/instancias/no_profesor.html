@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Sin perfil de profesor - Planificaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="alert alert-warning">
+        <h5 class="alert-heading">Sin perfil de profesor</h5>
+        <p class="mb-0">
+            Tu usuario ({{ user.email }}) no tiene un perfil de profesor asociado.
+            Contactá al administrador del sistema para que te asigne las materias correspondientes.
+        </p>
+    </div>
+</div>
+{% endblock %}

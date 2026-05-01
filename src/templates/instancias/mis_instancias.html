@@ -5,9 +5,48 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Mis Instancias de Presentación</h2>
-    
-    <div class="alert alert-info mt-4">
-        <strong>En construcción:</strong> {{ mensaje }}
+    {% if profesor %}
+    <p class="text-muted">{{ profesor }} &mdash; {{ profesor.institucion }}</p>
+    {% endif %}
+
+    {% if instancias_activas %}
+    <h4 class="mt-4">Instancias Activas</h4>
+    <div class="list-group">
+        {% for inst in instancias_activas %}
+        <a href="{% url 'instancias:detalle' inst.pk %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ inst.nombre }}</h5>
+                {% if inst.estado == 'abierta' %}
+                    <span class="badge bg-success">Abierta</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Programada</span>
+                {% endif %}
+            </div>
+            <p class="mb-1">Período: {{ inst.get_periodo_display }} {{ inst.anio_academico }}</p>
+            <small>
+                Fecha límite: {{ inst.fecha_limite|date:"d/m/Y" }}
+                {% if inst.es_tardia %}
+                    <span class="text-danger">(Entregas tardías)</span>
+                {% endif %}
+            </small>
+        </a>
+        {% endfor %}
     </div>
+    {% else %}
+    <div class="alert alert-info mt-4">
+        No hay instancias activas actualmente.
+    </div>
+    {% endif %}
+
+    {% if instancias_historicas %}
+    <h4 class="mt-4">Histórico</h4>
+    <div class="list-group">
+        {% for inst in instancias_historicas %}
+        <a href="{% url 'instancias:detalle' inst.pk %}" class="list-group-item list-group-item-action">
+            <span class="text-muted">{{ inst.nombre }} ({{ inst.anio_academico }})</span>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

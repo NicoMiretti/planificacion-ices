@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ instancia.nombre }} - Planificaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'instancias:lista' %}">Instancias</a></li>
+            <li class="breadcrumb-item active">{{ instancia.nombre }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <h2>{{ instancia.nombre }}</h2>
+            <p class="text-muted">
+                {{ instancia.get_periodo_display }} {{ instancia.anio_academico }}
+            </p>
+        </div>
+        <div>
+            {% if instancia.estado == 'abierta' %}
+                <span class="badge bg-success fs-6">Abierta</span>
+            {% elif instancia.estado == 'programada' %}
+                <span class="badge bg-warning text-dark fs-6">Programada</span>
+            {% else %}
+                <span class="badge bg-secondary fs-6">Cerrada</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Fechas</h6>
+                    <p class="mb-1">
+                        <strong>Apertura:</strong> {{ instancia.fecha_apertura|date:"d/m/Y" }}
+                    </p>
+                    <p class="mb-0">
+                        <strong>Límite:</strong> {{ instancia.fecha_limite|date:"d/m/Y" }}
+                        {% if instancia.es_tardia and instancia.esta_abierta %}
+                            <span class="text-danger">(Período de entregas tardías)</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materias de audiencia -->
+    <h4 class="mt-4">Materias incluidas</h4>
+    {% if materias %}
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Materia</th>
+                    <th>Carrera</th>
+                    <th>Año</th>
+                    <th>Régimen</th>
+                    <th>Profesor Titular</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for materia in materias %}
+                <tr>
+                    <td>{{ materia.nombre }}</td>
+                    <td>{{ materia.carrera }}</td>
+                    <td>{{ materia.anio }}°</td>
+                    <td>{{ materia.get_regimen_display }}</td>
+                    <td>
+                        {% if materia.profesor_titular %}
+                            {{ materia.profesor_titular }}
+                        {% else %}
+                            <span class="text-muted">Sin asignar</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        No hay materias en la audiencia de esta instancia.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
