@@ -179,6 +179,7 @@ def rechazar_version(request, version_id):
 
 
 @login_required
+@revisores
 def correccion_leve(request, version_id):
     """CU-05: Aplicar corrección leve (solo moderadora)."""
     if request.method != 'POST':

@@ -68,10 +68,28 @@ def detalle_instancia(request, pk):
     # Si es profesor, filtrar solo sus materias
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
         materias = materias.filter(profesor_titular=request.user.perfil_profesor)
-    
+
+    # Para profesores: dict materia_id → planificacion existente
+    planificaciones_por_materia = {}
+    if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
+        from apps.planificaciones.models import Planificacion
+        qs = Planificacion.objects.filter(
+            instancia=instancia,
+            profesor=request.user.perfil_profesor,
+            materia__in=materias
+        )
+        planificaciones_por_materia = {p.materia_id: p for p in qs}
+
+    # Lista de (materia, planificacion_o_None) para el template
+    materias_con_planif = [
+        (m, planificaciones_por_materia.get(m.pk))
+        for m in materias
+    ]
+
     context = {
         'instancia': instancia,
         'materias': materias,
+        'materias_con_planif': materias_con_planif,
         'today': timezone.now().date(),
     }
     return render(request, 'instancias/detalle.html', context)

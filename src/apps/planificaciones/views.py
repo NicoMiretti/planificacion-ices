@@ -119,6 +119,10 @@ def detalle_planificacion(request, pk):
     planificacion = get_object_or_404(Planificacion, pk=pk)
 
     user = request.user
+    # Alumnos y gestión no tienen acceso hasta la consulta pública (Fase 6)
+    if user.rol in ('alumno', 'gestion'):
+        messages.error(request, 'No tienes permiso para ver esta planificación.')
+        return redirect('usuarios:home')
     if user.es_profesor:
         if planificacion.profesor.usuario != user:
             messages.error(request, 'No tienes acceso a esta planificación.')
@@ -137,6 +141,17 @@ def detalle_planificacion(request, pk):
 def descargar_version(request, version_id):
     """Descargar archivo Word de una versión."""
     version = get_object_or_404(Version, pk=version_id)
+
+    user = request.user
+    # Alumnos y gestión no tienen acceso hasta la consulta pública (Fase 6)
+    if user.rol in ('alumno', 'gestion'):
+        messages.error(request, 'No tienes permiso para descargar esta versión.')
+        return redirect('usuarios:home')
+    # Profesores solo pueden descargar versiones de sus propias planificaciones
+    if user.es_profesor:
+        if version.planificacion.profesor.usuario != user:
+            messages.error(request, 'No tienes acceso a esta versión.')
+            return redirect('instancias:mis_instancias')
 
     return FileResponse(
         version.archivo.open('rb'),

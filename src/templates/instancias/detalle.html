@@ -6,7 +6,13 @@
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'instancias:lista' %}">Instancias</a></li>
+            <li class="breadcrumb-item">
+                {% if request.user.es_profesor %}
+                    <a href="{% url 'instancias:mis_instancias' %}">Mis instancias</a>
+                {% else %}
+                    <a href="{% url 'instancias:lista' %}">Instancias</a>
+                {% endif %}
+            </li>
             <li class="breadcrumb-item active">{{ instancia.nombre }}</li>
         </ol>
     </nav>
@@ -60,14 +66,15 @@
                     <th>Año</th>
                     <th>Régimen</th>
                     <th>Profesor Titular</th>
+                    {% if request.user.es_profesor %}<th></th>{% endif %}
                 </tr>
             </thead>
             <tbody>
-                {% for materia in materias %}
+                {% for materia, planif in materias_con_planif %}
                 <tr>
                     <td>{{ materia.nombre }}</td>
                     <td>{{ materia.carrera }}</td>
-                    <td>{{ materia.anio }}°</td>
+                    <td>{{ materia.anio_cursado }}°</td>
                     <td>{{ materia.get_regimen_display }}</td>
                     <td>
                         {% if materia.profesor_titular %}
@@ -76,6 +83,19 @@
                             <span class="text-muted">Sin asignar</span>
                         {% endif %}
                     </td>
+                    {% if request.user.es_profesor %}
+                    <td>
+                        {% if planif %}
+                            <a href="{% url 'planificaciones:detalle' planif.pk %}"
+                               class="btn btn-sm btn-outline-primary">Ver planificación</a>
+                        {% elif instancia.estado == 'abierta' %}
+                            <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
+                               class="btn btn-sm btn-primary">Cargar planificación</a>
+                        {% else %}
+                            <span class="text-muted">—</span>
+                        {% endif %}
+                    </td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
