@@ -1,7 +1,7 @@
 # Modelo de Datos — Sistema de Planificaciones ICES/UCSE
 
 > Diagrama de entidades y relaciones del sistema.  
-> Última actualización: Fase 4 completa.
+> Última actualización: Fase 5 completa.
 
 ---
 
@@ -114,6 +114,26 @@ erDiagram
         datetime fecha_aprobacion
     }
 
+    %% =================== REVISIONES ===================
+    Revision {
+        int id PK
+        int version_id FK
+        int usuario_id FK
+        string tipo
+        string observaciones
+        string detalle_correccion
+        string archivo_corregido
+        datetime fecha
+    }
+
+    VistoBueno {
+        int id PK
+        int version_id FK
+        int usuario_id FK
+        string rol
+        datetime fecha
+    }
+
     %% =================== RELACIONES ===================
 
     %% Catálogos
@@ -138,6 +158,12 @@ erDiagram
     InstanciaPresentacion ||--o{ Planificacion : "agrupa"
     Planificacion ||--o{ Version : "versiona"
     Version |o--|| Planificacion : "es oficial de"
+
+    %% Revisiones
+    Version ||--o{ Revision : "registra"
+    Usuario ||--o{ Revision : "realiza"
+    Version ||--o{ VistoBueno : "recibe"
+    Usuario ||--o{ VistoBueno : "otorga"
 ```
 
 ---
@@ -175,6 +201,13 @@ erDiagram
 | `Planificacion` | Agrupa todas las versiones de una materia en una instancia | Única por (materia, profesor, instancia) |
 | `Version` | Archivo Word específico con su estado FSM | Versionado correlativo: v1, v2, … |
 
+### Módulo Revisiones
+
+| Entidad | Descripción | Notas |
+|---------|-------------|-------|
+| `Revision` | Registro de cada acción de revisión sobre una versión | Tipos: tomar, aprobar, rechazar, correccion_leve |
+| `VistoBueno` | Aprobación formal de un revisor (moderadora o coordinador) | unique_together: (version, rol) — controla el doble visto |
+
 ---
 
 ## Estados de una Versión (FSM)
@@ -210,13 +243,5 @@ stateDiagram-v2
 | **RN-03** | Para pasar a `oficial` se requiere doble aprobación (moderadora + coordinador) |
 | **RN-06** | Un documento Word debe contener los 7 campos obligatorios para enviarse |
 | **RN-08** | Una entrega después de `fecha_limite` se marca como tardía con días de atraso |
+| **RN-07** | Solo la moderadora puede aplicar correcciones leves; el estado de la versión no cambia |
 | **RN-09** | Existe como máximo una `Planificacion` por combinación (materia, profesor, instancia) |
-
----
-
-## Próximas entidades (Fase 5)
-
-| Entidad | Descripción |
-|---------|-------------|
-| `Observacion` | Comentario de rechazo o corrección vinculado a una `Version` |
-| `VistosBuenos` | Registro de aprobaciones por revisor para control de doble firma |

@@ -1,13 +1,104 @@
 {% extends 'base.html' %}
 
-{% block title %}Tablero de Revisión - Planificaciones{% endblock %}
+{% block title %}Tablero de Revisión{% endblock %}
 
 {% block content %}
 <div class="container-fluid mt-4">
     <h2>Tablero de Revisión</h2>
-    
-    <div class="alert alert-info mt-4">
-        <strong>En construcción:</strong> {{ mensaje }}
+
+    <!-- Filtros -->
+    <form method="get" class="row g-2 mb-4 mt-2">
+        <div class="col-md-3">
+            <select name="carrera" class="form-select">
+                <option value="">Todas las carreras</option>
+                {% for c in carreras %}
+                <option value="{{ c.id }}" {% if filtros.carrera == c.id|stringformat:"s" %}selected{% endif %}>
+                    {{ c.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="estado" class="form-select">
+                <option value="">Todos los estados</option>
+                {% for val, label in estados %}
+                <option value="{{ val }}" {% if filtros.estado == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2 d-flex align-items-center">
+            <div class="form-check">
+                <input type="checkbox" name="tardia" value="1" class="form-check-input"
+                       id="chk-tardia" {% if filtros.tardia %}checked{% endif %}>
+                <label class="form-check-label" for="chk-tardia">Solo tardías</label>
+            </div>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Filtrar</button>
+            <a href="{% url 'revisiones:tablero' %}" class="btn btn-outline-secondary">Limpiar</a>
+        </div>
+    </form>
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">
+        {{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
+    {% endfor %}
+    {% endif %}
+
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Materia</th>
+                <th>Profesor</th>
+                <th>Carrera</th>
+                <th>Instancia</th>
+                <th>Ver.</th>
+                <th>Estado</th>
+                <th>Tardía</th>
+                <th>Envío</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in versiones %}
+            <tr {% if v.tiene_mi_visto %}class="table-success"{% endif %}>
+                <td>{{ v.planificacion.materia.nombre }}</td>
+                <td>{{ v.planificacion.profesor }}</td>
+                <td>{{ v.planificacion.materia.carrera.nombre }}</td>
+                <td>{{ v.planificacion.instancia.nombre }}</td>
+                <td>v{{ v.numero }}</td>
+                <td>
+                    {% if v.estado == 'enviada' %}
+                        <span class="badge bg-primary">Enviada</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">En Revisión</span>
+                    {% endif %}
+                    {% if v.tiene_mi_visto %}
+                        <span class="badge bg-success">Mi V°B°</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if v.entrega_tardia %}
+                    <span class="badge bg-danger">{{ v.dias_atraso }}d</span>
+                    {% else %}-{% endif %}
+                </td>
+                <td><small>{{ v.fecha_envio|date:"d/m/Y H:i" }}</small></td>
+                <td>
+                    <a href="{% url 'revisiones:revisar' v.pk %}" class="btn btn-sm btn-primary">
+                        Revisar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9" class="text-center text-muted py-4">
+                    No hay planificaciones pendientes de revisión.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}

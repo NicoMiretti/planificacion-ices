@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial — {{ planificacion.materia.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'revisiones:tablero' %}">Tablero</a></li>
+            <li class="breadcrumb-item active">Historial</li>
+        </ol>
+    </nav>
+
+    <h3>Historial de revisiones</h3>
+    <p class="text-muted">
+        {{ planificacion.materia.nombre }} &mdash;
+        {{ planificacion.profesor }} &mdash;
+        {{ planificacion.instancia.nombre }}
+    </p>
+
+    {% if revisiones %}
+    <div class="timeline">
+        {% for rev in revisiones %}
+        <div class="card mb-2">
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ rev.get_tipo_display }}</strong>
+                    <small class="text-muted">{{ rev.fecha|date:"d/m/Y H:i" }}</small>
+                </div>
+                <div class="text-muted small">v{{ rev.version.numero }} — {{ rev.usuario|default:"Sistema" }}</div>
+                {% if rev.observaciones %}
+                <div class="mt-1">{{ rev.observaciones }}</div>
+                {% endif %}
+                {% if rev.detalle_correccion %}
+                <div class="mt-1 text-info">Corrección: {{ rev.detalle_correccion }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">No hay revisiones registradas.</div>
+    {% endif %}
+</div>
+{% endblock %}

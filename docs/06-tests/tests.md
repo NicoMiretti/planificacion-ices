@@ -16,6 +16,7 @@ docker-compose exec web pytest apps/usuarios/tests/ -v
 docker-compose exec web pytest apps/catalogos/tests/ -v
 docker-compose exec web pytest apps/instancias/tests/ -v
 docker-compose exec web pytest apps/planificaciones/tests/ -v
+docker-compose exec web pytest apps/revisiones/tests/ -v
 
 # Un test específico
 docker-compose exec web pytest apps/usuarios/tests/test_usuarios.py::TestUsuarioModel::test_crear_usuario_con_email -v
@@ -217,20 +218,57 @@ Relacionado con: [CU-07 Cargar planificación](04-casos-de-uso/casos-de-uso.md#c
 
 ---
 
-## Tests Pendientes (por fase)
+### 5. Revisiones (`apps/revisiones/tests/`)
 
-### Fase 5 — Revisiones
+Relacionado con: [CU-02 Tomar para revisión](04-casos-de-uso/casos-de-uso.md#cu-02), [CU-03 Aprobar planificación](04-casos-de-uso/casos-de-uso.md#cu-03), [CU-04 Rechazar planificación](04-casos-de-uso/casos-de-uso.md#cu-04), [CU-05 Corrección leve](04-casos-de-uso/casos-de-uso.md#cu-05)
 
-| Test Esperado | CU Relacionado |
-|---------------|----------------|
-| `test_tomar_para_revision` | CU-02 |
-| `test_aprobar_visto_bueno` | CU-03 |
-| `test_doble_aprobacion_oficial` | CU-03, RN-03 |
-| `test_rechazar_con_observaciones` | CU-04 |
-| `test_rechazo_requiere_texto` | CU-04 |
-| `test_correccion_leve` | CU-05, RN-07 |
-| `test_solo_moderadora_corrige` | CU-05 |
-| `test_coordinador_ve_su_carrera` | CU-02, RF-031 |
+#### TestTomarRevision
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_tomar_cambia_estado` | Tomar una versión enviada la pasa a `en_revision` | CU-02 |
+| `test_tomar_crea_registro_revision` | Tomar crea un registro `Revision` de tipo `TOMAR` | CU-02 |
+| `test_no_se_puede_tomar_borrador` | No se puede tomar una versión en estado `borrador` | CU-02 |
+
+#### TestAprobar
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_primer_visto_no_aprueba` | Un solo visto bueno (moderadora) no cambia el estado | RN-03 |
+| `test_doble_visto_aprueba_y_marca_oficial` | Moderadora + coordinador → estado `oficial` | CU-03, RN-03 |
+| `test_no_se_puede_aprobar_dos_veces_mismo_rol` | El mismo rol no puede registrar dos vistos buenos | RN-03 |
+| `test_coordinador_incorrecto_no_puede_aprobar` | Coordinador de otra carrera no puede aprobar | RF-031 |
+| `test_profesor_no_puede_aprobar` | Un profesor no puede dar visto bueno | RN-03 |
+
+#### TestRechazar
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_rechazar_cambia_estado` | Rechazar cambia el estado a `rechazada` | CU-04 |
+| `test_rechazar_crea_revision_con_observaciones` | El rechazo guarda las observaciones en `Revision` | CU-04 |
+| `test_rechazar_sin_observaciones_falla` | Las observaciones son obligatorias para rechazar | RN-04 |
+| `test_rechazar_observaciones_solo_espacios_falla` | Observaciones con solo espacios también son rechazadas | RN-04 |
+
+#### TestCorreccionLeve
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_moderadora_puede_corregir` | Moderadora puede aplicar corrección leve | CU-05, RN-07 |
+| `test_corrección_no_cambia_estado` | La corrección leve no cambia el estado `en_revision` | RN-07 |
+| `test_coordinador_no_puede_corregir` | Solo la moderadora puede aplicar correcciones leves | RN-07 |
+| `test_corrección_sin_detalle_falla` | El detalle de la corrección es obligatorio | CU-05 |
+
+#### TestRevisionesViews
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_tablero_requiere_login` | Tablero redirige si no está autenticado | RNF-001 |
+| `test_tablero_requiere_rol_revisor` | Tablero redirige a profesores (no son revisores) | RN-03 |
+| `test_tablero_accesible_moderadora` | Moderadora puede acceder al tablero | CU-02 |
+| `test_tablero_accesible_coordinador` | Coordinador puede acceder al tablero | CU-02 |
+| `test_aprobar_via_post` | POST a aprobar registra el visto bueno correctamente | CU-03 |
+| `test_rechazar_via_post` | POST a rechazar cambia estado a `rechazada` | CU-04 |
+| `test_rechazar_sin_observaciones_no_cambia_estado` | POST a rechazar sin observaciones no cambia el estado | RN-04 |
 
 ---
 
@@ -242,10 +280,10 @@ Relacionado con: [CU-07 Cargar planificación](04-casos-de-uso/casos-de-uso.md#c
 | catalogos | 18 | ✅ Completo |
 | instancias | 17 | ✅ Completo |
 | planificaciones | 24 | ✅ Completo |
-| revisiones | 0 | ⏳ Fase 5 |
+| revisiones | 23 | ✅ Completo |
 | notificaciones | 0 | ⏳ Fase 7 |
 
-**Total actual: 72 tests**
+**Total actual: 95 tests**
 
 ---
 
