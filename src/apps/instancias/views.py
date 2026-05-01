@@ -107,13 +107,37 @@ def detalle_instancia(request, pk):
 
     # Filtrar materias según el rol
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
-        # Profesor: solo sus propias materias
         materias = materias.filter(profesor_titular=request.user.perfil_profesor)
     elif request.user.es_coordinador:
-        # Coordinador: solo materias de sus carreras
         mis_carreras = Carrera.objects.filter(coordinador=request.user)
         materias = materias.filter(carrera__in=mis_carreras)
-    # Moderadora: ve todas las materias (sin filtro)
+    # Moderadora: ve todas sin filtro
+
+    # Obtener carreras y años disponibles ANTES de aplicar filtros GET
+    carreras_disponibles = (
+        materias.values_list('carrera__id', 'carrera__nombre')
+        .distinct().order_by('carrera__nombre')
+    )
+    anios_disponibles = (
+        materias.values_list('anio_cursado', flat=True)
+        .distinct().order_by('anio_cursado')
+    )
+    carreras_disponibles = list(carreras_disponibles)
+    anios_disponibles = list(anios_disponibles)
+
+    # Filtros opcionales por carrera y año (solo si hay más de una opción)
+    filtro_carrera = request.GET.get('carrera')
+    filtro_anio = request.GET.get('anio')
+    if filtro_carrera:
+        try:
+            materias = materias.filter(carrera_id=int(filtro_carrera))
+        except (ValueError, TypeError):
+            filtro_carrera = None
+    if filtro_anio:
+        try:
+            materias = materias.filter(anio_cursado=int(filtro_anio))
+        except (ValueError, TypeError):
+            filtro_anio = None
 
     planificaciones_por_materia = {}
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
@@ -126,13 +150,11 @@ def detalle_instancia(request, pk):
         planificaciones_por_materia = {p.materia_id: p for p in qs}
     elif request.user.es_revisor:
         from apps.planificaciones.models import Planificacion
-        # Solo la planificación del profesor titular de cada materia
         qs = Planificacion.objects.filter(
             instancia=instancia,
             materia__in=materias
         ).select_related('materia__profesor_titular').prefetch_related('versiones')
         for p in qs:
-            # Si hay varias para la misma materia, preferir la del titular
             mat_id = p.materia_id
             if mat_id not in planificaciones_por_materia:
                 planificaciones_por_materia[mat_id] = p
@@ -150,5 +172,10 @@ def detalle_instancia(request, pk):
         'materias': materias,
         'materias_con_planif': materias_con_planif,
         'today': timezone.now().date(),
+        'carreras_disponibles': carreras_disponibles,
+        'anios_disponibles': anios_disponibles,
+        'filtro_carrera': filtro_carrera,
+        'filtro_anio': filtro_anio,
+        'mostrar_filtros': len(carreras_disponibles) > 1 or len(anios_disponibles) > 1,
     }
     return render(request, 'instancias/detalle.html', context)

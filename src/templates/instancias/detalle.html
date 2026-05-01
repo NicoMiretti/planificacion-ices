@@ -53,6 +53,38 @@
 
     <h5 class="mb-3" style="color:var(--ices-blue)">Materias incluidas</h5>
 
+    {# ── Filtros de carrera y año (solo si hay más de una opción) ── #}
+    {% if mostrar_filtros %}
+    <div class="d-flex flex-wrap gap-2 mb-3 align-items-center">
+        {% if carreras_disponibles|length > 1 %}
+        <div class="d-flex align-items-center gap-1 me-2">
+            <span class="text-muted" style="font-size:.8rem">Carrera:</span>
+            <a href="?{% if filtro_anio %}anio={{ filtro_anio }}&{% endif %}"
+               class="btn btn-sm {% if not filtro_carrera %}btn-ices{% else %}btn-ices-outline{% endif %}"
+               style="font-size:.78rem">Todas</a>
+            {% for cid, cnombre in carreras_disponibles %}
+            <a href="?carrera={{ cid }}{% if filtro_anio %}&anio={{ filtro_anio }}{% endif %}"
+               class="btn btn-sm {% if filtro_carrera == cid|stringformat:'s' %}btn-ices{% else %}btn-ices-outline{% endif %}"
+               style="font-size:.78rem">{{ cnombre }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if anios_disponibles|length > 1 %}
+        <div class="d-flex align-items-center gap-1">
+            <span class="text-muted" style="font-size:.8rem">Año:</span>
+            <a href="?{% if filtro_carrera %}carrera={{ filtro_carrera }}&{% endif %}"
+               class="btn btn-sm {% if not filtro_anio %}btn-ices{% else %}btn-ices-outline{% endif %}"
+               style="font-size:.78rem">Todos</a>
+            {% for anio in anios_disponibles %}
+            <a href="?anio={{ anio }}{% if filtro_carrera %}&carrera={{ filtro_carrera }}{% endif %}"
+               class="btn btn-sm {% if filtro_anio == anio|stringformat:'s' %}btn-ices{% else %}btn-ices-outline{% endif %}"
+               style="font-size:.78rem">{{ anio }}°</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
     {% if materias %}
     <div class="ices-card">
         <div class="card-body p-0">
