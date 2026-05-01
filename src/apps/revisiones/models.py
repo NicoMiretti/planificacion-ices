@@ -11,7 +11,7 @@ class Revision(models.Model):
     """Registra cada acción de revisión sobre una versión."""
 
     class Tipo(models.TextChoices):
-        TOMAR = 'tomar', 'Tomar para revisión'
+        TOMAR = 'tomar', 'Revisión iniciada'
         APROBAR = 'aprobar', 'Aprobar'
         RECHAZAR = 'rechazar', 'Rechazar'
         CORRECCION_LEVE = 'correccion_leve', 'Corrección leve'

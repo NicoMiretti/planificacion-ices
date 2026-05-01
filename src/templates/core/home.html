@@ -1,55 +1,168 @@
 {% extends 'base.html' %}
 
-{% block title %}Inicio — Planificaciones ICES/UCSE{% endblock %}
+{% block title %}Inicio — Planificaciones ICES{% endblock %}
 
 {% block content %}
 <div class="container ices-page">
+
     <div class="ices-page-header">
-        <h2>Bienvenido, {{ user.nombre_completo|default:user.email }}</h2>
+        <h3 class="mb-1">Bienvenido, {{ user.nombre_completo|default:user.email }}</h3>
         <p class="text-muted mb-0">
-            Accediste como <strong>{{ user.get_rol_display }}</strong>.
-            Seleccioná una opción para continuar.
+            <span class="ices-badge ices-badge-info me-1">{{ user.get_rol_display }}</span>
+            {% if user.es_profesor and user.perfil_profesor %}
+                {{ user.perfil_profesor.institucion }}
+            {% endif %}
         </p>
     </div>
 
-    <div class="row g-3 mt-1" style="max-width:640px">
-        {% if user.es_profesor %}
+    {# ─── ALERTAS CONTEXTUALES ─── #}
+    {% if alertas %}
+    <div class="mb-4">
+        {% for a in alertas %}
+        <a href="{{ a.url }}" class="text-decoration-none">
+            <div class="alert ices-alert alert-{{ a.tipo }} d-flex align-items-center gap-2 mb-2 py-2">
+                <i class="bi {{ a.icono }}"></i>
+                <span style="font-size:.9rem;">{{ a.texto }}</span>
+                <i class="bi bi-chevron-right ms-auto"></i>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {# ═══════════════ DASHBOARD PROFESOR ═══════════════ #}
+    {% if user.es_profesor %}
+
+    {% if stats %}
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-blue)">{{ stats.instancias_activas }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Instancias activas</div>
+            </div>
+        </div>
+        {% if stats.rechazadas %}
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid var(--ices-danger)">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-danger)">{{ stats.rechazadas }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Rechazada{{ stats.rechazadas|pluralize }}</div>
+            </div>
+        </div>
+        {% endif %}
+        {% if stats.sin_cargar %}
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid #f59e0b">
+                <div style="font-size:1.8rem;font-weight:700;color:#d97706">{{ stats.sin_cargar }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Sin cargar</div>
+            </div>
+        </div>
+        {% endif %}
+        {% if stats.en_revision %}
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid #f59e0b">
+                <div style="font-size:1.8rem;font-weight:700;color:#d97706">{{ stats.en_revision }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">En revisión</div>
+            </div>
+        </div>
+        {% endif %}
+        {% if stats.oficiales %}
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid var(--ices-success)">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-success)">{{ stats.oficiales }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Oficial{{ stats.oficiales|pluralize:"es" }}</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="row g-3" style="max-width:500px">
         <div class="col-sm-6">
             <a href="{% url 'instancias:mis_instancias' %}" class="rol-card">
-                <span class="rol-icon">&#128194;</span>
+                <span class="rol-icon"><i class="bi bi-folder2-open"></i></span>
                 <div class="rol-label">Mis Instancias</div>
                 <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver convocatorias activas</div>
             </a>
         </div>
-        {% endif %}
-
-        {% if user.puede_gestionar %}
-        <div class="col-sm-6">
-            <a href="{% url 'instancias:lista' %}" class="rol-card">
-                <span class="rol-icon">&#128197;</span>
-                <div class="rol-label">Instancias</div>
-                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Gestionar convocatorias</div>
-            </a>
-        </div>
-        {% endif %}
-
-        {% if user.es_revisor %}
-        <div class="col-sm-6">
-            <a href="{% url 'revisiones:tablero' %}" class="rol-card">
-                <span class="rol-icon">&#9989;</span>
-                <div class="rol-label">Tablero de Revisión</div>
-                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Aprobar y revisar planificaciones</div>
-            </a>
-        </div>
-        {% endif %}
-
         <div class="col-sm-6">
             <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
-                <span class="rol-icon">&#128270;</span>
+                <span class="rol-icon"><i class="bi bi-search"></i></span>
                 <div class="rol-label">Consulta Pública</div>
                 <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones aprobadas</div>
             </a>
         </div>
     </div>
+
+    {# ═══════════════ DASHBOARD REVISOR ═══════════════ #}
+    {% elif user.es_revisor %}
+
+    {% if stats %}
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-blue)">{{ stats.total_pendientes }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Total pendientes</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid var(--ices-blue-light)">
+                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-blue-light)">{{ stats.nuevas_enviadas }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Nuevas enviadas</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2"
+                 {% if stats.esperando_mi_visto %}style="border-top:3px solid #f59e0b"{% endif %}>
+                <div style="font-size:1.8rem;font-weight:700;color:{% if stats.esperando_mi_visto %}#d97706{% else %}var(--ices-text-muted){% endif %}">{{ stats.esperando_mi_visto }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Esperan mi aceptación</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="ices-card text-center py-3 px-2"
+                 {% if stats.tardias %}style="border-top:3px solid var(--ices-danger)"{% endif %}>
+                <div style="font-size:1.8rem;font-weight:700;color:{% if stats.tardias %}var(--ices-danger){% else %}var(--ices-text-muted){% endif %}">{{ stats.tardias }}</div>
+                <div style="font-size:.78rem;color:var(--ices-text-muted)">Tardías</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row g-3" style="max-width:600px">
+        <div class="col-sm-6">
+            <a href="{% url 'revisiones:tablero' %}" class="rol-card">
+                <span class="rol-icon"><i class="bi bi-clipboard2-check"></i></span>
+                <div class="rol-label">Tablero de revisión</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Aceptar y rechazar planificaciones</div>
+            </a>
+        </div>
+        <div class="col-sm-6">
+            <a href="{% url 'instancias:lista' %}" class="rol-card">
+                <span class="rol-icon"><i class="bi bi-calendar3"></i></span>
+                <div class="rol-label">Instancias</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver convocatorias y materias</div>
+            </a>
+        </div>
+        <div class="col-sm-6">
+            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
+                <span class="rol-icon"><i class="bi bi-search"></i></span>
+                <div class="rol-label">Consulta Pública</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones oficiales</div>
+            </a>
+        </div>
+    </div>
+
+    {# ═══════════════ ALUMNO / GESTIÓN ═══════════════ #}
+    {% else %}
+    <div class="row g-3" style="max-width:400px">
+        <div class="col-12">
+            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
+                <span class="rol-icon"><i class="bi bi-search"></i></span>
+                <div class="rol-label">Consulta Pública</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones oficiales aprobadas</div>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}

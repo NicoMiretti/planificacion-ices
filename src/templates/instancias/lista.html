@@ -1,90 +1,107 @@
 {% extends 'base.html' %}
 
-{% block title %}Instancias de Presentación - Planificaciones{% endblock %}
+{% block title %}Instancias de Presentación{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2>Instancias de Presentación</h2>
-        <a href="/admin/instancias/instanciapresentacion/add/" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Nueva Instancia
+<div class="container ices-page">
+
+    <div class="ices-page-header d-flex justify-content-between align-items-start">
+        <div>
+            <h3 class="mb-1"><i class="bi bi-calendar3 me-2"></i>Instancias de Presentación</h3>
+            <p class="text-muted mb-0">Convocatorias de entrega de planificaciones</p>
+        </div>
+        {% if user.puede_gestionar %}
+        <a href="/admin/instancias/instanciapresentacion/add/" class="btn btn-ices btn-sm">
+            <i class="bi bi-plus-circle me-1"></i>Nueva Instancia
         </a>
+        {% endif %}
     </div>
 
-    <!-- Filtros -->
-    <form method="get" class="row g-2 mt-2 mb-3">
-        <div class="col-auto">
-            <select name="anio" class="form-select">
-                <option value="">Todos los años</option>
-                {% for anio in anios_disponibles %}
-                <option value="{{ anio }}" {% if filtro_anio == anio|stringformat:"s" %}selected{% endif %}>
-                    {{ anio }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-auto">
-            <select name="estado" class="form-select">
-                <option value="">Todos los estados</option>
-                {% for val, label in estados %}
-                <option value="{{ val }}" {% if filtro_estado == val %}selected{% endif %}>
-                    {{ label }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-outline-secondary">Filtrar</button>
-            <a href="{% url 'instancias:lista' %}" class="btn btn-outline-secondary">Limpiar</a>
+    {# Filtros #}
+    <form method="get" class="ices-card mb-4">
+        <div class="card-body p-3">
+            <div class="row g-2 align-items-end">
+                <div class="col-auto">
+                    <label class="form-label small text-muted mb-1">Año</label>
+                    <select name="anio" class="form-select form-select-sm">
+                        <option value="">Todos los años</option>
+                        {% for anio in anios_disponibles %}
+                        <option value="{{ anio }}" {% if filtro_anio == anio|stringformat:"s" %}selected{% endif %}>
+                            {{ anio }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <label class="form-label small text-muted mb-1">Estado</label>
+                    <select name="estado" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                        {% for val, label in estados %}
+                        <option value="{{ val }}" {% if filtro_estado == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto ms-auto d-flex gap-2">
+                    <button type="submit" class="btn btn-ices btn-sm">
+                        <i class="bi bi-funnel me-1"></i>Filtrar
+                    </button>
+                    <a href="{% url 'instancias:lista' %}" class="btn btn-ices-outline btn-sm">
+                        <i class="bi bi-x me-1"></i>Limpiar
+                    </a>
+                </div>
+            </div>
         </div>
     </form>
 
-    <!-- Tabla de instancias -->
     {% if instancias %}
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Período</th>
-                    <th>Apertura</th>
-                    <th>Límite</th>
-                    <th>Estado</th>
-                    <th>Carreras</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for inst in instancias %}
-                <tr>
-                    <td><strong>{{ inst.nombre }}</strong></td>
-                    <td>{{ inst.get_periodo_display }} {{ inst.anio_academico }}</td>
-                    <td>{{ inst.fecha_apertura|date:"d/m/Y" }}</td>
-                    <td>{{ inst.fecha_limite|date:"d/m/Y" }}</td>
-                    <td>
-                        {% if inst.estado == 'abierta' %}
-                            <span class="badge bg-success">Abierta</span>
-                        {% elif inst.estado == 'programada' %}
-                            <span class="badge bg-warning text-dark">Programada</span>
-                        {% else %}
-                            <span class="badge bg-secondary">Cerrada</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ inst.carreras.count }}</td>
-                    <td>
-                        <a href="{% url 'instancias:detalle' inst.pk %}" class="btn btn-sm btn-outline-primary">
-                            Ver
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="ices-card">
+        <div class="card-body p-0">
+            <table class="ices-table table mb-0">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Período</th>
+                        <th>Apertura</th>
+                        <th>Límite</th>
+                        <th>Estado</th>
+                        <th>Carreras</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inst in instancias %}
+                    <tr>
+                        <td class="fw-semibold">{{ inst.nombre }}</td>
+                        <td class="text-muted">{{ inst.get_periodo_display }} {{ inst.anio_academico }}</td>
+                        <td style="font-size:.85rem">{{ inst.fecha_apertura|date:"d/m/Y" }}</td>
+                        <td style="font-size:.85rem">{{ inst.fecha_limite|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if inst.estado == 'abierta' %}
+                                <span class="ices-badge ices-badge-success"><i class="bi bi-circle-fill" style="font-size:.5rem"></i> Abierta</span>
+                            {% elif inst.estado == 'programada' %}
+                                <span class="ices-badge ices-badge-warning">Programada</span>
+                            {% else %}
+                                <span class="ices-badge" style="background:#f1f5f9;color:#64748b">Cerrada</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ inst.carreras.count }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'instancias:detalle' inst.pk %}" class="btn btn-ices-outline btn-sm">
+                                <i class="bi bi-eye me-1"></i>Ver
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     {% else %}
-    <div class="alert alert-info mt-3">
-        No hay instancias registradas.
+    <div class="alert ices-alert alert-info d-flex align-items-center gap-2">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No hay instancias registradas con los filtros seleccionados.</span>
     </div>
     {% endif %}
+
 </div>
 {% endblock %}

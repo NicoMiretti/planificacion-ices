@@ -5,12 +5,12 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
-from apps.usuarios.decorators import solo_moderadora
+from apps.usuarios.decorators import solo_moderadora, revisores
 from .models import InstanciaPresentacion
 
 
 @login_required
-@solo_moderadora
+@revisores
 def lista_instancias(request):
     """Vista para moderadora: todas las instancias."""
     instancias = InstanciaPresentacion.objects.all()
@@ -43,14 +43,45 @@ def lista_instancias(request):
 def mis_instancias(request):
     """Vista para profesor: sus instancias asignadas."""
     if not hasattr(request.user, 'perfil_profesor'):
-        # No es profesor - mostrar mensaje
         return render(request, 'instancias/no_profesor.html')
-    
+
     profesor = request.user.perfil_profesor
     instancias = InstanciaPresentacion.objects.para_profesor(request.user)
-    
+
+    from apps.planificaciones.models import Planificacion, Version
+
+    def resumen_instancia(inst):
+        """Devuelve dict de conteos de estados de planificaciones en la instancia."""
+        planifs = Planificacion.objects.filter(
+            instancia=inst, profesor=profesor
+        ).prefetch_related('versiones')
+        total_mats = inst.materias_audiencia().filter(profesor_titular=profesor).count()
+        estados = {'rechazadas': 0, 'en_revision': 0, 'enviadas': 0,
+                   'borradores': 0, 'oficiales': 0, 'sin_cargar': 0}
+        planif_ids = set()
+        for p in planifs:
+            planif_ids.add(p.materia_id)
+            ultima = p.versiones.order_by('-numero').first()
+            if ultima:
+                if ultima.estado in ('rechazada', 'rechazada_auto'):
+                    estados['rechazadas'] += 1
+                elif ultima.estado == 'en_revision':
+                    estados['en_revision'] += 1
+                elif ultima.estado == 'enviada':
+                    estados['enviadas'] += 1
+                elif ultima.estado == 'borrador':
+                    estados['borradores'] += 1
+                elif ultima.estado in ('oficial', 'aprobada'):
+                    estados['oficiales'] += 1
+        estados['sin_cargar'] = total_mats - len(planif_ids)
+        return estados
+
+    activas_list = []
+    for inst in instancias.activas():
+        activas_list.append((inst, resumen_instancia(inst)))
+
     context = {
-        'instancias_activas': instancias.activas(),
+        'instancias_activas': activas_list,
         'instancias_historicas': instancias.historicas(),
         'profesor': profesor,
         'today': timezone.now().date(),

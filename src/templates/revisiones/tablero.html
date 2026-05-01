@@ -3,102 +3,151 @@
 {% block title %}Tablero de Revisión{% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4">
-    <h2>Tablero de Revisión</h2>
+<div class="container ices-page">
 
-    <!-- Filtros -->
-    <form method="get" class="row g-2 mb-4 mt-2">
-        <div class="col-md-3">
-            <select name="carrera" class="form-select">
-                <option value="">Todas las carreras</option>
-                {% for c in carreras %}
-                <option value="{{ c.id }}" {% if filtros.carrera == c.id|stringformat:"s" %}selected{% endif %}>
-                    {{ c.nombre }}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="estado" class="form-select">
-                <option value="">Todos los estados</option>
-                {% for val, label in estados %}
-                <option value="{{ val }}" {% if filtros.estado == val %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-2 d-flex align-items-center">
-            <div class="form-check">
-                <input type="checkbox" name="tardia" value="1" class="form-check-input"
-                       id="chk-tardia" {% if filtros.tardia %}checked{% endif %}>
-                <label class="form-check-label" for="chk-tardia">Solo tardías</label>
-            </div>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-outline-primary">Filtrar</button>
-            <a href="{% url 'revisiones:tablero' %}" class="btn btn-outline-secondary">Limpiar</a>
-        </div>
-    </form>
+    <div class="ices-page-header">
+        <h3 class="mb-1"><i class="bi bi-clipboard2-check me-2"></i>Tablero de Revisión</h3>
+        <p class="text-muted mb-0">Planificaciones pendientes de tu revisión</p>
+    </div>
 
     {% if messages %}
     {% for msg in messages %}
-    <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">
-        {{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div class="alert ices-alert alert-{{ msg.tags }} alert-dismissible fade show d-flex align-items-center gap-2">
+        {% if msg.tags == 'success' %}<i class="bi bi-check-circle-fill"></i>
+        {% elif msg.tags == 'error' or msg.tags == 'danger' %}<i class="bi bi-x-circle-fill"></i>
+        {% else %}<i class="bi bi-info-circle-fill"></i>{% endif %}
+        <span>{{ msg }}</span>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
     </div>
     {% endfor %}
     {% endif %}
 
-    <table class="table table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th>Materia</th>
-                <th>Profesor</th>
-                <th>Carrera</th>
-                <th>Instancia</th>
-                <th>Ver.</th>
-                <th>Estado</th>
-                <th>Tardía</th>
-                <th>Envío</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for v in versiones %}
-            <tr {% if v.tiene_mi_visto %}class="table-success"{% endif %}>
-                <td>{{ v.planificacion.materia.nombre }}</td>
-                <td>{{ v.planificacion.profesor }}</td>
-                <td>{{ v.planificacion.materia.carrera.nombre }}</td>
-                <td>{{ v.planificacion.instancia.nombre }}</td>
-                <td>v{{ v.numero }}</td>
-                <td>
-                    {% if v.estado == 'enviada' %}
-                        <span class="badge bg-primary">Enviada</span>
-                    {% else %}
-                        <span class="badge bg-warning text-dark">En Revisión</span>
-                    {% endif %}
-                    {% if v.tiene_mi_visto %}
-                        <span class="badge bg-success">Mi V°B°</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if v.entrega_tardia %}
-                    <span class="badge bg-danger">{{ v.dias_atraso }}d</span>
-                    {% else %}-{% endif %}
-                </td>
-                <td><small>{{ v.fecha_envio|date:"d/m/Y H:i" }}</small></td>
-                <td>
-                    <a href="{% url 'revisiones:revisar' v.pk %}" class="btn btn-sm btn-primary">
-                        Revisar
+    {# ── Filtros ── #}
+    <form method="get" class="ices-card mb-4">
+        <div class="card-body p-3">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1">Carrera</label>
+                    <select name="carrera" class="form-select form-select-sm">
+                        <option value="">Todas las carreras</option>
+                        {% for c in carreras %}
+                        <option value="{{ c.id }}" {% if filtros.carrera == c.id|stringformat:"s" %}selected{% endif %}>
+                            {{ c.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1">Estado</label>
+                    <select name="estado" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                        {% for val, label in estados %}
+                        <option value="{{ val }}" {% if filtros.estado == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto d-flex align-items-center mt-3">
+                    <div class="form-check">
+                        <input type="checkbox" name="tardia" value="1" class="form-check-input"
+                               id="chk-tardia" {% if filtros.tardia %}checked{% endif %}>
+                        <label class="form-check-label small" for="chk-tardia">
+                            <i class="bi bi-clock-history text-danger me-1"></i>Solo tardías
+                        </label>
+                    </div>
+                </div>
+                <div class="col-auto ms-auto d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-ices btn-sm">
+                        <i class="bi bi-funnel me-1"></i>Filtrar
+                    </button>
+                    <a href="{% url 'revisiones:tablero' %}" class="btn btn-ices-outline btn-sm">
+                        <i class="bi bi-x me-1"></i>Limpiar
                     </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9" class="text-center text-muted py-4">
-                    No hay planificaciones pendientes de revisión.
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {# ── Tabla ── #}
+    <div class="ices-card">
+        <div class="card-body p-0">
+            <table class="ices-table table mb-0">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>Carrera</th>
+                        <th>Instancia</th>
+                        <th>Ver.</th>
+                        <th>Estado</th>
+                        <th>Envío</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in versiones %}
+                    <tr>
+                        <td class="fw-semibold">{{ v.planificacion.materia.nombre }}</td>
+                        <td class="text-muted">{{ v.planificacion.profesor }}</td>
+                        <td class="text-muted" style="font-size:.85rem;">{{ v.planificacion.materia.carrera.nombre }}</td>
+                        <td class="text-muted" style="font-size:.85rem;">
+                            {{ v.planificacion.instancia.nombre }} {{ v.planificacion.instancia.anio_academico }}
+                        </td>
+                        <td><span class="text-muted">v{{ v.numero }}</span></td>
+                        <td>
+                            {% if v.estado == 'enviada' %}
+                                <span class="ices-badge ices-badge-info">
+                                    <i class="bi bi-send"></i> Enviada
+                                </span>
+                            {% else %}
+                                <span class="ices-badge ices-badge-warning">
+                                    <i class="bi bi-hourglass-split"></i> En Revisión
+                                </span>
+                            {% endif %}
+                            {% if v.entrega_tardia %}
+                                <span class="ices-badge ices-badge-danger ms-1">
+                                    <i class="bi bi-clock-history"></i> Tardía {{ v.dias_atraso }}d
+                                </span>
+                            {% endif %}
+                            {% if v.tiene_mi_visto %}
+                                <span class="ices-badge ices-badge-success ms-1">
+                                    <i class="bi bi-check2"></i> Acepté
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="font-size:.82rem;" class="text-muted">
+                            {{ v.fecha_envio|date:"d/m/Y H:i" }}
+                        </td>
+                        <td class="text-end">
+                            {% if v.estado == 'enviada' %}
+                                <a href="{% url 'revisiones:revisar' v.pk %}"
+                                   class="btn btn-ices btn-sm">
+                                    <i class="bi bi-play-fill me-1"></i>Iniciar revisión
+                                </a>
+                            {% elif v.tiene_mi_visto %}
+                                <a href="{% url 'revisiones:revisar' v.pk %}"
+                                   class="btn btn-ices-outline btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Ver
+                                </a>
+                            {% else %}
+                                <a href="{% url 'revisiones:revisar' v.pk %}"
+                                   class="btn btn-sm" style="background:#fff3cd;color:#856404;border:1px solid #ffc107;">
+                                    <i class="bi bi-pencil-square me-1"></i>Continuar revisión
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-5">
+                            <i class="bi bi-check2-all fs-3 d-block mb-2 text-success"></i>
+                            No hay planificaciones pendientes de revisión.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

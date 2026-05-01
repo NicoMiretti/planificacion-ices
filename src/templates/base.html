@@ -56,7 +56,7 @@
                     </li>
                     {% endif %}
 
-                    {% if user.puede_gestionar %}
+                    {% if user.es_revisor or user.puede_gestionar %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/instancias/' %}active{% endif %}"
                            href="{% url 'instancias:lista' %}">

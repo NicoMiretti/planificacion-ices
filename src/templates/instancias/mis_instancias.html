@@ -1,52 +1,124 @@
 {% extends 'base.html' %}
 
-{% block title %}Mis Instancias - Planificaciones{% endblock %}
+{% block title %}Mis Instancias{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Mis Instancias de Presentación</h2>
-    {% if profesor %}
-    <p class="text-muted">{{ profesor }} &mdash; {{ profesor.institucion }}</p>
+<div class="container ices-page">
+
+    <div class="ices-page-header">
+        <h3 class="mb-1"><i class="bi bi-folder2-open me-2"></i>Mis Instancias</h3>
+        {% if profesor %}
+        <p class="text-muted mb-0">{{ profesor }} &mdash; {{ profesor.institucion }}</p>
+        {% endif %}
+    </div>
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert ices-alert alert-{{ msg.tags }} alert-dismissible fade show d-flex align-items-center gap-2">
+        <i class="bi bi-info-circle-fill"></i><span>{{ msg }}</span>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
     {% endif %}
 
+    {# ── Instancias Activas ── #}
     {% if instancias_activas %}
-    <h4 class="mt-4">Instancias Activas</h4>
-    <div class="list-group">
-        {% for inst in instancias_activas %}
-        <a href="{% url 'instancias:detalle' inst.pk %}" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ inst.nombre }}</h5>
-                {% if inst.estado == 'abierta' %}
-                    <span class="badge bg-success">Abierta</span>
-                {% else %}
-                    <span class="badge bg-warning text-dark">Programada</span>
-                {% endif %}
+    <h5 class="mb-3 mt-2" style="color:var(--ices-blue)">Instancias activas</h5>
+    <div class="row g-3 mb-5">
+        {% for inst, resumen in instancias_activas %}
+        <div class="col-md-6">
+            <a href="{% url 'instancias:detalle' inst.pk %}" class="text-decoration-none">
+            <div class="ices-card h-100" style="border-top:3px solid {% if inst.estado == 'abierta' %}var(--ices-success){% else %}#f59e0b{% endif %};">
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <div class="fw-semibold" style="color:var(--ices-blue)">{{ inst.nombre }}</div>
+                            <div class="text-muted" style="font-size:.83rem">
+                                {{ inst.get_periodo_display }} {{ inst.anio_academico }}
+                            </div>
+                        </div>
+                        {% if inst.estado == 'abierta' %}
+                            <span class="ices-badge ices-badge-success"><i class="bi bi-circle-fill" style="font-size:.5rem"></i> Abierta</span>
+                        {% else %}
+                            <span class="ices-badge ices-badge-warning">Programada</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-muted mb-3" style="font-size:.82rem">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Límite: {{ inst.fecha_limite|date:"d/m/Y" }}
+                        {% if inst.es_tardia and inst.esta_abierta %}
+                        <span class="text-danger ms-1">(período tardío)</span>
+                        {% endif %}
+                    </div>
+
+                    {# Mini resumen de estados #}
+                    <div class="d-flex flex-wrap gap-1">
+                        {% if resumen.rechazadas %}
+                        <span class="ices-badge ices-badge-danger">
+                            <i class="bi bi-x-circle me-1"></i>{{ resumen.rechazadas }} rechazada{{ resumen.rechazadas|pluralize }}
+                        </span>
+                        {% endif %}
+                        {% if resumen.sin_cargar %}
+                        <span class="ices-badge" style="background:#fef9c3;color:#854d0e;">
+                            <i class="bi bi-exclamation-triangle me-1"></i>{{ resumen.sin_cargar }} sin cargar
+                        </span>
+                        {% endif %}
+                        {% if resumen.borradores %}
+                        <span class="ices-badge" style="background:#f1f5f9;color:#64748b;">
+                            <i class="bi bi-file-earmark me-1"></i>{{ resumen.borradores }} borrador{{ resumen.borradores|pluralize:"es" }}
+                        </span>
+                        {% endif %}
+                        {% if resumen.enviadas %}
+                        <span class="ices-badge ices-badge-info">
+                            <i class="bi bi-send me-1"></i>{{ resumen.enviadas }} enviada{{ resumen.enviadas|pluralize }}
+                        </span>
+                        {% endif %}
+                        {% if resumen.en_revision %}
+                        <span class="ices-badge ices-badge-warning">
+                            <i class="bi bi-hourglass-split me-1"></i>{{ resumen.en_revision }} en revisión
+                        </span>
+                        {% endif %}
+                        {% if resumen.oficiales %}
+                        <span class="ices-badge ices-badge-success">
+                            <i class="bi bi-patch-check me-1"></i>{{ resumen.oficiales }} oficial{{ resumen.oficiales|pluralize:"es" }}
+                        </span>
+                        {% endif %}
+                        {% if not resumen.rechazadas and not resumen.sin_cargar and not resumen.borradores and not resumen.enviadas and not resumen.en_revision and not resumen.oficiales %}
+                        <span class="text-muted" style="font-size:.8rem">Sin planificaciones cargadas</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <p class="mb-1">Período: {{ inst.get_periodo_display }} {{ inst.anio_academico }}</p>
-            <small>
-                Fecha límite: {{ inst.fecha_limite|date:"d/m/Y" }}
-                {% if inst.es_tardia %}
-                    <span class="text-danger">(Entregas tardías)</span>
-                {% endif %}
-            </small>
-        </a>
+            </a>
+        </div>
         {% endfor %}
     </div>
     {% else %}
-    <div class="alert alert-info mt-4">
-        No hay instancias activas actualmente.
+    <div class="alert ices-alert alert-info d-flex align-items-center gap-2 mb-5">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No hay instancias activas actualmente.</span>
     </div>
     {% endif %}
 
+    {# ── Histórico ── #}
     {% if instancias_historicas %}
-    <h4 class="mt-4">Histórico</h4>
-    <div class="list-group">
-        {% for inst in instancias_historicas %}
-        <a href="{% url 'instancias:detalle' inst.pk %}" class="list-group-item list-group-item-action">
-            <span class="text-muted">{{ inst.nombre }} ({{ inst.anio_academico }})</span>
-        </a>
-        {% endfor %}
+    <h5 class="mb-3" style="color:var(--ices-text-muted)">Histórico</h5>
+    <div class="ices-card">
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+                {% for inst in instancias_historicas %}
+                <li class="list-group-item px-3 py-2">
+                    <a href="{% url 'instancias:detalle' inst.pk %}" class="text-decoration-none text-muted">
+                        <i class="bi bi-archive me-2"></i>
+                        {{ inst.nombre }} — {{ inst.get_periodo_display }} {{ inst.anio_academico }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endif %}
+
 </div>
 {% endblock %}
