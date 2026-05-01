@@ -1,0 +1,19 @@
+# Base requirements - común a todos los entornos
+Django>=5.0,<6.0
+psycopg[binary]>=3.1
+python-dotenv>=1.0
+
+# FSM para estados de planificación
+django-fsm>=3.0
+
+# Auditoría de cambios
+django-simple-history>=3.5
+
+# Parseo de documentos Word
+python-docx>=1.1
+
+# Validación de archivos
+python-magic>=0.4
+
+# Zona horaria
+pytz>=2024.1

@@ -1,0 +1,11 @@
+# Production requirements
+-r base.txt
+
+# WSGI server
+gunicorn>=21.0
+
+# Static files
+whitenoise>=6.6
+
+# Seguridad
+django-csp>=3.8

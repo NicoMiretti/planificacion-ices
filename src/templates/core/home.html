@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Planificaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1>Sistema de Planificaciones</h1>
+        <p class="lead">ICES / UCSE</p>
+        
+        <div class="mt-4">
+            {% if user.is_authenticated %}
+            <p>Bienvenido, <strong>{{ user.nombre_completo|default:user.email }}</strong></p>
+            <p>Rol: <span class="badge bg-primary">{{ user.get_rol_display }}</span></p>
+            {% else %}
+            <a href="{% url 'usuarios:login' %}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

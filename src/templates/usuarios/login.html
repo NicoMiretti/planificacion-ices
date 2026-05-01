@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Planificaciones{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Iniciar Sesión</h4>
+                </div>
+                <div class="card-body">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Email o contraseña incorrectos.
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Email</label>
+                            <input type="email" 
+                                   name="username" 
+                                   class="form-control" 
+                                   id="username"
+                                   placeholder="tu@email.com"
+                                   required 
+                                   autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" 
+                                   name="password" 
+                                   class="form-control" 
+                                   id="password"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            Ingresar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3 text-muted">
+                <small>Sistema de Planificaciones ICES/UCSE</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
