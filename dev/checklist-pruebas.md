@@ -215,81 +215,139 @@ exit()
 
 ---
 
-## Fase 3 — Instancias (pendiente)
+## Fase 3 — Instancias ✅
 
-### Tests a implementar
-- Crear instancia de presentación
-- Audiencia (carreras, régimen)
-- Estados: programada → abierta → cerrada
-- Calcular materias de la audiencia
-- Consultar instancias por profesor
+### Tests Automatizados
 
-### Pruebas Manuales Esperadas
-| # | Prueba | CU Relacionado |
-|---|--------|----------------|
-| 3.1 | Crear instancia con fecha futura | CU-01 |
-| 3.2 | Instancia se abre automáticamente | CU-01 |
-| 3.3 | Seleccionar audiencia (carreras) | CU-01 |
-| 3.4 | Profesor ve sus instancias | CU-06 |
-| 3.5 | Histórico de instancias pasadas | CU-06 |
+```bash
+docker-compose exec web pytest apps/instancias/tests/ -v
+```
 
----
+**Tests incluidos:**
+- `test_crear_instancia_basica` — Instancia con fechas y período
+- `test_estado_programada_antes_apertura` — Estado según fechas
+- `test_estado_abierta_entre_fechas` / `test_estado_abierta_despues_limite` — Apertura y tardías
+- `test_cerrada_manual_no_reabre` — Cierre manual definitivo
+- `test_materias_audiencia_por_carrera` / filtro regímen / filtro institución
+- `test_profesores_audiencia` — Profesores de la audiencia
+- `test_manager_activas` / `test_manager_abiertas` / `test_manager_para_profesor`
+- `test_lista_instancias_requiere_moderadora` / `test_mis_instancias_profesor` / `test_detalle_instancia`
 
-## Fase 4 — Planificaciones (pendiente)
+### Pruebas Manuales
 
-### Tests a implementar
-- Subir documento Word
-- Validación de campos obligatorios
-- Rechazo automático si falta campo
-- Versionado correlativo
-- Marca de entrega tardía
-
-### Pruebas Manuales Esperadas
-| # | Prueba | CU Relacionado |
-|---|--------|----------------|
-| 4.1 | Profesor sube Word | CU-07 |
-| 4.2 | Enviar → validación campos | CU-08 |
-| 4.3 | Rechazo automático | CU-08 |
-| 4.4 | Envío exitoso → versión creada | CU-08 |
-| 4.5 | Entrega tardía marcada | CU-08 |
-| 4.6 | Ver historial de versiones | CU-09 |
-| 4.7 | Clonar planificación anterior | CU-14 |
+| # | Prueba | Pasos | Resultado Esperado |
+|---|--------|-------|-------------------|
+| 3.1 | Crear instancia | Admin > Instancias > Agregar | Instancia con estado `programada` |
+| 3.2 | Instancia se abre | Fijar fecha apertura = hoy, reiniciar | Estado cambia a `abierta` |
+| 3.3 | Seleccionar carreras | Editar instancia, agregar carreras | Solo esas carreras en audiencia |
+| 3.4 | Profesor ve instancias | Login como profesor → /instancias/mis/ | Solo instancias con sus materias |
+| 3.5 | Detalle instancia | Click en instancia | Muestra materias y botón cargar |
 
 ---
 
-## Fase 5 — Revisiones (pendiente)
+## Fase 4 — Planificaciones ✅
 
-### Tests a implementar
-- Tomar planificación para revisión
-- Aprobar (visto bueno individual)
-- Doble aprobación → oficial
-- Rechazar con observaciones
-- Corrección leve
+### Tests Automatizados
 
-### Pruebas Manuales Esperadas
-| # | Prueba | CU Relacionado |
-|---|--------|----------------|
-| 5.1 | Tablero muestra pendientes | CU-02 |
-| 5.2 | Filtros del tablero | CU-02 |
-| 5.3 | Coordinador ve solo su carrera | CU-02 |
-| 5.4 | Dar visto bueno | CU-03 |
-| 5.5 | Doble visto → aprobada | CU-03 |
-| 5.6 | Rechazar con texto | CU-04 |
-| 5.7 | Corrección leve (moderadora) | CU-05 |
-| 5.8 | Profesor notificado | CU-03, CU-04 |
+```bash
+docker-compose exec web pytest apps/planificaciones/tests/ -v
+```
+
+**Tests incluidos:**
+- `test_documento_completo_es_valido` / `test_documento_incompleto_no_es_valido` / `test_documento_vacio_falla`
+- `test_nombre_campo_devuelve_string` / `test_variantes_de_campo`
+- `test_crear_planificacion` / `test_unique_together`
+- `test_siguiente_numero_version_sin_versiones` / `test_siguiente_numero_version_con_versiones`
+- `test_estado_inicial_borrador` / `test_enviar_cambia_estado` / `test_rechazar_automaticamente`
+- `test_flujo_completo_aprobacion` / `test_flujo_rechazo_revisor`
+- `test_entrega_en_plazo` / `test_entrega_tardia`
+- `test_cargar_requiere_login` / `test_profesor_accede_a_cargar` / `test_subir_archivo_crea_version`
+- `test_enviar_version_valida` / `test_enviar_version_invalida_rechaza_auto`
+
+### Pruebas Manuales
+
+| # | Prueba | Pasos | Resultado Esperado |
+|---|--------|-------|-------------------|
+| 4.1 | Profesor sube Word | Instancia > materia > Cargar planificación | Borrador v1 creado |
+| 4.2 | Enviar doc completo | Detalle planificación > Enviar | Estado `enviada` |
+| 4.3 | Rechazo automático | Enviar doc sin campos | Estado `rechazada_auto` + lista de campos faltantes con nombres legibles |
+| 4.4 | Segunda versión | Subir nuevo archivo | Se crea v2 |
+| 4.5 | Entrega tardía | Instancia fuera de plazo, enviar | Marca tardía + días de atraso |
+| 4.6 | Descargar versión | Click en ↓ Descargar | Descarga el .docx |
+| 4.7 | Clonar planificación | Link clonar en cargar | Copia archivo oficial previo como borrador |
+
+### Crear Datos de Prueba (Fase 4)
+
+```bash
+docker-compose exec web python manage.py shell
+
+from apps.instancias.models import InstanciaPresentacion
+from apps.catalogos.models import Carrera
+from datetime import date, timedelta
+
+sistemas = Carrera.objects.get(nombre='Ingeniía en Sistemas')
+
+instancia = InstanciaPresentacion.objects.create(
+    nombre='Planificaciones 2026',
+    anio_academico=2026,
+    periodo='anual',
+    fecha_apertura=date.today() - timedelta(days=5),
+    fecha_limite=date.today() + timedelta(days=25),
+)
+instancia.carreras.add(sistemas)
+print(f'Instancia creada: {instancia} (estado: {instancia.estado})')
+exit()
+```
+
+---
+
+## Fase 5 — Revisiones ✅
+
+### Tests Automatizados
+
+```bash
+docker-compose exec web pytest apps/revisiones/tests/ -v
+```
+
+**Tests incluidos:**
+- `test_tomar_cambia_estado` / `test_tomar_crea_registro_revision` / `test_no_se_puede_tomar_borrador`
+- `test_primer_visto_no_aprueba` / `test_doble_visto_aprueba_y_marca_oficial`
+- `test_no_se_puede_aprobar_dos_veces_mismo_rol` / `test_coordinador_incorrecto_no_puede_aprobar` / `test_profesor_no_puede_aprobar`
+- `test_rechazar_cambia_estado` / `test_rechazar_crea_revision_con_observaciones`
+- `test_rechazar_sin_observaciones_falla` / `test_rechazar_observaciones_solo_espacios_falla`
+- `test_moderadora_puede_corregir` / `test_corrección_no_cambia_estado`
+- `test_coordinador_no_puede_corregir` / `test_corrección_sin_detalle_falla`
+- `test_tablero_requiere_login` / `test_tablero_requiere_rol_revisor`
+- `test_tablero_accesible_moderadora` / `test_tablero_accesible_coordinador`
+- `test_aprobar_via_post` / `test_rechazar_via_post` / `test_rechazar_sin_observaciones_no_cambia_estado`
+
+### Pruebas Manuales
+
+| # | Prueba | Pasos | Resultado Esperado |
+|---|--------|-------|-------------------|
+| 5.1 | Tablero muestra pendientes | Login moderadora → /revisiones/ | Lista versiones enviadas/en revisión |
+| 5.2 | Filtro por carrera | Usar filtro carrera en tablero | Solo muestra esa carrera |
+| 5.3 | Coordinador ve solo su carrera | Login coordinador → tablero | Solo ve materias de su carrera |
+| 5.4 | Dar visto bueno | Revisar > Dar Visto Bueno | Badge verde en sección aprobación |
+| 5.5 | Doble visto → oficial | Moderadora + coordinador aprueban | Estado cambia a Oficial |
+| 5.6 | Rechazar con texto | Revisar > Rechazar + observaciones | Estado `rechazada`, texto guardado |
+| 5.7 | Rechazar sin texto | Intentar rechazar sin observaciones | Error, estado no cambia |
+| 5.8 | Corrección leve (moderadora) | Revisar > Corrección Leve | Registro guardado, estado sigue en revisión |
 
 ---
 
 ## Resumen de Cobertura
 
 | Fase | Tests Auto | Pruebas Manuales | Estado |
-|------|------------|------------------|--------|
+|------|------------|------------------|---------|
 | 0 - Setup | — | 4 | ✅ |
-| 1 - Usuarios | 10 | 7 | ✅ |
-| 2 - Catálogos | 15 | 10 | ✅ |
-| 3 - Instancias | — | — | Pendiente |
-| 4 - Planificaciones | — | — | Pendiente |
-| 5 - Revisiones | — | — | Pendiente |
+| 1 - Usuarios | 13 | 7 | ✅ |
+| 2 - Catálogos | 18 | 10 | ✅ |
+| 3 - Instancias | 17 | 5 | ✅ |
+| 4 - Planificaciones | 24 | 7 | ✅ |
+| 5 - Revisiones | 23 | 8 | ✅ |
+
+**Total tests automáticos: 95**
 
 ---
 

@@ -28,7 +28,13 @@
                         <a class="nav-link" href="{% url 'instancias:mis_instancias' %}">Mis Instancias</a>
                     </li>
                     {% endif %}
-                    
+
+                    {% if user.puede_gestionar %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'instancias:lista' %}">Instancias</a>
+                    </li>
+                    {% endif %}
+
                     {% if user.es_revisor %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'revisiones:tablero' %}">Tablero de Revisión</a>

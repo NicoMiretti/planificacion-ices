@@ -130,10 +130,17 @@ def detalle_planificacion(request, pk):
 
     context = {
         'planificacion': planificacion,
-        'versiones': planificacion.versiones.all(),
         'version_actual': planificacion.ultima_version,
-        'nombre_campo': nombre_campo,
     }
+
+    # Pre-calcular nombres legibles de campos faltantes para cada versión
+    versiones = list(planificacion.versiones.all())
+    for v in versiones:
+        v.campos_faltantes_nombres = [
+            nombre_campo(c) for c in (v.campos_faltantes or [])
+        ]
+    context['versiones'] = versiones
+
     return render(request, 'planificaciones/detalle.html', context)
 
 

@@ -6,8 +6,12 @@
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
+            {% if request.user.es_profesor %}
             <li class="breadcrumb-item"><a href="{% url 'instancias:mis_instancias' %}">Mis Instancias</a></li>
             <li class="breadcrumb-item">{{ planificacion.instancia.nombre }}</li>
+            {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'revisiones:tablero' %}">Tablero</a></li>
+            {% endif %}
             <li class="breadcrumb-item active">{{ planificacion.materia.nombre }}</li>
         </ol>
     </nav>
@@ -99,11 +103,11 @@
                     {% endif %}
                 </td>
             </tr>
-            {% if v.estado == 'rechazada_auto' and v.campos_faltantes %}
+            {% if v.estado == 'rechazada_auto' and v.campos_faltantes_nombres %}
             <tr class="table-warning">
                 <td colspan="5">
                     <small><strong>Campos faltantes:</strong>
-                    {% for campo in v.campos_faltantes %}{{ campo }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                    {% for nombre in v.campos_faltantes_nombres %}{{ nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}
                     </small>
                 </td>
             </tr>
