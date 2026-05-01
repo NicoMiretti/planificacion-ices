@@ -12,8 +12,16 @@ from .models import InstanciaPresentacion
 @login_required
 @revisores
 def lista_instancias(request):
-    """Vista para moderadora: todas las instancias."""
+    """Vista: moderadora ve todas, coordinador solo sus carreras."""
+    from apps.catalogos.models import Carrera
     instancias = InstanciaPresentacion.objects.all()
+
+    # Coordinador: solo instancias de sus carreras
+    if request.user.es_coordinador:
+        mis_carreras = Carrera.objects.filter(
+            coordinador=request.user
+        ).values_list('id', flat=True)
+        instancias = instancias.filter(carreras__in=mis_carreras).distinct()
     
     # Filtros opcionales
     anio = request.GET.get('anio')
@@ -100,7 +108,8 @@ def detalle_instancia(request, pk):
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
         materias = materias.filter(profesor_titular=request.user.perfil_profesor)
 
-    # Para profesores: dict materia_id → planificacion existente
+    # Para profesores: solo sus materias con sus planificaciones
+    # Para revisores/moderadora: todas las materias con las planificaciones de todos
     planificaciones_por_materia = {}
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
         from apps.planificaciones.models import Planificacion
@@ -108,7 +117,14 @@ def detalle_instancia(request, pk):
             instancia=instancia,
             profesor=request.user.perfil_profesor,
             materia__in=materias
-        )
+        ).prefetch_related('versiones')
+        planificaciones_por_materia = {p.materia_id: p for p in qs}
+    elif request.user.es_revisor:
+        from apps.planificaciones.models import Planificacion
+        qs = Planificacion.objects.filter(
+            instancia=instancia,
+            materia__in=materias
+        ).prefetch_related('versiones')
         planificaciones_por_materia = {p.materia_id: p for p in qs}
 
     # Lista de (materia, planificacion_o_None) para el template

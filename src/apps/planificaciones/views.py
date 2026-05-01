@@ -134,7 +134,9 @@ def detalle_planificacion(request, pk):
     }
 
     # Pre-calcular nombres legibles de campos faltantes para cada versión
-    versiones = list(planificacion.versiones.all())
+    versiones = list(
+        planificacion.versiones.prefetch_related('revisiones').all()
+    )
     for v in versiones:
         v.campos_faltantes_nombres = [
             nombre_campo(c) for c in (v.campos_faltantes or [])

@@ -64,7 +64,7 @@
                         <th>Año</th>
                         <th>Régimen</th>
                         <th>Profesor Titular</th>
-                        {% if request.user.es_profesor %}<th></th>{% endif %}
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,10 +81,9 @@
                                 <span class="text-muted">Sin asignar</span>
                             {% endif %}
                         </td>
-                        {% if request.user.es_profesor %}
                         <td class="text-end">
+                        {% if request.user.es_profesor %}
                             {% if planif %}
-                                {# Mostrar estado de la última versión #}
                                 {% with ultima=planif.versiones.last %}
                                 {% if ultima %}
                                     {% if ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
@@ -108,8 +107,28 @@
                             {% else %}
                                 <span class="text-muted">—</span>
                             {% endif %}
-                        </td>
+                        {% elif request.user.es_revisor %}
+                            {% if planif %}
+                                {% with ultima=planif.versiones.last %}
+                                {% if ultima %}
+                                    {% if ultima.estado == 'en_revision' or ultima.estado == 'enviada' %}
+                                    <span class="ices-badge ices-badge-warning me-2"><i class="bi bi-hourglass-split"></i></span>
+                                    {% elif ultima.estado == 'oficial' or ultima.estado == 'aprobada' %}
+                                    <span class="ices-badge ices-badge-success me-2"><i class="bi bi-patch-check"></i></span>
+                                    {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
+                                    <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
+                                    {% endif %}
+                                {% endif %}
+                                {% endwith %}
+                                <a href="{% url 'planificaciones:detalle' planif.pk %}"
+                                   class="btn btn-ices-outline btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Ver
+                                </a>
+                            {% else %}
+                                <span class="text-muted small">Sin planificación</span>
+                            {% endif %}
                         {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
