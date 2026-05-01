@@ -1,20 +1,54 @@
 {% extends 'base.html' %}
 
-{% block title %}Inicio - Planificaciones{% endblock %}
+{% block title %}Inicio — Planificaciones ICES/UCSE{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="text-center">
-        <h1>Sistema de Planificaciones</h1>
-        <p class="lead">ICES / UCSE</p>
-        
-        <div class="mt-4">
-            {% if user.is_authenticated %}
-            <p>Bienvenido, <strong>{{ user.nombre_completo|default:user.email }}</strong></p>
-            <p>Rol: <span class="badge bg-primary">{{ user.get_rol_display }}</span></p>
-            {% else %}
-            <a href="{% url 'usuarios:login' %}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
-            {% endif %}
+<div class="container ices-page">
+    <div class="ices-page-header">
+        <h2>Bienvenido, {{ user.nombre_completo|default:user.email }}</h2>
+        <p class="text-muted mb-0">
+            Accediste como <strong>{{ user.get_rol_display }}</strong>.
+            Seleccioná una opción para continuar.
+        </p>
+    </div>
+
+    <div class="row g-3 mt-1" style="max-width:640px">
+        {% if user.es_profesor %}
+        <div class="col-sm-6">
+            <a href="{% url 'instancias:mis_instancias' %}" class="rol-card">
+                <span class="rol-icon">&#128194;</span>
+                <div class="rol-label">Mis Instancias</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver convocatorias activas</div>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if user.puede_gestionar %}
+        <div class="col-sm-6">
+            <a href="{% url 'instancias:lista' %}" class="rol-card">
+                <span class="rol-icon">&#128197;</span>
+                <div class="rol-label">Instancias</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Gestionar convocatorias</div>
+            </a>
+        </div>
+        {% endif %}
+
+        {% if user.es_revisor %}
+        <div class="col-sm-6">
+            <a href="{% url 'revisiones:tablero' %}" class="rol-card">
+                <span class="rol-icon">&#9989;</span>
+                <div class="rol-label">Tablero de Revisión</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Aprobar y revisar planificaciones</div>
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="col-sm-6">
+            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
+                <span class="rol-icon">&#128270;</span>
+                <div class="rol-label">Consulta Pública</div>
+                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones aprobadas</div>
+            </a>
         </div>
     </div>
 </div>

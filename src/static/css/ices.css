@@ -1,0 +1,417 @@
+/* ============================================================
+   Sistema de Planificaciones ICES/UCSE
+   Hoja de estilos principal — Fase A
+   ============================================================ */
+
+/* --- Variables de diseño --- */
+:root {
+  --ices-blue:        #1a3a5c;
+  --ices-blue-mid:    #2155a0;
+  --ices-blue-light:  #2e7bc4;
+  --ices-accent:      #4a9fd4;
+  --ices-bg:          #f4f6f9;
+  --ices-surface:     #ffffff;
+  --ices-border:      #dde3ec;
+  --ices-text:        #1e2a3a;
+  --ices-text-muted:  #6b7a90;
+  --ices-success:     #1a7a4a;
+  --ices-danger:      #b02a2a;
+  --ices-warning:     #856404;
+  --ices-radius:      8px;
+  --ices-radius-lg:   12px;
+  --ices-shadow:      0 1px 4px rgba(26,58,92,.08), 0 4px 16px rgba(26,58,92,.06);
+  --ices-shadow-sm:   0 1px 3px rgba(26,58,92,.10);
+}
+
+/* --- Reset y base --- */
+html { font-size: 15px; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--ices-bg);
+  color: var(--ices-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main { flex: 1; }
+
+/* --- Tipografía --- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--ices-blue);
+  letter-spacing: -0.01em;
+}
+
+.text-muted { color: var(--ices-text-muted) !important; }
+
+/* --- Navbar --- */
+.ices-navbar {
+  background: var(--ices-blue) !important;
+  border-bottom: 3px solid var(--ices-blue-light);
+  padding: .6rem 0;
+  box-shadow: 0 2px 8px rgba(26,58,92,.18);
+}
+
+.ices-navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: .01em;
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.ices-navbar .navbar-brand .brand-logo {
+  height: 36px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.ices-navbar .navbar-brand .brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.ices-navbar .navbar-brand .brand-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ices-navbar .navbar-brand .brand-subtitle {
+  font-size: .7rem;
+  font-weight: 400;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ices-navbar .nav-link {
+  color: rgba(255,255,255,.82) !important;
+  font-size: .875rem;
+  font-weight: 500;
+  padding: .4rem .75rem !important;
+  border-radius: var(--ices-radius);
+  transition: background .15s, color .15s;
+}
+
+.ices-navbar .nav-link:hover,
+.ices-navbar .nav-link:focus {
+  color: #fff !important;
+  background: rgba(255,255,255,.12);
+}
+
+.ices-navbar .nav-link.active {
+  color: #fff !important;
+  background: var(--ices-blue-light);
+}
+
+.ices-navbar .dropdown-menu {
+  border: none;
+  box-shadow: var(--ices-shadow);
+  border-radius: var(--ices-radius);
+  font-size: .875rem;
+  min-width: 200px;
+  margin-top: .4rem;
+}
+
+.ices-navbar .dropdown-item { padding: .5rem 1rem; }
+.ices-navbar .dropdown-item:hover { background: var(--ices-bg); color: var(--ices-blue); }
+
+.ices-navbar .badge-rol {
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .2em .55em;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* --- Página de login --- */
+.ices-login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--ices-blue) 0%, var(--ices-blue-mid) 55%, var(--ices-blue-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ices-login-card {
+  background: #fff;
+  border-radius: var(--ices-radius-lg);
+  box-shadow: 0 8px 40px rgba(26,58,92,.22);
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.ices-login-card .login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.ices-login-card .login-logo {
+  height: 56px;
+  margin-bottom: .75rem;
+}
+
+.ices-login-card .login-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ices-blue);
+  margin-bottom: .15rem;
+}
+
+.ices-login-card .login-subtitle {
+  font-size: .8rem;
+  color: var(--ices-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* --- Contenido principal --- */
+.ices-page {
+  padding: 2rem 0 3rem;
+}
+
+.ices-page-header {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--ices-border);
+}
+
+.ices-page-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: .2rem;
+}
+
+/* --- Cards --- */
+.ices-card {
+  background: var(--ices-surface);
+  border: 1px solid var(--ices-border);
+  border-radius: var(--ices-radius-lg);
+  box-shadow: var(--ices-shadow-sm);
+  overflow: hidden;
+}
+
+.ices-card .card-header {
+  background: var(--ices-bg);
+  border-bottom: 1px solid var(--ices-border);
+  padding: .85rem 1.25rem;
+  font-weight: 600;
+  font-size: .875rem;
+  color: var(--ices-blue);
+}
+
+/* --- Tabla estilizada --- */
+.ices-table {
+  font-size: .875rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.ices-table thead th {
+  background: var(--ices-bg);
+  color: var(--ices-text-muted);
+  font-size: .75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .7rem 1rem;
+  border-bottom: 2px solid var(--ices-border);
+  white-space: nowrap;
+}
+
+.ices-table tbody td {
+  padding: .8rem 1rem;
+  border-bottom: 1px solid var(--ices-border);
+  vertical-align: middle;
+}
+
+.ices-table tbody tr:last-child td { border-bottom: none; }
+
+.ices-table tbody tr:hover { background: #f8fafc; }
+
+.ices-table-wrap {
+  background: var(--ices-surface);
+  border: 1px solid var(--ices-border);
+  border-radius: var(--ices-radius-lg);
+  box-shadow: var(--ices-shadow-sm);
+  overflow: hidden;
+}
+
+/* --- Badges de estado --- */
+.ices-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: .3em .7em;
+  border-radius: 999px;
+}
+
+.ices-badge-success   { background: #d1f0e0; color: var(--ices-success); }
+.ices-badge-primary   { background: #dbeafe; color: var(--ices-blue-mid); }
+.ices-badge-warning   { background: #fef3c7; color: var(--ices-warning); }
+.ices-badge-danger    { background: #fde8e8; color: var(--ices-danger); }
+.ices-badge-secondary { background: #e8edf4; color: var(--ices-text-muted); }
+.ices-badge-info      { background: #e0f0fb; color: #1466a0; }
+
+/* --- Botones --- */
+.btn-ices-primary {
+  background: var(--ices-blue-light);
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: .875rem;
+  border-radius: var(--ices-radius);
+  padding: .45rem 1.1rem;
+  transition: background .15s, transform .1s;
+}
+
+.btn-ices-primary:hover  { background: var(--ices-blue-mid); color: #fff; }
+.btn-ices-primary:active { transform: scale(.97); }
+
+.btn-ices-outline {
+  background: transparent;
+  border: 1.5px solid var(--ices-border);
+  color: var(--ices-text);
+  font-weight: 500;
+  font-size: .875rem;
+  border-radius: var(--ices-radius);
+  padding: .45rem 1.1rem;
+  transition: border-color .15s, background .15s;
+}
+
+.btn-ices-outline:hover { border-color: var(--ices-blue-light); color: var(--ices-blue-light); }
+
+/* --- Alerts --- */
+.ices-alert {
+  border-radius: var(--ices-radius);
+  border: none;
+  font-size: .875rem;
+  padding: .85rem 1.1rem;
+}
+
+.alert-success { background: #d1f0e0; color: var(--ices-success); }
+.alert-danger  { background: #fde8e8; color: var(--ices-danger); }
+.alert-warning { background: #fef3c7; color: var(--ices-warning); }
+.alert-info    { background: #e0f0fb; color: #1466a0; }
+
+/* --- Formularios --- */
+.form-control, .form-select {
+  border: 1.5px solid var(--ices-border);
+  border-radius: var(--ices-radius);
+  font-size: .875rem;
+  color: var(--ices-text);
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--ices-blue-light);
+  box-shadow: 0 0 0 3px rgba(46,123,196,.15);
+  outline: none;
+}
+
+.form-label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--ices-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: .35rem;
+}
+
+/* --- Breadcrumb --- */
+.breadcrumb {
+  font-size: .8rem;
+  margin-bottom: 1.25rem;
+  gap: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before { color: var(--ices-text-muted); }
+.breadcrumb-item a { color: var(--ices-blue-light); text-decoration: none; }
+.breadcrumb-item a:hover { text-decoration: underline; }
+.breadcrumb-item.active { color: var(--ices-text-muted); }
+
+/* --- Footer --- */
+.ices-footer {
+  background: var(--ices-blue);
+  color: rgba(255,255,255,.55);
+  font-size: .78rem;
+  padding: 1rem 0;
+  margin-top: auto;
+  text-align: center;
+  letter-spacing: .02em;
+}
+
+.ices-footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+.ices-footer a:hover { color: #fff; }
+
+/* --- Home cards de rol --- */
+.rol-card {
+  background: var(--ices-surface);
+  border: 1px solid var(--ices-border);
+  border-radius: var(--ices-radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--ices-shadow-sm);
+  transition: box-shadow .2s, transform .2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.rol-card:hover {
+  box-shadow: var(--ices-shadow);
+  transform: translateY(-2px);
+  color: inherit;
+}
+
+.rol-card .rol-icon {
+  font-size: 2.25rem;
+  margin-bottom: .6rem;
+  display: block;
+}
+
+.rol-card .rol-label {
+  font-weight: 600;
+  color: var(--ices-blue);
+  font-size: .9rem;
+}
+
+/* --- Stat chip (tablero) --- */
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  background: var(--ices-bg);
+  border: 1px solid var(--ices-border);
+  border-radius: var(--ices-radius);
+  padding: .4rem .8rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--ices-text);
+}
+
+.stat-chip .stat-num {
+  font-size: 1.1rem;
+  color: var(--ices-blue-light);
+}
+
+/* --- Utilities --- */
+.text-ices     { color: var(--ices-blue) !important; }
+.bg-ices-light { background: var(--ices-bg) !important; }
+.border-ices   { border-color: var(--ices-border) !important; }
