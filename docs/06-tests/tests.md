@@ -14,6 +14,7 @@ docker-compose exec web pytest --cov=apps --cov-report=html
 # Tests de una app específica
 docker-compose exec web pytest apps/usuarios/tests/ -v
 docker-compose exec web pytest apps/catalogos/tests/ -v
+docker-compose exec web pytest apps/instancias/tests/ -v
 
 # Un test específico
 docker-compose exec web pytest apps/usuarios/tests/test_usuarios.py::TestUsuarioModel::test_crear_usuario_con_email -v
@@ -111,20 +112,52 @@ Relacionado con: [CU-16 Gestionar catálogos](04-casos-de-uso/casos-de-uso.md#cu
 
 ---
 
+### 3. Instancias (`apps/instancias/tests/`)
+
+Relacionado con: [CU-01 Crear instancia de presentación](04-casos-de-uso/casos-de-uso.md#cu-01), [CU-06 Ver instancias asignadas](04-casos-de-uso/casos-de-uso.md#cu-06)
+
+#### TestInstanciaPresentacionModelo
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_crear_instancia_basica` | Crea instancia con nombre, año, período y fechas | CU-01 |
+| `test_estado_programada_antes_apertura` | Estado es `programada` si hoy es antes de fecha_apertura | RN-01 |
+| `test_estado_abierta_entre_fechas` | Estado es `abierta` entre apertura y límite | RN-01 |
+| `test_estado_abierta_despues_limite` | Estado sigue `abierta` após fecha_límite (acepta tardías) | RN-08 |
+| `test_cerrada_manual_no_reabre` | Una instancia cerrada manualmente no cambia de estado | RN-01 |
+
+#### TestInstanciaAudiencia
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_materias_audiencia_por_carrera` | `materias_audiencia()` devuelve materias de las carreras configuradas | CU-01, CU-06 |
+| `test_materias_audiencia_filtro_regimen` | Filtro por régimen excluye materias de otro régimen | CU-01 |
+| `test_materias_audiencia_filtro_institucion` | Filtro por institución excluye materias de otra institución | CU-01 |
+| `test_profesores_audiencia` | `profesores_audiencia()` devuelve profesores con materias en la audiencia | CU-06 |
+
+#### TestInstanciaManager
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_manager_activas` | `.activas()` devuelve solo instancias programadas y abiertas | CU-06 |
+| `test_manager_abiertas` | `.abiertas()` devuelve solo instancias con estado abierta | CU-06 |
+| `test_manager_para_profesor` | `.para_profesor(usuario)` devuelve instancias con materias del profesor | CU-06 |
+| `test_manager_para_profesor_sin_perfil` | `.para_profesor()` con usuario sin perfil devuelve queryset vacío | CU-06 |
+
+#### TestInstanciaViews
+
+| Test | Descripción | Regla/RF |
+|------|-------------|----------|
+| `test_lista_instancias_requiere_moderadora` | Vista `lista` redirige si el usuario no es moderadora | CU-01 |
+| `test_lista_instancias_moderadora_accede` | Moderadora accede correctamente a la lista de instancias | CU-01 |
+| `test_mis_instancias_profesor` | Profesor ve sus instancias activas en `/instancias/mis/` | CU-06 |
+| `test_detalle_instancia` | Detalle muestra las materias de la audiencia | CU-01, CU-06 |
+
+---
+
 ## Tests Pendientes (por fase)
 
-### Fase 3 — Instancias
-
-| Test Esperado | CU Relacionado |
-|---------------|----------------|
-| `test_crear_instancia` | CU-01 |
-| `test_instancia_audiencia_carreras` | CU-01 |
-| `test_instancia_fechas_validacion` | CU-01 |
-| `test_instancia_estado_programada` | CU-01 |
-| `test_instancia_estado_abierta` | CU-01 |
-| `test_materias_audiencia` | CU-01, CU-06 |
-| `test_profesores_audiencia` | CU-01, CU-06 |
-| `test_instancias_para_profesor` | CU-06 |
+### Fase 4 — Planificaciones
 
 ### Fase 4 — Planificaciones
 
@@ -160,12 +193,12 @@ Relacionado con: [CU-16 Gestionar catálogos](04-casos-de-uso/casos-de-uso.md#cu
 |--------|-------|--------|
 | usuarios | 13 | ✅ Completo |
 | catalogos | 18 | ✅ Completo |
-| instancias | 0 | ⏳ Fase 3 |
+| instancias | 17 | ✅ Completo |
 | planificaciones | 0 | ⏳ Fase 4 |
 | revisiones | 0 | ⏳ Fase 5 |
 | notificaciones | 0 | ⏳ Fase 7 |
 
-**Total actual: 31 tests**
+**Total actual: 48 tests**
 
 ---
 
