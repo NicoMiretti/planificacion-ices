@@ -69,7 +69,7 @@ class InstanciaForm(forms.ModelForm):
             materias_sin_profesor = materias_todas.filter(profesor_titular__isnull=True)
 
             if materias_sin_profesor.exists():
-                materias_list = ', '.join([m.codigo for m in materias_sin_profesor[:5]])
+                materias_list = ', '.join([m.nombre for m in materias_sin_profesor[:5]])
                 if materias_sin_profesor.count() > 5:
                     materias_list += f', ... (+{materias_sin_profesor.count() - 5} más)'
                 raise forms.ValidationError(
