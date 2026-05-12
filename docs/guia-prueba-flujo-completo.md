@@ -225,57 +225,37 @@ El sistema requiere **doble visto bueno** (moderadora + coordinador de la carrer
 
 ---
 
-## Fase 5 — Actualización (nueva versión oficial)
-
-Si en una instancia posterior se aprueba una nueva versión de la misma materia:
-
-```
-[Oficial vigente v1] → [Reemplazada]
-[Oficial vigente v2] ← nueva oficial
-```
-
-El historial de versiones siempre se conserva.
-
----
-
 ## Diagrama de estados completo (Version)
 
 ```
-              ┌────────────────────────────────────────────┐
-              │                                            │
-        ┌─────▼─────┐                                      │
-   ─────►  Borrador  │                                      │
-        └─────┬─────┘                                      │
-              │ ENVIAR                                      │
-     ┌────────┴────────┐                                    │
-     │                 │                                    │
-Doc incompleto    Doc completo                              │
-     │                 │                                    │
-┌────▼────────┐  ┌──────▼──────┐                           │
-│  Rechazada  │  │ En revisión │                           │
-│ (automático)│  └──────┬──────┘                           │
-└────┬────────┘         │                                   │
-     │         ┌────────┴────────┐                          │
-     │     RECHAZAR          APROBAR                        │
-     │         │                 │                          │
-     │  ┌──────▼──────┐  ┌───────▼──────┐                  │
-     │  │  Rechazada  │  │   Aprobada   │                  │
-     │  └──────┬──────┘  └───────┬──────┘                  │
-     │         │                 │ VB Mod + VB Coord        │
-Nueva versión  │          ┌──────▼──────┐                  │
-     │         │          │   Oficial   ├──────────────────┘
-     └─────────┘          │   vigente   │ (nueva versión aprobada
-                          └──────┬──────┘  en instancia futura)
-                                 │
-                          ┌──────▼──────┐
-                          │ Reemplazada │
-                          └─────────────┘
+        ┌───────────┐
+   ─────►  Borrador  │
+        └─────┬─────┘
+              │ ENVIAR
+     ┌────────┴────────┐
+     │                 │
+Doc incompleto    Doc completo
+     │                 │
+┌────▼────────┐  ┌──────▼──────┐
+│  Rechazada  │  │ En revisión │
+│ (automático)│  └──────┬──────┘
+└────┬────────┘         │
+     │         ┌────────┴────────┐
+     │     RECHAZAR          VB Mod + VB Coord
+     │         │                 │
+     │  ┌──────▼──────┐  ┌───────▼──────┐
+     │  │  Rechazada  │  │   Oficial    │
+     │  └──────┬──────┘  └──────────────┘
+     │         │
+Nueva versión  │
+     └─────────┘
 ```
 
-**Estados (7):** `borrador` → `en_revision` → `aprobada` → `oficial` → `reemplazada`
+**Estados (5 activos):** `borrador` → `en_revision` → `oficial`
 Desde `borrador` también: `rechazada_auto` (doc incompleto)
 Desde `en_revision` también: `rechazada` (revisor rechaza con observaciones)
 
+> El estado `aprobada` es transitorio (se asigna y pasa a `oficial` en la misma operación cuando se completa el doble VB).
 > El estado `enviada` fue eliminado — al enviar el doc pasa directamente a `en_revision`.
 
 ---
@@ -311,19 +291,6 @@ Desde `en_revision` también: `rechazada` (revisor rechaza con observaciones)
 1. Crear materia SIN profesor titular
 2. Intentar crear instancia solo con esa carrera/régimen
 3. El formulario debe mostrar error y no crear la instancia
-
-### Caso 6 — Múltiples versiones / nueva instancia
-1. Año 2025: planificación de Prog I llega a Oficial
-2. Año 2026: se crea nueva instancia
-3. Profesor carga nueva versión de Prog I
-4. Al aprobar: la v1 pasa a **Reemplazada**, la nueva queda como **Oficial vigente**
-
-### Caso 7 — Cambio de titular entre años
-1. Materia tenía a Pérez como titular en 2025 → planificación oficial
-2. Cambiar el titular de la materia a Gómez
-3. Crear instancia 2026
-4. Pérez sigue viendo su historial 2025 en "Mis Instancias"
-5. Gómez ve la instancia 2026 y tiene que cargar su planificación
 
 ---
 

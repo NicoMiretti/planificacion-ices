@@ -79,33 +79,28 @@ Contraseña: mod123
 
 ---
 
-### Fase 3: Revisor aprueba
+### Fase 3: Doble visto bueno (Moderadora + Coordinador)
 
-1. Ir a **Revisiones → Tablero**
-2. Ver la planificación en estado `En Revisión`
-3. Click en **Revisar**
-4. **Aprobar** → pasa a `Aprobada`
+El sistema requiere que **tanto la moderadora como el coordinador de la carrera** aprueben la versión.
+
+**Como moderadora:**
+1. **Revisiones → Tablero**
+2. Click en **Revisar**
+3. **Aprobar** → registra el visto bueno de la moderadora
+
+**Como coordinador** (coord.sistemas@ices.edu / coord123):
+1. **Revisiones → Tablero**
+2. Click en **Revisar** (o **Ver** si la moderadora ya aprobó)
+3. **Aprobar** → registra el visto bueno del coordinador
 
 **Observación esperada:**
-- Estado cambia a `Aprobada`
-- Redirige al tablero
-- La planificación ya no aparece en "En Revisión"
+- Cuando ambos dieron visto bueno, el estado cambia automáticamente a `Oficial`
+- No hay botón manual de "Marcar Oficial" — el sistema lo hace solo al completarse el doble VB
+- La planificación desaparece del tablero
 
 **Puntos a observar:**
-- ¿El panel de aprobación es claro?
-- ¿Se entiende qué significan los estados Moderadora/Coordinador?
-
----
-
-### Fase 4: Moderadora oficializa
-
-1. Instancias → [instancia]
-2. Ver materia con estado `Aprobada`
-3. Click en **Marcar Oficial** (si está disponible)
-
-**Observación esperada:**
-- Estado cambia a `Oficial`
-- Planificación está lista para consulta (solo lectura)
+- ¿Es claro que se necesitan dos aprobaciones?
+- ¿El estado intermedio (solo un VB) es visible?
 
 ---
 
@@ -295,11 +290,12 @@ En **Revisiones → Tablero**, observar:
    - Ver rechazo
    - Cargar versión 2
    - Enviar
-9. ✅ Login como revisor
-   - Aprobar v2
+8. ✅ Login como revisor (moderadora)
+    - Aprobar v2 (primer VB)
+9. ✅ Login como coordinador
+    - Aprobar v2 (segundo VB) → pasa automáticamente a Oficial
 10. ✅ Login como moderadora
-    - Ver tablero
-    - Marcar oficial
+    - Ver instancia → verificar estado Oficial
 
 ---
 
@@ -351,7 +347,7 @@ A medida que uses el sistema, completa esta tabla:
 
 ## Notas para el Equipo
 
-- **Estado Oficial**: aún no se usa en la UI (reservado para futuro)
+- **Estado Oficial**: se asigna automáticamente cuando moderadora + coordinador aprueban (no hay botón manual)
 - **Correcciones leves**: vuelven a Borrador (no crean nueva versión oficial)
 - **Rechazo automático**: debería no ocurrir (es fallback de seguridad)
 - **Media files**: en Render plan Free se pierden, usar S3 para producción
