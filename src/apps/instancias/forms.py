@@ -12,7 +12,10 @@ class InstanciaForm(forms.ModelForm):
     )
 
     solo_regimen = forms.ChoiceField(
-        choices=[('', 'Usar el mismo régimen que el período (recomendado)')] + list(Materia.Regimen.choices),
+        choices=[
+            ('', 'Usar el mismo régimen que el período (recomendado)'),
+            ('todos', 'Todas las materias (todos los regímenes)'),
+        ] + list(Materia.Regimen.choices),
         required=False,
         label='Filtrar materias por régimen',
         help_text='Por defecto se incluyen solo las materias cuyo régimen coincide con el período elegido.',

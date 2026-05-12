@@ -200,9 +200,13 @@ class InstanciaPresentacion(models.Model):
             activo=True
         )
 
-        # Filtrar por régimen: usa solo_regimen si está seteado, sino el periodo de la instancia
+        # Filtrar por régimen:
+        # - solo_regimen = 'todos'  → sin filtro (todas las materias)
+        # - solo_regimen = <valor>  → filtrar por ese régimen
+        # - solo_regimen vacío     → usar el periodo de la instancia como régimen
         regimen_efectivo = self.solo_regimen or self.periodo
-        materias = materias.filter(regimen=regimen_efectivo)
+        if regimen_efectivo != 'todos':
+            materias = materias.filter(regimen=regimen_efectivo)
 
         # Filtrar por institución si está especificado
         if self.institucion:

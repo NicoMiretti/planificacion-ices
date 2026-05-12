@@ -25,7 +25,8 @@ def crear_planificaciones_al_agregar_carreras(sender, instance, action, pk_set, 
 
     # Filtrar por el régimen efectivo de la instancia
     regimen_efectivo = instance.solo_regimen or instance.periodo
-    materias = materias.filter(regimen=regimen_efectivo)
+    if regimen_efectivo != 'todos':
+        materias = materias.filter(regimen=regimen_efectivo)
 
     for materia in materias:
         if materia.profesor_titular:
