@@ -83,20 +83,39 @@ def tablero_revision(request):
 
 @login_required
 @revisores
-def revisar_version(request, version_id):
-    """Vista de revisión individual. Toma automáticamente si está enviada."""
-    version = get_object_or_404(
-        Version.objects.select_related(
-            'planificacion__materia__carrera__coordinador',
-            'planificacion__profesor__usuario',
-            'planificacion__instancia'
+def revisar_planificacion(request, planificacion_id):
+    """Vista principal de revisión. Siempre trabaja con la última versión de la planificación."""
+    planificacion = get_object_or_404(
+        Planificacion.objects.select_related(
+            'materia__carrera__coordinador',
+            'profesor__usuario',
+            'instancia'
         ),
-        pk=version_id
+        pk=planificacion_id
     )
 
     user = request.user
 
-    # Tomar si está enviada
+    # Coordinador solo puede revisar sus carreras
+    if user.es_coordinador:
+        if planificacion.materia.carrera.coordinador != user:
+            messages.error(request, 'No tienes acceso a esta planificación.')
+            return redirect('revisiones:tablero')
+
+    # Tomar la última versión relevante (enviada o en_revision)
+    version = planificacion.versiones.filter(
+        estado__in=[Version.Estado.ENVIADA, Version.Estado.EN_REVISION]
+    ).order_by('-numero').first()
+
+    # Si no hay versión activa, mostrar la última en cualquier estado
+    if version is None:
+        version = planificacion.ultima_version
+
+    if version is None:
+        messages.error(request, 'Esta planificación no tiene versiones todavía.')
+        return redirect('revisiones:tablero')
+
+    # Tomar automáticamente si está enviada
     if version.estado == Version.Estado.ENVIADA:
         try:
             RevisionService.tomar_para_revision(version, user)
@@ -104,15 +123,6 @@ def revisar_version(request, version_id):
         except ValueError as e:
             messages.error(request, str(e))
             return redirect('revisiones:tablero')
-
-    # Coordinador solo puede revisar sus carreras
-    if user.es_coordinador:
-        carrera = version.planificacion.materia.carrera
-        if carrera.coordinador != user:
-            messages.error(request, 'No tienes acceso a esta planificación.')
-            return redirect('revisiones:tablero')
-
-    planificacion = version.planificacion
 
     mi_visto = VistoBueno.objects.filter(version=version, rol=user.rol).first()
     otro_rol = 'coordinador' if user.rol == 'moderadora' else 'moderadora'
@@ -145,7 +155,8 @@ def revisar_version(request, version_id):
 def aprobar_version(request, version_id):
     """CU-03: Aprobar planificación (dar visto bueno)."""
     if request.method != 'POST':
-        return redirect('revisiones:revisar', version_id=version_id)
+        version = get_object_or_404(Version, pk=version_id)
+        return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
 
     version = get_object_or_404(Version, pk=version_id)
 
@@ -161,17 +172,18 @@ def aprobar_version(request, version_id):
     except ValueError as e:
         messages.error(request, str(e))
 
-    return redirect('revisiones:tablero')
+    return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
 
 
 @login_required
 @revisores
 def rechazar_version(request, version_id):
     """CU-04: Rechazar planificación con observaciones."""
-    if request.method != 'POST':
-        return redirect('revisiones:revisar', version_id=version_id)
-
     version = get_object_or_404(Version, pk=version_id)
+
+    if request.method != 'POST':
+        return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
+
     form = RechazarForm(request.POST)
 
     if form.is_valid():
@@ -187,21 +199,22 @@ def rechazar_version(request, version_id):
     else:
         messages.error(request, 'Las observaciones son obligatorias para rechazar.')
 
-    return redirect('revisiones:tablero')
+    return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
 
 
 @login_required
 @revisores
 def correccion_leve(request, version_id):
     """CU-05: Aplicar corrección leve (solo moderadora)."""
+    version = get_object_or_404(Version, pk=version_id)
+
     if request.method != 'POST':
-        return redirect('revisiones:revisar', version_id=version_id)
+        return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
 
     if not request.user.es_moderadora:
         messages.error(request, 'Solo la moderadora puede aplicar correcciones leves.')
         return redirect('revisiones:tablero')
 
-    version = get_object_or_404(Version, pk=version_id)
     form = CorreccionLeveForm(request.POST, request.FILES)
 
     if form.is_valid():
@@ -218,7 +231,7 @@ def correccion_leve(request, version_id):
     else:
         messages.error(request, 'El detalle de la corrección es obligatorio.')
 
-    return redirect('revisiones:revisar', version_id=version_id)
+    return redirect('revisiones:revisar', planificacion_id=version.planificacion_id)
 
 
 @login_required
