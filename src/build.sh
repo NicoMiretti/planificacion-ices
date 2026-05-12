@@ -6,3 +6,20 @@ pip install -r requirements/production.txt
 
 python manage.py collectstatic --no-input
 python manage.py migrate
+
+# Crear superusuario si están definidas las variables de entorno
+python manage.py shell -c "
+import os
+from apps.usuarios.models import Usuario
+email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
+password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
+nombre = os.environ.get('DJANGO_SUPERUSER_NOMBRE', 'Admin')
+if email and password:
+    if not Usuario.objects.filter(email=email).exists():
+        Usuario.objects.create_superuser(email=email, password=password, nombre_completo=nombre)
+        print(f'Superusuario {email} creado.')
+    else:
+        print(f'Superusuario {email} ya existe, omitiendo.')
+else:
+    print('DJANGO_SUPERUSER_EMAIL / PASSWORD no configuradas, omitiendo creación.')
+"
