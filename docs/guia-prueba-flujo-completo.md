@@ -193,23 +193,28 @@ Las versiones aparecen en el tablero en estado `En Revisión` (no hay estado pre
 
 Una vez en revisión, el revisor tiene dos opciones:
 
-### Bifurcación C — Aprobación
+### Bifurcación C — Corrección leve
 
 ```
-[En revisión] → APROBAR → [Aprobada]
+[En revisión] → CORRECCIÓN LEVE → [En revisión] (sin cambio de estado)
 ```
 
-El sistema requiere **doble visto bueno** (moderadora + coordinador de la carrera) para marcar como Oficial.
+- Solo la **moderadora** puede aplicar correcciones leves
+- Registra una nota en el historial de revisión
+- La versión **permanece en `En Revisión`**
+- El coordinador puede continuar revisando y aprobando la misma versión
 
-- La moderadora da su visto bueno
-- El coordinador de la carrera también debe dar el visto bueno (desde la misma pantalla de detalle)
-- Cuando ambos vistos están registrados: versión pasa a **Oficial vigente**
+### Bifurcación D — Aprobación (doble visto bueno)
 
 ```
-[Aprobada] → VB Moderadora + VB Coordinador → [Oficial vigente]
+[En revisión] → VB Moderadora + VB Coordinador → [Oficial]
 ```
 
-### Bifurcación D — Rechazo con observaciones
+- La moderadora da su visto bueno desde **Revisar → Aprobar**
+- El coordinador de la carrera hace lo mismo
+- Cuando ambos vistos están registrados: la versión pasa automáticamente a **Oficial**
+
+### Bifurcación E — Rechazo con observaciones
 
 ```
 [En revisión] → RECHAZAR → [Rechazada]

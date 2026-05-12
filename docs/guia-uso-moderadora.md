@@ -106,17 +106,19 @@ El sistema requiere que **tanto la moderadora como el coordinador de la carrera*
 
 ## Bifurcaciones y Casos Especiales
 
-### Caso A: Profesor envía tarde (después de fecha límite)
+### Caso A: Profesor envía después de fecha límite
 
-**Fase 2b:**
-1. Profesor intenta **Cargar nueva versión** después de la fecha límite
-2. Sistema bloquea: "La instancia ha cerrado"
-3. Intenta **Enviar** la que está en `Borrador`
-4. Aún puede enviar (sin cerrar) → va a `En Revisión`
+1. Crear instancia con `fecha_limite` = ayer
+2. Profesor carga un .docx y **Envía**
+3. El sistema permite el envío pero lo marca como **entrega tardía**
 
 **Observación esperada:**
-- ¿Hay advertencia visual de que está fuera de plazo?
-- ¿El error es amigable?
+- El envío no está bloqueado por la fecha límite
+- La versión queda en `En Revisión` con indicación de entrega tardía (días de atraso)
+
+**Puntos a observar:**
+- ¿Se muestra cuántos días tarde fue la entrega?
+- ¿Está claro en el tablero que es una entrega tardía?
 
 ---
 
@@ -158,22 +160,22 @@ El sistema requiere que **tanto la moderadora como el coordinador de la carrera*
 
 ---
 
-### Caso D: Corrección leve (Revisor)
+### Caso D: Corrección leve (Moderadora)
 
-**Fase 3c:**
+> Solo la **moderadora** puede aplicar correcciones leves (no el coordinador).
+
 1. En el tablero: **Revisar**
-2. Ver toggle **"¿Es una corrección leve?"** → ON
-3. Cargar comentario (ej: "Fix el punto 2.3")
-4. **Aplicar corrección** → vuelve a `Borrador` con comentario
+2. Completar el campo de detalle con la corrección aplicada
+3. **Aplicar corrección leve** → registra la nota en el historial
 
 **Observación esperada:**
-- El profesor ve la planificación como `Borrador` nuevamente
-- Puede editar directamente (sin cargar nueva versión)
-- Al guardar cambios y **Enviar** nuevamente → `En Revisión`
+- La versión **permanece en `En Revisión`** (no vuelve a Borrador)
+- El historial muestra la corrección aplicada
+- El coordinador puede continuar revisando la misma versión
 
 **Puntos a observar:**
-- ¿El toggle está donde se espera?
-- ¿Es claro que la corrección leve NO requiere nueva versión?
+- ¿Es claro que la versión sigue en revisión?
+- ¿Se diferencia visualmente de un rechazo?
 
 ---
 
