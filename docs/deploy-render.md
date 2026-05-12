@@ -66,6 +66,11 @@ En la sección **Environment** del web service, agregar:
 | `DEBUG` | `False` |
 | `DATABASE_URL` | Pegar la **Internal Database URL** del paso 1 |
 | `ALLOWED_HOSTS` | *(dejar vacío — Render inyecta `RENDER_EXTERNAL_HOSTNAME` automáticamente)* |
+| `DJANGO_SUPERUSER_EMAIL` | Email del primer usuario admin (ej: `admin@ices.edu`) |
+| `DJANGO_SUPERUSER_PASSWORD` | Contraseña segura para ese usuario |
+| `DJANGO_SUPERUSER_NOMBRE` | Nombre completo del admin (opcional, default: `Admin`) |
+
+> El `build.sh` crea el superusuario automáticamente al deployar si estas variables están presentes. Si el usuario ya existe, las ignora.
 
 ### Generar SECRET_KEY
 
@@ -99,20 +104,21 @@ Running migrations...
 
 ---
 
-## Paso 5 — Crear superusuario y seed inicial
+## Paso 5 — Seed inicial
 
-Desde la pestaña **Shell** del web service en Render:
+El superusuario ya fue creado automáticamente por `build.sh` usando las variables del paso 3.
+
+Para cargar datos iniciales, usar la opción **Shell** → **One-off Job** en Render (o esperar a que Render habilite Shell en el plan Free):
 
 ```bash
-# Crear superusuario admin
-python manage.py createsuperuser
-
 # Opción A: solo moderadora (recomendado para producción)
 python manage.py seed_data --reset
 
 # Opción B: catálogo completo (coordinadores, carreras, profesores, materias)
 python manage.py seed_data --catalogo
 ```
+
+> Si no tenés acceso a la Shell, también podés agregar el comando de seed al final de `build.sh` de forma temporal y hacer un deploy.
 
 ---
 
