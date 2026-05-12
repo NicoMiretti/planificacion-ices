@@ -23,3 +23,11 @@ if email and password:
 else:
     print('DJANGO_SUPERUSER_EMAIL / PASSWORD no configuradas, omitiendo creación.')
 "
+
+# Seed inicial si está configurado (solo corre una vez si se define la variable)
+SEED_ON_BUILD="${SEED_ON_BUILD:-}"
+if [ -n "$SEED_ON_BUILD" ]; then
+    echo "==> Ejecutando seed_data --${SEED_ON_BUILD}"
+    python manage.py seed_data --"${SEED_ON_BUILD}"
+    echo "==> Seed completado. Recordá quitar SEED_ON_BUILD para deploys futuros."
+fi
