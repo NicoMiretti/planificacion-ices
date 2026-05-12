@@ -23,13 +23,14 @@ Esta guía describe paso a paso cómo probar el sistema desde cero, incluyendo t
 ## Fase 1 — Setup del catálogo (Moderadora)
 
 > Todas las acciones de esta fase son en **Catálogo** (menú superior).
+> El orden correcto es: Institución → Carrera → Profesores → Materias.
 
 ### 1.1 Crear una institución
 
-La institución es el contenedor de carreras y define qué plantilla usan los profesores.
+**Catálogo → Instituciones → Nueva Institución**
 
-- Ir a `/admin/catalogos/institucion/add/` (por ahora solo desde admin)
-- Crear: `ICES` — *Instituto de Ciencias y Estudios Superiores*
+- Nombre: `Instituto de Ciencias y Estudios Superiores`
+- Código: `ICES` *(código corto único, se usa en badges y filtros)*
 
 ### 1.2 Crear una carrera
 

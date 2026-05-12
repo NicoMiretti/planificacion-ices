@@ -17,6 +17,55 @@ from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm
 def catalogo_home(request):
     return render(request, 'catalogos/catalogo.html')
 
+# ─────────────────────── Instituciones ─────────────────────────
+
+@login_required
+@gestores
+def institucion_lista(request):
+    instituciones = Institucion.objects.order_by('nombre')
+    return render(request, 'catalogos/institucion_lista.html', {'instituciones': instituciones})
+
+
+@login_required
+@gestores
+def institucion_crear(request):
+    form = InstitucionForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Institución creada correctamente.')
+        return redirect('catalogos:institucion_lista')
+    return render(request, 'catalogos/institucion_form.html',
+                  {'form': form, 'titulo': 'Nueva Institución'})
+
+
+@login_required
+@gestores
+def institucion_editar(request, pk):
+    institucion = get_object_or_404(Institucion, pk=pk)
+    form = InstitucionForm(request.POST or None, instance=institucion)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Institución actualizada correctamente.')
+        return redirect('catalogos:institucion_lista')
+    return render(request, 'catalogos/institucion_form.html',
+                  {'form': form, 'titulo': 'Editar Institución', 'objeto': institucion})
+
+
+@login_required
+@gestores
+def institucion_eliminar(request, pk):
+    institucion = get_object_or_404(Institucion, pk=pk)
+    if request.method == 'POST':
+        try:
+            institucion.delete()
+            messages.success(request, 'Institución eliminada.')
+        except Exception:
+            messages.error(request, 'No se puede eliminar: la institución tiene carreras asociadas.')
+        return redirect('catalogos:institucion_lista')
+    return render(request, 'catalogos/confirmar_eliminar.html',
+                  {'objeto': institucion, 'tipo': 'institución', 'volver': 'catalogos:institucion_lista'})
+
+
 # ─────────────────────── Carreras ───────────────────────────────
 
 @login_required

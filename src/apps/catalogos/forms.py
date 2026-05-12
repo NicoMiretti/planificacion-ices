@@ -1,8 +1,22 @@
 """
-Formularios para el ABM de catálogos: Carrera, Profesor, Materia.
+Formularios para el ABM de catálogos: Institucion, Carrera, Profesor, Materia.
 """
 from django import forms
 from apps.catalogos.models import Carrera, Profesor, Materia, Institucion
+
+
+class InstitucionForm(forms.ModelForm):
+    class Meta:
+        model = Institucion
+        fields = ['nombre', 'codigo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'codigo': forms.TextInput(attrs={'class': 'form-control',
+                                             'placeholder': 'Ej: ICES'}),
+        }
+        help_texts = {
+            'codigo': 'Código corto único (ICES, UCSE, …). No se puede cambiar después si ya tiene carreras.',
+        }
 
 
 class CarreraForm(forms.ModelForm):

@@ -7,6 +7,12 @@ urlpatterns = [
     # Hub de catálogo
     path('', views.catalogo_home, name='catalogo'),
 
+    # Instituciones
+    path('instituciones/', views.institucion_lista, name='institucion_lista'),
+    path('instituciones/nueva/', views.institucion_crear, name='institucion_crear'),
+    path('instituciones/<int:pk>/editar/', views.institucion_editar, name='institucion_editar'),
+    path('instituciones/<int:pk>/eliminar/', views.institucion_eliminar, name='institucion_eliminar'),
+
     # Carreras
     path('carreras/', views.carrera_lista, name='carrera_lista'),
     path('carreras/nueva/', views.carrera_crear, name='carrera_crear'),
