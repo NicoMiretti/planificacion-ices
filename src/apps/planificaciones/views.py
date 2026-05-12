@@ -54,9 +54,9 @@ def cargar_planificacion(request, instancia_id, materia_id):
         if form.is_valid():
             archivo = form.cleaned_data['archivo']
 
-            # Crear la planificación solo al guardar la primera versión
+            # Crear la planificación si el signal no la creó (fallback)
             if not planificacion:
-                planificacion = Planificacion.objects.create(
+                planificacion, _ = Planificacion.objects.get_or_create(
                     materia=materia,
                     profesor=profesor,
                     instancia=instancia

@@ -100,11 +100,12 @@ def instancia(carrera):
 
 @pytest.fixture
 def planificacion(materia, profesor, instancia):
-    return Planificacion.objects.create(
+    p, _ = Planificacion.objects.get_or_create(
         materia=materia,
         profesor=profesor,
         instancia=instancia
     )
+    return p
 
 
 @pytest.fixture

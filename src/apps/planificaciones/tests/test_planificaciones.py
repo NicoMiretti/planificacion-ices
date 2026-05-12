@@ -77,11 +77,12 @@ def instancia(carrera):
 
 @pytest.fixture
 def planificacion(materia, profesor, instancia):
-    return Planificacion.objects.create(
+    p, _ = Planificacion.objects.get_or_create(
         materia=materia,
         profesor=profesor,
         instancia=instancia
     )
+    return p
 
 
 def crear_doc_word(campos):
@@ -174,7 +175,7 @@ class TestPlanificacionModelo:
 
     def test_crear_planificacion(self, materia, profesor, instancia):
         """RF-07: Se puede crear una planificación para materia/profesor/instancia."""
-        planif = Planificacion.objects.create(
+        planif, _ = Planificacion.objects.get_or_create(
             materia=materia,
             profesor=profesor,
             instancia=instancia
@@ -287,7 +288,7 @@ class TestEntregaTardia:
         )
         inst.carreras.add(materia.carrera)
 
-        planif = Planificacion.objects.create(materia=materia, profesor=profesor, instancia=inst)
+        planif, _ = Planificacion.objects.get_or_create(materia=materia, profesor=profesor, instancia=inst)
         archivo = SimpleUploadedFile('test.docx', b'x')
         version = Version.objects.create(planificacion=planif, numero=1, archivo=archivo)
 
@@ -309,7 +310,7 @@ class TestEntregaTardia:
         )
         inst.carreras.add(materia.carrera)
 
-        planif = Planificacion.objects.create(materia=materia, profesor=profesor, instancia=inst)
+        planif, _ = Planificacion.objects.get_or_create(materia=materia, profesor=profesor, instancia=inst)
         archivo = SimpleUploadedFile('test.docx', b'x')
         version = Version.objects.create(planificacion=planif, numero=1, archivo=archivo)
 

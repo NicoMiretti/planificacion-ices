@@ -187,32 +187,17 @@ def detalle_instancia(request, pk):
 @solo_moderadora
 def crear_instancia(request):
     """Vista: moderadora da de alta una nueva instancia de presentación."""
-    from apps.planificaciones.models import Planificacion
-
     if request.method == 'POST':
         form = InstanciaForm(request.POST)
         if form.is_valid():
             instancia = form.save(commit=False)
             instancia.creada_por = request.user
             instancia.save()
-            form.save_m2m()
-
-            # Auto-crear Planificacion para cada materia con profesor titular
-            materias = instancia.materias_audiencia()
-            creadas = 0
-            for materia in materias:
-                if materia.profesor_titular:
-                    _, fue_creada = Planificacion.objects.get_or_create(
-                        materia=materia,
-                        profesor=materia.profesor_titular,
-                        instancia=instancia,
-                    )
-                    if fue_creada:
-                        creadas += 1
+            form.save_m2m()  # dispara el signal que auto-crea las planificaciones
 
             messages.success(
                 request,
-                f'Instancia "{instancia}" creada con {creadas} planificaciones inicializadas.'
+                f'Instancia "{instancia}" creada correctamente.'
             )
             return redirect('instancias:detalle', pk=instancia.pk)
     else:

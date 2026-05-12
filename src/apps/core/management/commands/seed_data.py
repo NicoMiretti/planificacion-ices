@@ -433,18 +433,6 @@ class Command(BaseCommand):
                 visto(v, users['moderadora'], 'moderadora')
                 visto(v, coord, 'coordinador')
 
-        # ── Auto-completar planificaciones para todas las materias de cada instancia ──
-        # Garantiza que ninguna materia quede "Sin planificación" en la interfaz.
-        from apps.planificaciones.models import Planificacion as P
-        for instancia_obj in inst.values():
-            for materia in instancia_obj.materias_audiencia():
-                if materia.profesor_titular:
-                    P.objects.get_or_create(
-                        materia=materia,
-                        profesor=materia.profesor_titular,
-                        instancia=instancia_obj,
-                    )
-
     # ──────────────────────────────────────────────────────────────
 
     def _print_resumen(self, users):
