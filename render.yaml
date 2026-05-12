@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: planificacion-ices
+    env: python
+    region: oregon
+    plan: free
+    rootDir: src
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: planificacion-ices-db
+          property: connectionString
+
+  - type: pserv
+    name: planificacion-ices-media
+    # Los archivos de media (planificaciones subidas) requieren
+    # almacenamiento persistente. Ver sección "Media files" en la guía.
+
+databases:
+  - name: planificacion-ices-db
+    databaseName: planificaciones
+    user: planificaciones
+    plan: free
+    region: oregon

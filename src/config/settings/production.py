@@ -1,9 +1,26 @@
 """
 Django production settings.
 """
+import os
+import dj_database_url
 from .base import *
 
 DEBUG = False
+
+# Render agrega automáticamente el dominio .onrender.com
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Base de datos via DATABASE_URL (Render la inyecta automáticamente)
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True,
+    )
+}
 
 # Security
 SECURE_BROWSER_XSS_FILTER = True
