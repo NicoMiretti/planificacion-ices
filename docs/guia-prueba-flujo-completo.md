@@ -6,12 +6,12 @@ Esta guía describe paso a paso cómo probar el sistema desde cero, incluyendo t
 
 ## Cuentas disponibles tras el reset
 
-| Rol            | Email                           | Contraseña |
-|----------------|---------------------------------|------------|
-| Admin          | *(superusuario, acceso via /admin/)* | —   |
-| Moderadora     | moderadora@ices.edu             | mod123     |
-| Coord. Sistemas | coord.sistemas@ices.edu        | coord123   |
-| Coord. Administ.| coord.contabilidad@ices.edu    | coord123   |
+| Rol        | Email                | Contraseña |
+|------------|----------------------|------------|
+| Admin      | *(superusuario, acceso via /admin/)* | — |
+| Moderadora | moderadora@ices.edu  | mod123     |
+
+> Los coordinadores **no se crean** en el reset. La moderadora los da de alta desde el Catálogo (paso 1.1).
 
 > Para resetear la base y volver a este estado inicial:
 > ```
@@ -23,16 +23,29 @@ Esta guía describe paso a paso cómo probar el sistema desde cero, incluyendo t
 ## Fase 1 — Setup del catálogo (Moderadora)
 
 > Todas las acciones de esta fase son en **Catálogo** (menú superior).
-> El orden correcto es: Institución → Carrera → Profesores → Materias.
+> El orden correcto es: Coordinadores → Institución → Carrera → Profesores → Materias.
 
-### 1.1 Crear una institución
+### 1.1 Crear coordinadores
+
+**Catálogo → Coordinadores → Nuevo Coordinador**
+
+Crear al menos uno por carrera:
+
+| Nombre              | Email                        | Contraseña |
+|---------------------|------------------------------|------------|
+| Carlos Rodríguez    | coord.sistemas@ices.edu      | coord123   |
+| Laura Martínez      | coord.contabilidad@ices.edu  | coord123   |
+
+> El formulario crea el usuario con rol `coordinador` en un solo paso. Los coordinadores quedan disponibles para asignar a carreras.
+
+### 1.2 Crear una institución
 
 **Catálogo → Instituciones → Nueva Institución**
 
 - Nombre: `Instituto de Ciencias y Estudios Superiores`
 - Código: `ICES` *(código corto único, se usa en badges y filtros)*
 
-### 1.2 Crear una carrera
+### 1.3 Crear una carrera
 
 **Catálogo → Carreras → Nueva Carrera**
 
@@ -41,7 +54,7 @@ Esta guía describe paso a paso cómo probar el sistema desde cero, incluyendo t
 - Coordinador: `Carlos Rodríguez` *(coord.sistemas)*
 - Activa: ✓
 
-### 1.3 Crear profesores
+### 1.4 Crear profesores
 
 **Catálogo → Profesores → Nuevo Profesor**
 
@@ -54,7 +67,7 @@ Crear al menos dos:
 
 > ⚠️ El formulario crea el usuario y el perfil de profesor en un solo paso.
 
-### 1.4 Crear materias
+### 1.5 Crear materias
 
 **Catálogo → Materias → Nueva Materia**
 

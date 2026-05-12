@@ -80,7 +80,7 @@ class Command(BaseCommand):
             self._flush()
             self.stdout.write('\n▶  Creando usuarios staff...')
             self._create_staff()
-            self.stdout.write(self.style.SUCCESS('\n✅  Base reseteada. Solo quedan admin, moderadora y coordinadores.\n'))
+            self.stdout.write(self.style.SUCCESS('\n✅  Base reseteada. Solo quedan admin y moderadora. Creá coordinadores desde el Catálogo.\n'))
             return
 
         if options['flush']:
@@ -127,30 +127,19 @@ class Command(BaseCommand):
     # ──────────────────────────────────────────────────────────────
 
     def _create_staff(self):
-        """Crea solo la moderadora y los coordinadores de base."""
+        """Crea solo la moderadora (sin coordinadores, para que los cree via ABM)."""
         from apps.usuarios.models import Usuario
 
-        def ensure(email, password, rol, nombre):
-            u, created = Usuario.objects.get_or_create(
-                email=email,
-                defaults={'rol': rol, 'nombre_completo': nombre}
-            )
-            if created:
-                u.set_password(password)
-                u.save()
-                self.stdout.write(f'  Creado: {email}')
-            else:
-                self.stdout.write(f'  Ya existe: {email}')
-            return u
-
-        ensure('moderadora@ices.edu',       'mod123',   'moderadora',   'Ana García')
-        ensure('coord.sistemas@ices.edu',   'coord123', 'coordinador',  'Carlos Rodríguez')
-        ensure('coord.contabilidad@ices.edu','coord123', 'coordinador', 'Laura Martínez')
+        u, created = Usuario.objects.get_or_create(
+            email='moderadora@ices.edu',
+            defaults={'rol': 'moderadora', 'nombre_completo': 'Ana García'}
+        )
+        if created:
+            u.set_password('mod123')
+            u.save()
 
         self.stdout.write('\n Credenciales:')
-        self.stdout.write('  moderadora@ices.edu          mod123')
-        self.stdout.write('  coord.sistemas@ices.edu      coord123')
-        self.stdout.write('  coord.contabilidad@ices.edu  coord123')
+        self.stdout.write('  moderadora@ices.edu  mod123')
 
     # ──────────────────────────────────────────────────────────────
 
