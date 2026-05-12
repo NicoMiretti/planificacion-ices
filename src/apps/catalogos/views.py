@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.usuarios.decorators import gestores
-from apps.catalogos.models import Carrera, Profesor, Materia
-from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm
+from apps.catalogos.models import Carrera, Profesor, Materia, Institucion
+from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, InstitucionForm
 
 # ─────────────────────── Hub ────────────────────────────────────
 

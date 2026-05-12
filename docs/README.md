@@ -6,31 +6,29 @@ Sistema para que profesores envíen planificaciones académicas (anuales o cuatr
 
 ```
 docs/
-├── README.md                       ← este archivo (índice + metodología)
+├── README.md                              ← este archivo (índice + metodología)
+├── guia-prueba-flujo-completo.md          ← flujo completo para pruebas manuales
 ├── 01-vision/
-│   ├── vision-del-producto.md      ← propósito, alcance, objetivos
-│   ├── glosario.md                 ← términos del dominio
-│   ├── stakeholders.md             ← interesados y necesidades
-│   └── estructura-planificacion.md ← campos obligatorios de la plantilla
+│   ├── vision-del-producto.md             ← propósito, alcance, objetivos
+│   ├── glosario.md                        ← términos del dominio
+│   ├── stakeholders.md                    ← interesados y necesidades
+│   └── estructura-planificacion.md        ← campos obligatorios de la plantilla
 ├── 02-relevamiento/
 │   ├── guia-entrevista-moderador.md
 │   ├── protocolo-entrevistas.md
 │   └── actas/
 │       └── acta-YYYY-MM-DD-<rol>.md
 ├── 03-requerimientos/
-│   ├── requerimientos-funcionales.md
-│   ├── requerimientos-no-funcionales.md
-│   └── reglas-de-negocio.md
+│   └── requerimientos.md                  ← RF, RN y RNF
 ├── 04-casos-de-uso/
 │   ├── actores.md
-│   ├── diagrama-casos-de-uso.md
-│   └── CU-XX-<nombre>.md
+│   ├── casos-de-uso.md
+│   └── _plantilla-CU.md
 ├── 05-modelo/
-│   ├── modelo-dominio.md
-│   ├── diagrama-estados-planificacion.md
-│   └── diagrama-secuencia.md
-└── 06-decisiones/
-    └── ADR-XXXX-<titulo>.md        ← decisiones de arquitectura/diseño
+│   ├── modelo-de-datos.md                 ← diagrama ER + descripción de entidades
+│   └── diagrama-estados-planificacion.md  ← FSM de versiones
+└── 06-tests/
+    └── tests.md                           ← cobertura de tests por módulo
 ```
 
 ## Metodología sugerida (rol analista)

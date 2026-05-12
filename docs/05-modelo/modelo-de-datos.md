@@ -76,12 +76,10 @@ erDiagram
         string nombre
         int anio_academico
         string periodo
-        int institucion_id FK
         string solo_regimen
         date fecha_apertura
         date fecha_limite
         string estado
-        int creada_por_id FK
         datetime fecha_creacion
     }
 
@@ -149,10 +147,9 @@ erDiagram
     %% Instancias
     InstanciaPresentacion ||--o{ InstanciaCarrera : ""
     Carrera ||--o{ InstanciaCarrera : ""
-    Institucion |o--o{ InstanciaPresentacion : "filtra"
     Usuario ||--o{ InstanciaPresentacion : "crea"
 
-    %% Planificaciones
+    %% Planificaciones (auto-creadas por signal m2m_changed al asignar carreras)
     Materia ||--o{ Planificacion : "tiene"
     Profesor ||--o{ Planificacion : "presenta"
     InstanciaPresentacion ||--o{ Planificacion : "agrupa"
@@ -191,8 +188,8 @@ erDiagram
 
 | Entidad | Descripción | Notas |
 |---------|-------------|-------|
-| `InstanciaPresentacion` | Convocatoria para presentar planificaciones | Estados: programada, abierta, cerrada |
-| `InstanciaCarrera` | Tabla pivot M2M instancia ↔ carrera | Define la audiencia |
+| `InstanciaPresentacion` | Convocatoria para presentar planificaciones | Estados: programada, abierta, cerrada. `solo_regimen`: filtra materias por régimen específico (vacío = usar el periodo, `todos` = sin filtro) |
+| `InstanciaCarrera` | Tabla pivot M2M instancia ↔ carrera | Define la audiencia. El evento `post_add` en esta relación dispara la auto-creación de `Planificacion` |
 
 ### Módulo Planificaciones
 

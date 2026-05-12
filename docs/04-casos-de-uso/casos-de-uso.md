@@ -16,10 +16,12 @@
 
 **Precondiciones:**
 - La moderadora está autenticada con rol `moderadora`.
-- Existen carreras, materias y profesores cargados en el sistema (catálogo actualizado).
+- Existen al menos una carrera e institución cargadas en el catálogo.
+- Al menos una materia de la audiencia tiene profesor titular asignado (RN-12).
 
 **Postcondiciones (éxito):**
 - Se crea la instancia con estado "programada" o "abierta" según fecha de apertura.
+- El sistema auto-crea un objeto `Planificacion` por cada materia con titular en la audiencia (vía signal `m2m_changed` al asociar las carreras).
 - Los profesores de la audiencia reciben notificación por mail al llegar la fecha de apertura.
 - La instancia queda registrada en el histórico de instancias del sistema.
 
@@ -44,15 +46,15 @@
 2. Cada profesor ve solo las instancias que le corresponden según su audiencia.
 
 ### Flujos de excepción
-**E1.** Audiencia vacía  
-1. El sistema advierte que ningún profesor coincide con los criterios de audiencia.
-2. La moderadora ajusta los filtros o cancela.
+**E1.** Sin materias con titular en la audiencia  
+1. Al intentar guardar, el sistema muestra un error: "No hay materias con profesor titular asignado para las carreras y régimen seleccionados."
+2. La moderadora debe ir al catálogo y asignar titulares antes de continuar (RN-12).
 
 **E2.** Fecha límite anterior a fecha de apertura  
 1. El sistema rechaza la creación indicando el error.
 
 ### Reglas de negocio aplicables
-- RF-010, RF-011, RF-012, RF-013, RNF-011
+- RF-010, RF-011, RF-012, RF-013, RF-014, RN-12, RNF-011
 
 ### Requerimientos relacionados
 - RF-010, RF-011, RF-012, RF-013, RF-014

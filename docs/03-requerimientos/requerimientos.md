@@ -11,15 +11,17 @@
 | RF-002 | Asignar un **profesor titular** a cada materia. | Alta |
 | RF-003 | Asociar cada profesor a una **institución** (ICES o UCSE) para notificación y plantilla. | Alta |
 | RF-004 | Mantener las **plantillas** vigentes (ICES y UCSE) y los **materiales de apoyo** (reglamento, calendario, guía APA, doc orientador). | Alta |
+| RF-005 | La **moderadora** podrá gestionar el catálogo completo (instituciones, carreras, profesores, materias) desde la interfaz del sistema, sin necesidad de acceder al panel de administración de Django. | Alta |
 
 ### Instancias de presentación
 | ID | Requerimiento | Prioridad |
 |---|---|---|
-| RF-010 | Crear **instancias de presentación** programables: período cubierto, audiencia (carrera/s, institución, materias), fecha de apertura, fecha límite. | Alta |
-| RF-011 | Disparar **notificación por mail** a los profesores de la audiencia al abrir la instancia, en grupos por institución. | Alta |
-| RF-012 | El mail incluirá link a los materiales de apoyo y al sistema. | Alta |
-| RF-013 | Soportar **múltiples instancias** activas en paralelo (ej. anuales + cuatrimestrales). | Alta |
-| RF-014 | Recordatorios automáticos al profesor antes de la fecha límite (configurable). | Media |
+| RF-010 | Crear **instancias de presentación** programables: período cubierto, audiencia (carrera/s, institución, materias), fecha de apertura, fecha límite. El sistema valida que exista al menos una materia con profesor titular asignado para la combinación seleccionada antes de permitir la creación. | Alta |
+| RF-011 | Al crear la instancia, el sistema **auto-crea objetos Planificacion** por cada materia con titular en la audiencia (vía signal `m2m_changed`). | Alta |
+| RF-012 | Disparar **notificación por mail** a los profesores de la audiencia al abrir la instancia, en grupos por institución. | Alta |
+| RF-013 | El mail incluirá link a los materiales de apoyo y al sistema. | Alta |
+| RF-014 | Soportar **múltiples instancias** activas en paralelo (ej. anuales + cuatrimestrales). | Alta |
+| RF-015 | Recordatorios automáticos al profesor antes de la fecha límite (configurable). | Media |
 
 ### Carga y envío (profesor)
 | ID | Requerimiento | Prioridad |
@@ -81,6 +83,7 @@
 - **RN-09**: Cada profesor pertenece a una sola institución (ICES o UCSE) a efectos de notificación y plantilla.
 - **RN-10**: Las materias anuales no requieren ratificación a mitad de año.
 - **RN-11**: Una materia cuatrimestral dictada en ambos cuatrimestres requiere **una planificación por cuatrimestre**.
+- **RN-12**: No se puede crear una instancia si ninguna materia de la audiencia tiene profesor titular asignado. El sistema bloquea la creación con un mensaje de error explícito.
 
 ## No Funcionales
 

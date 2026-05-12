@@ -268,6 +268,33 @@ Relacionado con: [CU-02 Tomar para revisión](04-casos-de-uso/casos-de-uso.md#cu
 | `test_tablero_accesible_coordinador` | Coordinador puede acceder al tablero | CU-02 |
 | `test_aprobar_via_post` | POST a aprobar registra el visto bueno correctamente | CU-03 |
 | `test_rechazar_via_post` | POST a rechazar cambia estado a `rechazada` | CU-04 |
+
+---
+
+## Comportamientos implementados sin test formal (candidatos a agregar)
+
+| Comportamiento | Módulo | Regla/RF |
+|---|---|---|
+| `para_profesor()` incluye instancias históricas vía `Planificacion` registradas (cubre cambio de titular entre años) | instancias/models.py | CU-06 |
+| Signal `m2m_changed` auto-crea `Planificacion` al agregar carreras a instancia | instancias/signals.py | RF-011, RN-12 |
+| `InstanciaForm.clean()` rechaza si no hay materias con titular en la audiencia | instancias/forms.py | RN-12 |
+| `detalle_instancia` construye `planificaciones_por_materia` para todos los roles | instancias/views.py | CU-01, CU-06 |
+| `sin_cargar` se cuenta como planifs sin versiones (no materias sin Planificacion) | instancias/views.py, core/views.py | RF-028 |
+| ABM de Institución, Carrera, Profesor, Materia accesible solo para moderadora/admin | catalogos/views.py | RF-005 |
+| `ProfesorForm.save()` crea/edita el `Usuario` y el perfil `Profesor` en un solo paso | catalogos/forms.py | RF-005 |
+
+## Estado actual de tests
+
+```
+95 passed, 1 warning
+```
+
+Distribución:
+- `apps/catalogos/tests/` — 18 tests
+- `apps/instancias/tests/` — 17 tests
+- `apps/planificaciones/tests/` — 26 tests
+- `apps/revisiones/tests/` — 23 tests
+- `apps/usuarios/tests/` — 11 tests
 | `test_rechazar_sin_observaciones_no_cambia_estado` | POST a rechazar sin observaciones no cambia el estado | RN-04 |
 
 ---
