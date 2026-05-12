@@ -1,8 +1,10 @@
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
+from apps.instancias.models import InstanciaPresentacion
 
-@receiver(m2m_changed, sender='instancias.InstanciaPresentacion_carreras')
+
+@receiver(m2m_changed, sender=InstanciaPresentacion.carreras.through)
 def crear_planificaciones_al_agregar_carreras(sender, instance, action, pk_set, **kwargs):
     """
     Cuando se agregan carreras a una instancia, auto-crea una Planificacion
