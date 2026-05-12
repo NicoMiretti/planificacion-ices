@@ -182,7 +182,7 @@ class Command(BaseCommand):
 
         ices, _ = Institucion.objects.get_or_create(
             codigo='ICES',
-            defaults={'nombre': 'Instituto de Ciencias y Estudios Superiores'}
+            defaults={'nombre': 'Instituto Cooperativo de Enseñanza Superior'}
         )
         ucse, _ = Institucion.objects.get_or_create(
             codigo='UCSE',

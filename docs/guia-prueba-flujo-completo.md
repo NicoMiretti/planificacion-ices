@@ -42,7 +42,7 @@ Crear al menos uno por carrera:
 
 **Catálogo → Instituciones → Nueva Institución**
 
-- Nombre: `Instituto de Ciencias y Estudios Superiores`
+- Nombre: `Instituto Cooperativo de Enseñanza Superior`
 - Código: `ICES` *(código corto único, se usa en badges y filtros)*
 
 ### 1.3 Crear una carrera

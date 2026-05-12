@@ -15,7 +15,7 @@ User = get_user_model()
 def institucion_ices():
     """Fixture: Institución ICES."""
     return Institucion.objects.create(
-        nombre='Instituto de Ciencias y Estudios Superiores',
+        nombre='Instituto Cooperativo de Enseñanza Superior',
         codigo='ICES'
     )
 
