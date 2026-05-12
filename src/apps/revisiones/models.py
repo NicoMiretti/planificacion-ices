@@ -8,7 +8,7 @@ from django.db import models
 
 
 class Revision(models.Model):
-    """Registra cada acción de revisión sobre una versión."""
+    """Registra cada acción de revisión sobre una planificación (a lo largo de todas sus versiones)."""
 
     class Tipo(models.TextChoices):
         TOMAR = 'tomar', 'Revisión iniciada'
@@ -16,10 +16,20 @@ class Revision(models.Model):
         RECHAZAR = 'rechazar', 'Rechazar'
         CORRECCION_LEVE = 'correccion_leve', 'Corrección leve'
 
+    planificacion = models.ForeignKey(
+        'planificaciones.Planificacion',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='revisiones'
+    )
     version = models.ForeignKey(
         'planificaciones.Version',
-        on_delete=models.CASCADE,
-        related_name='revisiones'
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='revisiones',
+        help_text='Versión específica a la que corresponde esta acción'
     )
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL,

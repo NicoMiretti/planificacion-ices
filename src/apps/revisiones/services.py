@@ -24,6 +24,7 @@ class RevisionService:
         version.save()
 
         Revision.objects.create(
+            planificacion=version.planificacion,
             version=version,
             usuario=usuario,
             tipo=Revision.Tipo.TOMAR
@@ -64,6 +65,7 @@ class RevisionService:
             raise ValueError(f'Ya registraste tu visto bueno para esta versión')
 
         Revision.objects.create(
+            planificacion=version.planificacion,
             version=version,
             usuario=usuario,
             tipo=Revision.Tipo.APROBAR,
@@ -97,6 +99,7 @@ class RevisionService:
         version.save()
 
         Revision.objects.create(
+            planificacion=version.planificacion,
             version=version,
             usuario=usuario,
             tipo=Revision.Tipo.RECHAZAR,
@@ -124,6 +127,7 @@ class RevisionService:
             raise ValueError('El detalle de la corrección es obligatorio')
 
         revision = Revision.objects.create(
+            planificacion=version.planificacion,
             version=version,
             usuario=usuario,
             tipo=Revision.Tipo.CORRECCION_LEVE,

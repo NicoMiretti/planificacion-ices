@@ -182,6 +182,7 @@
                                 <span>
                                     <strong>{{ rev.get_tipo_display }}</strong>
                                     {% if rev.usuario %}<span class="text-muted"> por {{ rev.usuario }}</span>{% endif %}
+                                    {% if rev.version %}<span class="badge bg-light text-secondary border ms-2" style="font-size:.72rem;">v{{ rev.version.numero }}</span>{% endif %}
                                 </span>
                                 <small class="text-muted">{{ rev.fecha|date:"d/m/Y H:i" }}</small>
                             </div>

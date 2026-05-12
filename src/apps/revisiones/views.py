@@ -112,20 +112,23 @@ def revisar_version(request, version_id):
             messages.error(request, 'No tienes acceso a esta planificación.')
             return redirect('revisiones:tablero')
 
+    planificacion = version.planificacion
+
     mi_visto = VistoBueno.objects.filter(version=version, rol=user.rol).first()
     otro_rol = 'coordinador' if user.rol == 'moderadora' else 'moderadora'
     otro_visto = VistoBueno.objects.filter(version=version, rol=otro_rol).first()
 
-    # Rechazos activos en esta versión (para mostrar justificación prominente)
-    rechazos = version.revisiones.filter(tipo=Revision.Tipo.RECHAZAR).order_by('-fecha')
+    # Rechazos de CUALQUIER versión de esta planificación (historial completo)
+    rechazos = planificacion.revisiones.filter(tipo=Revision.Tipo.RECHAZAR).order_by('-fecha')
 
     # ¿La versión ya fue aprobada por ambos?
     ya_aprobada = version.estado in (Version.Estado.APROBADA, Version.Estado.OFICIAL)
 
     context = {
         'version': version,
-        'planificacion': version.planificacion,
-        'revisiones': version.revisiones.select_related('usuario').order_by('-fecha'),
+        'planificacion': planificacion,
+        # Historial completo de la planificación (todas las versiones)
+        'revisiones': planificacion.revisiones.select_related('usuario', 'version').order_by('-fecha'),
         'mi_visto': mi_visto,
         'otro_visto': otro_visto,
         'otro_rol': otro_rol,
