@@ -142,20 +142,20 @@ def detalle_instancia(request, pk):
             filtro_anio = None
 
     planificaciones_por_materia = {}
+    from apps.planificaciones.models import Planificacion
     if request.user.es_profesor and hasattr(request.user, 'perfil_profesor'):
-        from apps.planificaciones.models import Planificacion
         qs = Planificacion.objects.filter(
             instancia=instancia,
             profesor=request.user.perfil_profesor,
             materia__in=materias
         ).prefetch_related('versiones')
         planificaciones_por_materia = {p.materia_id: p for p in qs}
-    elif request.user.es_revisor:
-        from apps.planificaciones.models import Planificacion
+    else:
+        # Moderadora, coordinador, admin, revisor: ven la planif del titular
         qs = Planificacion.objects.filter(
             instancia=instancia,
             materia__in=materias
-        ).select_related('materia__profesor_titular').prefetch_related('versiones')
+        ).select_related('materia__profesor_titular', 'profesor').prefetch_related('versiones')
         for p in qs:
             mat_id = p.materia_id
             if mat_id not in planificaciones_por_materia:

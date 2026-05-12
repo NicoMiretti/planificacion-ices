@@ -96,11 +96,13 @@
                         <th>Año</th>
                         <th>Régimen</th>
                         <th>Profesor Titular</th>
+                        <th>Estado</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for materia, planif in materias_con_planif %}
+                    {% with ultima=planif.versiones.last %}
                     <tr>
                         <td class="fw-semibold">{{ materia.nombre }}</td>
                         <td class="text-muted" style="font-size:.85rem">{{ materia.carrera }}</td>
@@ -113,88 +115,44 @@
                                 <span class="text-muted">Sin asignar</span>
                             {% endif %}
                         </td>
+                        <td>
+                            {% if not planif %}
+                                <span class="text-muted small">Sin planificación</span>
+                            {% elif not ultima %}
+                                <span class="ices-badge" style="background:#f1f5f9;color:#64748b">Pendiente</span>
+                            {% elif ultima.estado == 'borrador' %}
+                                <span class="ices-badge" style="background:#f1f5f9;color:#64748b">Borrador</span>
+                            {% elif ultima.estado == 'enviada' %}
+                                <span class="ices-badge ices-badge-info">Enviada</span>
+                            {% elif ultima.estado == 'en_revision' %}
+                                <span class="ices-badge ices-badge-warning">En revisión</span>
+                            {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
+                                <span class="ices-badge ices-badge-danger">Rechazada</span>
+                            {% elif ultima.estado == 'aprobada' %}
+                                <span class="ices-badge ices-badge-success">Aprobada</span>
+                            {% elif ultima.estado == 'oficial' %}
+                                <span class="ices-badge ices-badge-success"><i class="bi bi-patch-check me-1"></i>Oficial</span>
+                            {% endif %}
+                        </td>
                         <td class="text-end">
-                        {% if request.user.es_profesor %}
                             {% if planif %}
-                                {% with ultima=planif.versiones.last %}
                                 {% if ultima %}
-                                    {% if ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
-                                    <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
-                                    {% elif ultima.estado == 'en_revision' %}
-                                    <span class="ices-badge ices-badge-warning me-2"><i class="bi bi-hourglass-split"></i></span>
-                                    {% elif ultima.estado == 'oficial' or ultima.estado == 'aprobada' %}
-                                    <span class="ices-badge ices-badge-success me-2"><i class="bi bi-patch-check"></i></span>
-                                    {% elif ultima.estado == 'enviada' %}
-                                    <span class="ices-badge ices-badge-info me-2"><i class="bi bi-send"></i></span>
-                                    {% endif %}
                                     <a href="{% url 'planificaciones:detalle' planif.pk %}"
-                                       class="btn btn-ices-outline btn-sm">Ver</a>
-                                {% else %}
-                                    {% if instancia.estado == 'abierta' %}
+                                       class="btn btn-ices-outline btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Ver
+                                    </a>
+                                {% elif request.user.es_profesor and instancia.estado == 'abierta' %}
                                     <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
                                        class="btn btn-ices btn-sm">
                                         <i class="bi bi-upload me-1"></i>Cargar
                                     </a>
-                                    {% else %}
+                                {% else %}
                                     <span class="text-muted">—</span>
-                                    {% endif %}
                                 {% endif %}
-                                {% endwith %}
-                            {% elif instancia.estado == 'abierta' %}
-                                <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
-                                   class="btn btn-ices btn-sm">
-                                    <i class="bi bi-upload me-1"></i>Cargar
-                                </a>
-                            {% else %}
-                                <span class="text-muted">—</span>
                             {% endif %}
-                        {% elif request.user.es_admin or request.user.es_moderadora or request.user.es_coordinador %}
-                            {% if planif %}
-                                {% with ultima=planif.versiones.last %}
-                                {% if ultima %}
-                                    {% if ultima.estado == 'en_revision' or ultima.estado == 'enviada' %}
-                                    <span class="ices-badge ices-badge-warning me-2"><i class="bi bi-hourglass-split"></i></span>
-                                    {% elif ultima.estado == 'oficial' or ultima.estado == 'aprobada' %}
-                                    <span class="ices-badge ices-badge-success me-2"><i class="bi bi-patch-check"></i></span>
-                                    {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
-                                    <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
-                                    {% endif %}
-                                    <a href="{% url 'revisiones:revisar' ultima.pk %}"
-                                       class="btn btn-ices-outline btn-sm">
-                                        <i class="bi bi-eye me-1"></i>Ver
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted small">Pendiente</span>
-                                {% endif %}
-                                {% endwith %}
-                            {% else %}
-                                <span class="text-muted small">Sin planificación</span>
-                            {% endif %}
-                        {% elif request.user.es_revisor %}
-                            {% if planif %}
-                                {% with ultima=planif.versiones.last %}
-                                {% if ultima %}
-                                    {% if ultima.estado == 'en_revision' or ultima.estado == 'enviada' %}
-                                    <span class="ices-badge ices-badge-warning me-2"><i class="bi bi-hourglass-split"></i></span>
-                                    {% elif ultima.estado == 'oficial' or ultima.estado == 'aprobada' %}
-                                    <span class="ices-badge ices-badge-success me-2"><i class="bi bi-patch-check"></i></span>
-                                    {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
-                                    <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
-                                    {% endif %}
-                                    <a href="{% url 'revisiones:revisar' ultima.pk %}"
-                                       class="btn btn-ices-outline btn-sm">
-                                        <i class="bi bi-eye me-1"></i>Ver
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted small">Pendiente</span>
-                                {% endif %}
-                                {% endwith %}
-                            {% else %}
-                                <span class="text-muted small">Sin planificación</span>
-                            {% endif %}
-                        {% endif %}
                         </td>
                     </tr>
+                    {% endwith %}
                     {% endfor %}
                 </tbody>
             </table>
