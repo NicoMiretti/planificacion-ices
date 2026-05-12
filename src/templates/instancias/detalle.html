@@ -136,15 +136,15 @@
                         </td>
                         <td class="text-end">
                             {% if planif %}
-                                {% if ultima %}
-                                    <a href="{% url 'planificaciones:detalle' planif.pk %}"
-                                       class="btn btn-ices-outline btn-sm">
-                                        <i class="bi bi-eye me-1"></i>Ver
-                                    </a>
-                                {% elif request.user.es_profesor and instancia.estado == 'abierta' %}
+                                {% if not ultima and request.user.es_profesor and instancia.estado == 'abierta' %}
                                     <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
                                        class="btn btn-ices btn-sm">
                                         <i class="bi bi-upload me-1"></i>Cargar
+                                    </a>
+                                {% elif ultima %}
+                                    <a href="{% url 'planificaciones:detalle' planif.pk %}"
+                                       class="btn btn-ices-outline btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Ver
                                     </a>
                                 {% else %}
                                     <span class="text-muted">—</span>

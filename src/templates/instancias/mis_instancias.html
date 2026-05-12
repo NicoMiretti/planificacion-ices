@@ -61,7 +61,7 @@
                         {% endif %}
                         {% if resumen.sin_cargar %}
                         <span class="ices-badge" style="background:#fef9c3;color:#854d0e;">
-                            <i class="bi bi-exclamation-triangle me-1"></i>{{ resumen.sin_cargar }} sin cargar
+                            <i class="bi bi-exclamation-triangle me-1"></i>{{ resumen.sin_cargar }} pendiente{{ resumen.sin_cargar|pluralize }}
                         </span>
                         {% endif %}
                         {% if resumen.borradores %}

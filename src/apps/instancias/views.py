@@ -149,17 +149,19 @@ def detalle_instancia(request, pk):
         planificaciones_por_materia = {p.materia_id: p for p in qs}
     else:
         # Moderadora, coordinador, admin, revisor: ven la planif del titular
+        materias_list = list(materias)
         qs = Planificacion.objects.filter(
             instancia=instancia,
-            materia__in=materias
-        ).select_related('materia__profesor_titular', 'profesor').prefetch_related('versiones')
+            materia__in=materias_list,
+        ).select_related('materia', 'profesor').prefetch_related('versiones')
+        # Indexar por materia, priorizando siempre la del profesor titular
+        raw = {}
         for p in qs:
-            mat_id = p.materia_id
-            if mat_id not in planificaciones_por_materia:
-                planificaciones_por_materia[mat_id] = p
-            elif (p.materia.profesor_titular and
-                  p.profesor == p.materia.profesor_titular):
-                planificaciones_por_materia[mat_id] = p
+            mid = p.materia_id
+            titular = p.materia.profesor_titular_id
+            if mid not in raw or p.profesor_id == titular:
+                raw[mid] = p
+        planificaciones_por_materia = raw
 
     materias_con_planif = [
         (m, planificaciones_por_materia.get(m.pk))
