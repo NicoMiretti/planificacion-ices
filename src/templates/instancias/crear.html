@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Instancia{% endblock %}
+
+{% block content %}
+<div class="container ices-page" style="max-width: 720px;">
+
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'instancias:lista' %}">Instancias</a></li>
+            <li class="breadcrumb-item active">Nueva Instancia</li>
+        </ol>
+    </nav>
+
+    <div class="ices-page-header">
+        <h3 class="mb-1"><i class="bi bi-plus-circle me-2"></i>Nueva Instancia de Presentación</h3>
+        <p class="text-muted mb-0">Al crear la instancia, se inicializarán automáticamente las planificaciones para cada materia con profesor titular asignado.</p>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="ices-alert ices-alert-{{ message.tags }} mb-3">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="ices-alert ices-alert-danger mb-3">
+            {% for error in form.non_field_errors %}
+            <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="ices-card mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Datos generales</h6>
+
+                <div class="mb-3">
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-medium">
+                        {{ form.nombre.label }} <span class="text-danger">*</span>
+                    </label>
+                    <input type="text"
+                           name="{{ form.nombre.html_name }}"
+                           id="{{ form.nombre.id_for_label }}"
+                           value="{{ form.nombre.value|default:'' }}"
+                           class="form-control {% if form.nombre.errors %}is-invalid{% endif %}"
+                           placeholder="Ej: Planificaciones Anuales 2027">
+                    {% for error in form.nombre.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="{{ form.anio_academico.id_for_label }}" class="form-label fw-medium">
+                            {{ form.anio_academico.label }} <span class="text-danger">*</span>
+                        </label>
+                        <input type="number"
+                               name="{{ form.anio_academico.html_name }}"
+                               id="{{ form.anio_academico.id_for_label }}"
+                               value="{{ form.anio_academico.value|default:'' }}"
+                               class="form-control {% if form.anio_academico.errors %}is-invalid{% endif %}"
+                               min="2020" max="2050">
+                        {% for error in form.anio_academico.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="{{ form.periodo.id_for_label }}" class="form-label fw-medium">
+                            {{ form.periodo.label }} <span class="text-danger">*</span>
+                        </label>
+                        <select name="{{ form.periodo.html_name }}"
+                                id="{{ form.periodo.id_for_label }}"
+                                class="form-select {% if form.periodo.errors %}is-invalid{% endif %}">
+                            {% for val, label in form.fields.periodo.choices %}
+                            <option value="{{ val }}" {% if form.periodo.value == val %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        {% for error in form.periodo.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ices-card mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Fechas</h6>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <label for="{{ form.fecha_apertura.id_for_label }}" class="form-label fw-medium">
+                            {{ form.fecha_apertura.label }} <span class="text-danger">*</span>
+                        </label>
+                        <input type="date"
+                               name="{{ form.fecha_apertura.html_name }}"
+                               id="{{ form.fecha_apertura.id_for_label }}"
+                               value="{{ form.fecha_apertura.value|default:'' }}"
+                               class="form-control {% if form.fecha_apertura.errors %}is-invalid{% endif %}">
+                        {% for error in form.fecha_apertura.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="{{ form.fecha_limite.id_for_label }}" class="form-label fw-medium">
+                            {{ form.fecha_limite.label }} <span class="text-danger">*</span>
+                        </label>
+                        <input type="date"
+                               name="{{ form.fecha_limite.html_name }}"
+                               id="{{ form.fecha_limite.id_for_label }}"
+                               value="{{ form.fecha_limite.value|default:'' }}"
+                               class="form-control {% if form.fecha_limite.errors %}is-invalid{% endif %}">
+                        {% for error in form.fecha_limite.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="text-muted small mt-2 mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    El estado (Programada / Abierta) se actualiza automáticamente según estas fechas.
+                </p>
+            </div>
+        </div>
+
+        <div class="ices-card mb-4">
+            <div class="card-body p-4">
+                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Carreras incluidas <span class="text-danger">*</span></h6>
+                {% if form.carreras.errors %}
+                <div class="text-danger small mb-2">
+                    {% for error in form.carreras.errors %}{{ error }}{% endfor %}
+                </div>
+                {% endif %}
+                <div class="d-flex flex-column gap-2">
+                    {% for checkbox in form.carreras %}
+                    <div class="form-check">
+                        {{ checkbox.tag }}
+                        <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                            {{ checkbox.choice_label }}
+                        </label>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted small">No hay carreras activas disponibles.</p>
+                    {% endfor %}
+                </div>
+                <p class="text-muted small mt-2 mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Se crearán planificaciones para todas las materias de las carreras seleccionadas que tengan profesor titular asignado.
+                </p>
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-ices">
+                <i class="bi bi-check-circle me-1"></i>Crear Instancia
+            </button>
+            <a href="{% url 'instancias:lista' %}" class="btn btn-ices-outline">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

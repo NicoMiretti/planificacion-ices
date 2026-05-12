@@ -1,12 +1,14 @@
 """
 Vistas para el módulo de instancias de presentación.
 """
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils import timezone
 
 from apps.usuarios.decorators import solo_moderadora, revisores
 from .models import InstanciaPresentacion
+from .forms import InstanciaForm
 
 
 @login_required
@@ -179,3 +181,41 @@ def detalle_instancia(request, pk):
         'mostrar_filtros': len(carreras_disponibles) > 1 or len(anios_disponibles) > 1,
     }
     return render(request, 'instancias/detalle.html', context)
+
+
+@login_required
+@solo_moderadora
+def crear_instancia(request):
+    """Vista: moderadora da de alta una nueva instancia de presentación."""
+    from apps.planificaciones.models import Planificacion
+
+    if request.method == 'POST':
+        form = InstanciaForm(request.POST)
+        if form.is_valid():
+            instancia = form.save(commit=False)
+            instancia.creada_por = request.user
+            instancia.save()
+            form.save_m2m()
+
+            # Auto-crear Planificacion para cada materia con profesor titular
+            materias = instancia.materias_audiencia()
+            creadas = 0
+            for materia in materias:
+                if materia.profesor_titular:
+                    _, fue_creada = Planificacion.objects.get_or_create(
+                        materia=materia,
+                        profesor=materia.profesor_titular,
+                        instancia=instancia,
+                    )
+                    if fue_creada:
+                        creadas += 1
+
+            messages.success(
+                request,
+                f'Instancia "{instancia}" creada con {creadas} planificaciones inicializadas.'
+            )
+            return redirect('instancias:detalle', pk=instancia.pk)
+    else:
+        form = InstanciaForm()
+
+    return render(request, 'instancias/crear.html', {'form': form})

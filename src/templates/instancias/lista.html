@@ -11,7 +11,7 @@
             <p class="text-muted mb-0">Convocatorias de entrega de planificaciones</p>
         </div>
         {% if user.puede_gestionar %}
-        <a href="/admin/instancias/instanciapresentacion/add/" class="btn btn-ices btn-sm">
+        <a href="{% url 'instancias:crear' %}" class="btn btn-ices btn-sm">
             <i class="bi bi-plus-circle me-1"></i>Nueva Instancia
         </a>
         {% endif %}
