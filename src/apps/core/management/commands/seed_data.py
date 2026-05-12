@@ -73,6 +73,10 @@ class Command(BaseCommand):
             '--reset', action='store_true',
             help='Vacía la base y deja solo admin, moderadora y coordinadores (sin datos de prueba).'
         )
+        parser.add_argument(
+            '--catalogo', action='store_true',
+            help='Vacía la base y crea moderadora, coordinadores, carreras, profesores y materias. Las instancias las creás vos.'
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -81,6 +85,16 @@ class Command(BaseCommand):
             self.stdout.write('\n▶  Creando usuarios staff...')
             self._create_staff()
             self.stdout.write(self.style.SUCCESS('\n✅  Base reseteada. Solo quedan admin y moderadora. Creá coordinadores desde el Catálogo.\n'))
+            return
+
+        if options['catalogo']:
+            self._flush()
+            self.stdout.write('\n▶  Creando moderadora...')
+            self._create_staff()
+            self.stdout.write('▶  Creando catálogo (coordinadores + carreras + profesores + materias)...')
+            self._create_catalogo()
+            self.stdout.write(self.style.SUCCESS('\n✅  Catálogo listo. Ahora creá las instancias desde el sistema.\n'))
+            self._print_catalogo_resumen()
             return
 
         if options['flush']:
@@ -140,6 +154,94 @@ class Command(BaseCommand):
 
         self.stdout.write('\n Credenciales:')
         self.stdout.write('  moderadora@ices.edu  mod123')
+
+    # ──────────────────────────────────────────────────────────────
+
+    def _create_catalogo(self):
+        """Crea coordinadores, carreras, profesores y materias sin instancias."""
+        from apps.usuarios.models import Usuario
+        from apps.catalogos.models import Institucion, Carrera, Profesor, Materia
+
+        def usuario(email, password, rol, nombre):
+            u, created = Usuario.objects.get_or_create(
+                email=email, defaults={'rol': rol, 'nombre_completo': nombre}
+            )
+            if created:
+                u.set_password(password)
+                u.save()
+            return u
+
+        mod = usuario('moderadora@ices.edu', 'mod123', 'moderadora', 'Ana García')
+
+        coord_sis  = usuario('coord.sistemas@ices.edu',     'coord123', 'coordinador', 'Carlos Rodríguez')
+        coord_cont = usuario('coord.contabilidad@ices.edu', 'coord123', 'coordinador', 'Laura Martínez')
+
+        u_perez  = usuario('perez@ices.edu',  'prof123', 'profesor', 'Roberto Pérez')
+        u_gomez  = usuario('gomez@ices.edu',  'prof123', 'profesor', 'Claudia Gómez')
+        u_silva  = usuario('silva@ices.edu',  'prof123', 'profesor', 'Marcelo Silva')
+        u_torres = usuario('torres@ices.edu', 'prof123', 'profesor', 'Patricia Torres')
+
+        ices, _ = Institucion.objects.get_or_create(
+            codigo='ICES',
+            defaults={'nombre': 'Instituto Cooperativo de Enseñanza Superior'}
+        )
+
+        sistemas, _ = Carrera.objects.get_or_create(
+            nombre='Ingeniería en Sistemas', institucion=ices,
+            defaults={'coordinador': coord_sis}
+        )
+        contabilidad, _ = Carrera.objects.get_or_create(
+            nombre='Licenciatura en Administración', institucion=ices,
+            defaults={'coordinador': coord_cont}
+        )
+
+        def prof(usuario_obj, legajo):
+            p, _ = Profesor.objects.get_or_create(
+                usuario=usuario_obj,
+                defaults={'institucion': ices, 'legajo': legajo}
+            )
+            return p
+
+        p_perez  = prof(u_perez,  'P-001')
+        p_gomez  = prof(u_gomez,  'P-002')
+        p_silva  = prof(u_silva,  'P-003')
+        p_torres = prof(u_torres, 'P-004')
+
+        def mat(nombre, carrera, anio, regimen, titular=None):
+            Materia.objects.get_or_create(
+                nombre=nombre, carrera=carrera,
+                defaults={'anio_cursado': anio, 'regimen': regimen,
+                          'profesor_titular': titular}
+            )
+
+        # Ingeniería en Sistemas
+        mat('Programación I',          sistemas,     1, 'anual', p_perez)
+        mat('Programación II',         sistemas,     2, 'anual', p_perez)
+        mat('Base de Datos',           sistemas,     2, '1cuat', p_gomez)
+        mat('Redes y Comunicaciones',  sistemas,     3, '1cuat', p_silva)
+        mat('Ingeniería de Software',  sistemas,     3, '2cuat', p_gomez)
+        mat('Sistemas Operativos',     sistemas,     3, 'anual', p_silva)
+        mat('Arquitectura de Computadoras', sistemas, 2, '2cuat', p_silva)
+        mat('Matemática Discreta',     sistemas,     1, '1cuat', p_perez)
+
+        # Licenciatura en Administración
+        mat('Contabilidad I',          contabilidad, 1, 'anual',  p_torres)
+        mat('Contabilidad II',         contabilidad, 2, 'anual',  p_torres)
+        mat('Matemática Financiera',   contabilidad, 2, '1cuat',  p_torres)
+        mat('Administración General',  contabilidad, 1, 'anual',  p_perez)
+        mat('Economía',                contabilidad, 1, '2cuat',  p_perez)
+        mat('Derecho Laboral',         contabilidad, 3, '1cuat',  None)
+        mat('Estadística Aplicada',    contabilidad, 2, '2cuat',  p_gomez)
+
+    def _print_catalogo_resumen(self):
+        self.stdout.write('\n Credenciales:')
+        self.stdout.write('  moderadora@ices.edu         mod123')
+        self.stdout.write('  coord.sistemas@ices.edu     coord123')
+        self.stdout.write('  coord.contabilidad@ices.edu coord123')
+        self.stdout.write('  perez@ices.edu              prof123')
+        self.stdout.write('  gomez@ices.edu              prof123')
+        self.stdout.write('  silva@ices.edu              prof123')
+        self.stdout.write('  torres@ices.edu             prof123')
 
     # ──────────────────────────────────────────────────────────────
 
