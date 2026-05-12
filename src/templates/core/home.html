@@ -98,12 +98,6 @@
             </div>
         </div>
         <div class="col-6 col-md-3">
-            <div class="ices-card text-center py-3 px-2" style="border-top:3px solid var(--ices-blue-light)">
-                <div style="font-size:1.8rem;font-weight:700;color:var(--ices-blue-light)">{{ stats.nuevas_enviadas }}</div>
-                <div style="font-size:.78rem;color:var(--ices-text-muted)">Nuevas enviadas</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
             <div class="ices-card text-center py-3 px-2"
                  {% if stats.esperando_mi_visto %}style="border-top:3px solid #f59e0b"{% endif %}>
                 <div style="font-size:1.8rem;font-weight:700;color:{% if stats.esperando_mi_visto %}#d97706{% else %}var(--ices-text-muted){% endif %}">{{ stats.esperando_mi_visto }}</div>

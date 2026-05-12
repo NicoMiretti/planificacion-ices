@@ -1,6 +1,6 @@
 """
 Servicio de revisión. Encapsula la lógica de negocio del circuito:
-tomar, aprobar (doble visto), rechazar y corrección leve.
+aprobar (doble visto), rechazar y corrección leve.
 """
 from django.db import transaction
 
@@ -10,27 +10,6 @@ from .models import Revision, VistoBueno
 
 class RevisionService:
     """Lógica de revisión desacoplada de las vistas."""
-
-    @staticmethod
-    def tomar_para_revision(version, usuario):
-        """
-        Un revisor toma una versión enviada para revisarla.
-        Cambia estado ENVIADA → EN_REVISION.
-        """
-        if version.estado != Version.Estado.ENVIADA:
-            raise ValueError(f'Solo se pueden tomar versiones enviadas (estado actual: {version.estado})')
-
-        version.tomar_revision()
-        version.save()
-
-        Revision.objects.create(
-            planificacion=version.planificacion,
-            version=version,
-            usuario=usuario,
-            tipo=Revision.Tipo.TOMAR
-        )
-        return version
-
     @staticmethod
     @transaction.atomic
     def aprobar(version, usuario):

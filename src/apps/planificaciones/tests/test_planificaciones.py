@@ -229,10 +229,10 @@ class TestVersionFSM:
         assert version.estado == Version.Estado.BORRADOR
 
     def test_enviar_cambia_estado(self, version):
-        """enviar() cambia estado a ENVIADA."""
+        """enviar() cambia estado a EN_REVISION."""
         version.enviar()
         version.save()
-        assert version.estado == Version.Estado.ENVIADA
+        assert version.estado == Version.Estado.EN_REVISION
         assert version.fecha_envio is not None
 
     def test_rechazar_automaticamente(self, version):
@@ -244,12 +244,8 @@ class TestVersionFSM:
         assert version.campos_faltantes == campos
 
     def test_flujo_completo_aprobacion(self, version):
-        """Flujo: borrador → enviada → en_revision → aprobada."""
+        """Flujo: borrador → en_revision → aprobada."""
         version.enviar()
-        version.save()
-        assert version.estado == Version.Estado.ENVIADA
-
-        version.tomar_revision()
         version.save()
         assert version.estado == Version.Estado.EN_REVISION
 
@@ -259,10 +255,8 @@ class TestVersionFSM:
         assert version.fecha_aprobacion is not None
 
     def test_flujo_rechazo_revisor(self, version):
-        """Flujo: borrador → enviada → en_revision → rechazada."""
+        """Flujo: borrador → en_revision → rechazada."""
         version.enviar()
-        version.save()
-        version.tomar_revision()
         version.save()
         version.rechazar()
         version.save()
@@ -369,7 +363,7 @@ class TestPlanificacionViews:
         assert planif.ultima_version.estado == Version.Estado.BORRADOR
 
     def test_enviar_version_valida(self, planificacion, usuario_profesor):
-        """Enviar una versión con doc válido cambia estado a ENVIADA."""
+        """Enviar una versión con doc válido cambia estado a EN_REVISION."""
         client = Client()
         client.force_login(usuario_profesor)
 
@@ -387,7 +381,7 @@ class TestPlanificacionViews:
         response = client.get(f'/planificaciones/enviar/{version.pk}/')
         version.refresh_from_db()
         assert response.status_code == 302
-        assert version.estado == Version.Estado.ENVIADA
+        assert version.estado == Version.Estado.EN_REVISION
 
     def test_enviar_version_invalida_rechaza_auto(self, planificacion, usuario_profesor):
         """Enviar una versión con doc inválido cambia estado a RECHAZADA_AUTO."""

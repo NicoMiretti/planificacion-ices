@@ -23,7 +23,7 @@ def tablero_revision(request):
     user = request.user
 
     versiones = Version.objects.filter(
-        estado__in=[Version.Estado.ENVIADA, Version.Estado.EN_REVISION]
+        estado__in=[Version.Estado.EN_REVISION]
     ).select_related(
         'planificacion__materia__carrera__institucion',
         'planificacion__profesor__usuario',
@@ -74,7 +74,6 @@ def tablero_revision(request):
         'filtros': filtros,
         'carreras': Carrera.objects.filter(activo=True),
         'estados': [
-            (Version.Estado.ENVIADA, 'Enviada'),
             (Version.Estado.EN_REVISION, 'En Revisión'),
         ],
     }
@@ -102,9 +101,9 @@ def revisar_planificacion(request, planificacion_id):
             messages.error(request, 'No tienes acceso a esta planificación.')
             return redirect('revisiones:tablero')
 
-    # Tomar la última versión relevante (enviada o en_revision)
+    # Tomar la última versión relevante (en_revision)
     version = planificacion.versiones.filter(
-        estado__in=[Version.Estado.ENVIADA, Version.Estado.EN_REVISION]
+        estado=Version.Estado.EN_REVISION
     ).order_by('-numero').first()
 
     # Si no hay versión activa, mostrar la última en cualquier estado
@@ -114,15 +113,6 @@ def revisar_planificacion(request, planificacion_id):
     if version is None:
         messages.error(request, 'Esta planificación no tiene versiones todavía.')
         return redirect('revisiones:tablero')
-
-    # Tomar automáticamente si está enviada
-    if version.estado == Version.Estado.ENVIADA:
-        try:
-            RevisionService.tomar_para_revision(version, user)
-            messages.info(request, 'Planificación tomada para revisión.')
-        except ValueError as e:
-            messages.error(request, str(e))
-            return redirect('revisiones:tablero')
 
     mi_visto = VistoBueno.objects.filter(version=version, rol=user.rol).first()
     otro_rol = 'coordinador' if user.rol == 'moderadora' else 'moderadora'

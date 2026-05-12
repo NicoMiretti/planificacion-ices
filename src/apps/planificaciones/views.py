@@ -36,13 +36,13 @@ def cargar_planificacion(request, instancia_id, materia_id):
         instancia=instancia
     ).first()
 
-    # Verificar que la última versión no esté enviada o en revisión
+    # Verificar que la última versión no esté en revisión
     if planificacion:
         ultima_version = planificacion.ultima_version
-        if ultima_version and ultima_version.estado in (Version.Estado.ENVIADA, Version.Estado.EN_REVISION):
+        if ultima_version and ultima_version.estado == Version.Estado.EN_REVISION:
             messages.error(
-                request, 
-                'No puedes cargar una nueva versión mientras hay una versión enviada o en revisión.'
+                request,
+                'No puedes cargar una nueva versión mientras hay una versión en revisión.'
             )
             return redirect('planificaciones:detalle', pk=planificacion.pk)
 
@@ -102,10 +102,6 @@ def enviar_planificacion(request, version_id):
         return redirect('instancias:mis_instancias')
 
     # Verificar estado
-    if version.estado == Version.Estado.ENVIADA:
-        messages.error(request, 'Esta versión ya fue enviada.')
-        return redirect('planificaciones:detalle', pk=version.planificacion.pk)
-    
     if version.estado == Version.Estado.EN_REVISION:
         messages.error(request, 'Esta versión está en revisión y no puede modificarse.')
         return redirect('planificaciones:detalle', pk=version.planificacion.pk)
@@ -135,10 +131,10 @@ def enviar_planificacion(request, version_id):
         if version.entrega_tardia:
             messages.warning(
                 request,
-                f'Planificación enviada como ENTREGA TARDÍA ({version.dias_atraso} días de atraso).'
+                f'Planificación enviada como ENTREGA TARDÍA ({version.dias_atraso} días de atraso). Queda en revisión.'
             )
         else:
-            messages.success(request, 'Planificación enviada correctamente.')
+            messages.success(request, 'Planificación enviada y en revisión.')
 
     return redirect('planificaciones:detalle', pk=version.planificacion.pk)
 

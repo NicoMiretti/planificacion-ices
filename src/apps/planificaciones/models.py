@@ -84,7 +84,6 @@ class Version(models.Model):
     """
     class Estado(models.TextChoices):
         BORRADOR = 'borrador', 'Borrador'
-        ENVIADA = 'enviada', 'Enviada'
         EN_REVISION = 'en_revision', 'En Revisión'
         RECHAZADA_AUTO = 'rechazada_auto', 'Rechazada (Automático)'
         RECHAZADA = 'rechazada', 'Rechazada'
@@ -137,16 +136,11 @@ class Version(models.Model):
         """Rechazo automático por falta de campos obligatorios."""
         self.campos_faltantes = campos_faltantes
 
-    @transition(field=estado, source=Estado.BORRADOR, target=Estado.ENVIADA)
+    @transition(field=estado, source=Estado.BORRADOR, target=Estado.EN_REVISION)
     def enviar(self):
-        """Envío exitoso tras validación."""
+        """Envío exitoso. Pasa directamente a En Revisión."""
         self.fecha_envio = timezone.now()
         self._calcular_tardia()
-
-    @transition(field=estado, source=Estado.ENVIADA, target=Estado.EN_REVISION)
-    def tomar_revision(self):
-        """Un revisor toma la planificación para revisar."""
-        pass
 
     @transition(field=estado, source=Estado.EN_REVISION, target=Estado.RECHAZADA)
     def rechazar(self):

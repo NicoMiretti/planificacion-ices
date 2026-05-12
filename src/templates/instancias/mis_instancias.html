@@ -69,11 +69,6 @@
                             <i class="bi bi-file-earmark me-1"></i>{{ resumen.borradores }} borrador{{ resumen.borradores|pluralize:"es" }}
                         </span>
                         {% endif %}
-                        {% if resumen.enviadas %}
-                        <span class="ices-badge ices-badge-info">
-                            <i class="bi bi-send me-1"></i>{{ resumen.enviadas }} enviada{{ resumen.enviadas|pluralize }}
-                        </span>
-                        {% endif %}
                         {% if resumen.en_revision %}
                         <span class="ices-badge ices-badge-warning">
                             <i class="bi bi-hourglass-split me-1"></i>{{ resumen.en_revision }} en revisión
@@ -84,7 +79,7 @@
                             <i class="bi bi-patch-check me-1"></i>{{ resumen.oficiales }} oficial{{ resumen.oficiales|pluralize:"es" }}
                         </span>
                         {% endif %}
-                        {% if not resumen.rechazadas and not resumen.sin_cargar and not resumen.borradores and not resumen.enviadas and not resumen.en_revision and not resumen.oficiales %}
+                        {% if not resumen.rechazadas and not resumen.sin_cargar and not resumen.borradores and not resumen.en_revision and not resumen.oficiales %}
                         <span class="text-muted" style="font-size:.8rem">Sin planificaciones cargadas</span>
                         {% endif %}
                     </div>

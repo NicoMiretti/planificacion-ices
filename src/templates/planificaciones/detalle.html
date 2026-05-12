@@ -27,7 +27,7 @@
                 {{ planificacion.instancia.get_periodo_display }} {{ planificacion.instancia.anio_academico }}
             </p>
         </div>
-        {% if planificacion.instancia.acepta_envios and request.user.es_profesor and planificacion.profesor.usuario == request.user and version_actual.estado != 'enviada' and version_actual.estado != 'en_revision' %}
+        {% if planificacion.instancia.acepta_envios and request.user.es_profesor and planificacion.profesor.usuario == request.user and version_actual.estado != 'en_revision' %}
         <a href="{% url 'planificaciones:cargar' planificacion.instancia.pk planificacion.materia.pk %}"
            class="btn btn-ices btn-sm">
             <i class="bi bi-upload me-1"></i>Subir Nueva Versión
@@ -79,8 +79,6 @@
                         <td>
                             {% if v.estado == 'borrador' %}
                                 <span class="ices-badge" style="background:#f1f5f9;color:#64748b">Borrador</span>
-                            {% elif v.estado == 'enviada' %}
-                                <span class="ices-badge ices-badge-info"><i class="bi bi-send me-1"></i>Enviada</span>
                             {% elif v.estado == 'en_revision' %}
                                 <span class="ices-badge ices-badge-warning"><i class="bi bi-hourglass-split me-1"></i>En Revisión</span>
                             {% elif v.estado == 'rechazada_auto' %}

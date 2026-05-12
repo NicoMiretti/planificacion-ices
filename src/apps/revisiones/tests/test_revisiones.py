@@ -109,51 +109,13 @@ def planificacion(materia, profesor, instancia):
 
 
 @pytest.fixture
-def version_enviada(planificacion):
-    """Versión ya enviada, lista para revisión."""
+def version_en_revision(planificacion):
+    """Versión ya en revisión (enviada va directo a EN_REVISION)."""
     archivo = SimpleUploadedFile('plan.docx', b'contenido')
     v = Version.objects.create(planificacion=planificacion, numero=1, archivo=archivo)
     v.enviar()
     v.save()
     return v
-
-
-@pytest.fixture
-def version_en_revision(version_enviada, usuario_moderadora):
-    """Versión ya tomada para revisión."""
-    RevisionService.tomar_para_revision(version_enviada, usuario_moderadora)
-    version_enviada.refresh_from_db()
-    return version_enviada
-
-
-# ============================================================
-# TESTS DEL SERVICIO — TOMAR
-# ============================================================
-
-@pytest.mark.django_db
-class TestTomarRevision:
-    """Tests de tomar_para_revision."""
-
-    def test_tomar_cambia_estado(self, version_enviada, usuario_moderadora):
-        """Tomar una versión enviada la cambia a EN_REVISION."""
-        version = RevisionService.tomar_para_revision(version_enviada, usuario_moderadora)
-        version.refresh_from_db()
-        assert version.estado == Version.Estado.EN_REVISION
-
-    def test_tomar_crea_registro_revision(self, version_enviada, usuario_moderadora):
-        """Tomar registra una Revision de tipo TOMAR."""
-        RevisionService.tomar_para_revision(version_enviada, usuario_moderadora)
-        assert Revision.objects.filter(
-            version=version_enviada,
-            tipo=Revision.Tipo.TOMAR
-        ).exists()
-
-    def test_no_se_puede_tomar_borrador(self, planificacion, usuario_moderadora):
-        """No se puede tomar una versión en estado borrador."""
-        archivo = SimpleUploadedFile('plan.docx', b'x')
-        v = Version.objects.create(planificacion=planificacion, numero=1, archivo=archivo)
-        with pytest.raises(ValueError, match='Solo se pueden tomar versiones enviadas'):
-            RevisionService.tomar_para_revision(v, usuario_moderadora)
 
 
 # ============================================================

@@ -26,7 +26,6 @@ def home(request):
             'instancias_activas': activas.count(),
             'rechazadas': 0,
             'en_revision': 0,
-            'enviadas': 0,
             'borradores': 0,
             'oficiales': 0,
             'sin_cargar': 0,
@@ -59,14 +58,6 @@ def home(request):
                     'texto': f'{p.materia.nombre}: en revisión.',
                     'url': f'/planificaciones/{p.pk}/',
                 })
-            elif ultima.estado == 'enviada':
-                stats['enviadas'] += 1
-                alertas.append({
-                    'tipo': 'info',
-                    'icono': 'bi-send',
-                    'texto': f'{p.materia.nombre}: enviada, esperando que un revisor la tome.',
-                    'url': f'/planificaciones/{p.pk}/',
-                })
             elif ultima.estado == 'borrador':
                 stats['borradores'] += 1
                 alertas.append({
@@ -88,7 +79,7 @@ def home(request):
         from django.db.models import Exists, OuterRef, Q
 
         versiones_qs = Version.objects.filter(
-            estado__in=['enviada', 'en_revision']
+            estado__in=['en_revision']
         )
         if user.es_coordinador:
             mis_carreras = Carrera.objects.filter(coordinador=user).values_list('id', flat=True)
@@ -106,18 +97,10 @@ def home(request):
             Exists(VistoBueno.objects.filter(version=OuterRef('pk'), rol=user.rol))
         ).count()
         tardias = versiones_qs.filter(entrega_tardia=True).count()
-        nuevas_enviadas = versiones_qs.filter(estado='enviada').count()
 
         instancias_abiertas = InstanciaPresentacion.objects.filter(estado='abierta').count()
 
         alertas = []
-        if nuevas_enviadas:
-            alertas.append({
-                'tipo': 'info',
-                'icono': 'bi-send',
-                'texto': f'{nuevas_enviadas} planificación{"es" if nuevas_enviadas > 1 else ""} nueva{"s" if nuevas_enviadas > 1 else ""} esperando ser tomada{"s" if nuevas_enviadas > 1 else ""}.',
-                'url': '/revisiones/',
-            })
         if esperando_mi_visto:
             alertas.append({
                 'tipo': 'warning',
@@ -135,7 +118,6 @@ def home(request):
 
         context['stats'] = {
             'total_pendientes': total_pendientes,
-            'nuevas_enviadas': nuevas_enviadas,
             'esperando_mi_visto': esperando_mi_visto,
             'ya_di_visto': ya_di_visto,
             'tardias': tardias,

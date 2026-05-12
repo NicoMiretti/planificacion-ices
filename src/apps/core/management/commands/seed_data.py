@@ -445,13 +445,11 @@ class Command(BaseCommand):
                 v.campos_faltantes = campos_faltantes
             v.save()
             # Aplicar estado FSM
-            if estado in ('enviada', 'en_revision', 'rechazada', 'rechazada_auto',
+            if estado in ('en_revision', 'rechazada', 'rechazada_auto',
                           'aprobada', 'oficial', 'reemplazada'):
                 v.estado = estado
-                if estado in ('enviada', 'en_revision', 'rechazada', 'rechazada_auto',
-                              'aprobada', 'oficial', 'reemplazada'):
-                    from django.utils import timezone
-                    v.fecha_envio = timezone.now()
+                from django.utils import timezone
+                v.fecha_envio = timezone.now()
                 if estado in ('aprobada', 'oficial'):
                     v.fecha_aprobacion = timezone.now()
                 v.save()
@@ -471,16 +469,17 @@ class Command(BaseCommand):
 
         # ── Instancia anual 2026 (abierta) ──────────────────────────
 
-        # Prog I – enviada, esperando revisión
+        # Prog I – en revisión (recién enviada)
         p = planif(cat['prog1'], cat['prof_perez'], inst['anual_26'])
-        make_version(p, 1, 'enviada')
+        make_version(p, 1, 'en_revision')
 
         # Prog II – en revisión, solo visto de moderadora
         p = planif(cat['prog2'], cat['prof_perez'], inst['anual_26'])
         v = make_version(p, 1, 'en_revision')
         visto(v, users['moderadora'], 'moderadora')
-        Revision.objects.get_or_create(version=v, tipo='tomar',
-            defaults={'usuario': users['moderadora']})
+        Revision.objects.get_or_create(
+            planificacion=p, version=v, tipo='aprobar',
+            defaults={'usuario': users['moderadora'], 'observaciones': 'Visto bueno de moderadora'})
 
         # Base de Datos – rechazada auto (doc incompleto) + nueva v2 en borrador
         p = planif(cat['bdatos'], cat['prof_gomez'], inst['anual_26'])
@@ -488,13 +487,14 @@ class Command(BaseCommand):
                      campos_faltantes=['bibliografia', 'requisitos'])
         make_version(p, 2, 'borrador')
 
-        # Redes – rechazada por revisor con observaciones + v2 enviada
+        # Redes – rechazada por revisor con observaciones + v2 en revisión
         p = planif(cat['redes'], cat['prof_silva'], inst['anual_26'])
         v1 = make_version(p, 1, 'rechazada')
-        Revision.objects.get_or_create(version=v1, tipo='rechazar',
+        Revision.objects.get_or_create(
+            planificacion=p, version=v1, tipo='rechazar',
             defaults={'usuario': users['moderadora'],
                       'observaciones': 'La bibliografía no está actualizada. Incluir fuentes del 2020 en adelante.'})
-        make_version(p, 2, 'enviada')
+        make_version(p, 2, 'en_revision')
 
         # Ing. Software – borrador (todavía no envió)
         p = planif(cat['iso'], cat['prof_gomez'], inst['anual_26'])
@@ -503,9 +503,6 @@ class Command(BaseCommand):
         # Sistemas Operativos – tardía, en revisión
         p = planif(cat['so'], cat['prof_silva'], inst['anual_26'])
         make_version(p, 1, 'en_revision', tardio=True, dias_atraso=4)
-        Revision.objects.get_or_create(
-            version=Version.objects.filter(planificacion=p).first(), tipo='tomar',
-            defaults={'usuario': users['moderadora']})
 
         # Contabilidad I – oficial (aprobada con doble visto)
         p = planif(cat['cont1'], cat['prof_torres'], inst['anual_26'])
@@ -518,7 +515,7 @@ class Command(BaseCommand):
         # ── Instancia 1er cuatrimestre 2026 (abierta) ────────────────
 
         p = planif(cat['bdatos'], cat['prof_gomez'], inst['primer_26'])
-        make_version(p, 1, 'enviada')
+        make_version(p, 1, 'en_revision')
 
         p = planif(cat['redes'], cat['prof_silva'], inst['primer_26'])
         make_version(p, 1, 'borrador')

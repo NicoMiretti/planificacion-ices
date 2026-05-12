@@ -65,7 +65,7 @@ def mis_instancias(request):
         planifs = Planificacion.objects.filter(
             instancia=inst, profesor=profesor
         ).prefetch_related('versiones')
-        estados = {'rechazadas': 0, 'en_revision': 0, 'enviadas': 0,
+        estados = {'rechazadas': 0, 'en_revision': 0,
                    'borradores': 0, 'oficiales': 0, 'sin_cargar': 0}
         for p in planifs:
             ultima = p.versiones.order_by('-numero').first()
@@ -75,8 +75,6 @@ def mis_instancias(request):
                 estados['rechazadas'] += 1
             elif ultima.estado == 'en_revision':
                 estados['en_revision'] += 1
-            elif ultima.estado == 'enviada':
-                estados['enviadas'] += 1
             elif ultima.estado == 'borrador':
                 estados['borradores'] += 1
             elif ultima.estado in ('oficial', 'aprobada'):

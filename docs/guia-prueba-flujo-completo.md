@@ -13,10 +13,30 @@ Esta guía describe paso a paso cómo probar el sistema desde cero, incluyendo t
 
 > Los coordinadores **no se crean** en el reset. La moderadora los da de alta desde el Catálogo (paso 1.1).
 
-> Para resetear la base y volver a este estado inicial:
-> ```
-> docker-compose exec web python manage.py seed_data --reset
-> ```
+### Comandos de seed disponibles
+
+| Comando | Qué deja |
+|---------|----------|
+| `seed_data --reset` | Solo moderadora (base vacía, sin catálogo) |
+| `seed_data --catalogo` | Moderadora + 2 coordinadores + 2 carreras + 4 profesores + 15 materias. **Las instancias las creás vos.** |
+| `seed_data` | Dataset completo de prueba (instancias 2024–2026 + planificaciones en distintos estados) |
+
+```bash
+docker-compose exec web python manage.py seed_data --reset
+docker-compose exec web python manage.py seed_data --catalogo
+docker-compose exec web python manage.py seed_data
+```
+
+> Con `--catalogo` las cuentas adicionales son:
+>
+> | Rol | Email | Contraseña |
+> |-----|-------|------------|
+> | Coordinador | coord.sistemas@ices.edu | coord123 |
+> | Coordinador | coord.contabilidad@ices.edu | coord123 |
+> | Profesor | perez@ices.edu | prof123 |
+> | Profesor | gomez@ices.edu | prof123 |
+> | Profesor | silva@ices.edu | prof123 |
+> | Profesor | torres@ices.edu | prof123 |
 
 ---
 
@@ -162,15 +182,19 @@ Si faltan campos obligatorios:
 
 ---
 
-## Fase 4 — Revisión (Moderadora)
+## Fase 4 — Revisión (Moderadora / Coordinador)
 
-**Tablero → [versión enviada] → Tomar revisión**
+**Tablero → [versión] → Revisar**
+
+El tablero muestra un botón **Revisar** para cualquier versión donde el revisor todavía no dio el visto bueno (tanto si está `Enviada` como `En revisión`). El botón **Ver** aparece cuando el revisor ya registró su aprobación.
+
+Al hacer clic en **Revisar** sobre una versión en estado `Enviada`, el sistema la pasa automáticamente a `En revisión` y la asigna al revisor. No es un paso manual separado.
 
 ```
-[Enviada] → TOMAR REVISIÓN → [En revisión]
+[Enviada] → clic en Revisar → [En revisión]  (transición automática)
 ```
 
-Una vez tomada, la moderadora tiene dos opciones:
+Una vez en revisión, el revisor tiene dos opciones:
 
 ### Bifurcación C — Aprobación
 
@@ -233,7 +257,7 @@ El historial de versiones siempre se conserva.
     ┌──────▼──────┐   ┌──────▼──────┐                                 │
     │  Rechazada  │   │   Enviada   │                                 │
     │ (automático)│   └──────┬──────┘                                 │
-    └──────┬──────┘          │ TOMAR REVISIÓN                          │
+    └──────┬──────┘          │ auto al hacer clic Revisar               │
            │          ┌──────▼──────┐                                 │
      Nueva versión    │ En revisión │                                 │
            │          └──────┬──────┘                                 │
@@ -259,13 +283,12 @@ El historial de versiones siempre se conserva.
 ## Casos de prueba sugeridos
 
 ### Caso 1 — Flujo feliz completo
-1. Setup completo (institución, carrera, profesor, materia con titular)
+1. Setup: `seed_data --catalogo` (o crear manualmente catálogo e instancia)
 2. Crear instancia anual abierta
 3. Loguearse como profesor → cargar planificación completa → enviar
-4. Loguearse como moderadora → tomar revisión → aprobar
-5. Dar visto bueno de moderadora
-6. Loguearse como coordinador → dar visto bueno
-7. Verificar que la versión queda en **Oficial vigente**
+4. Loguearse como moderadora → Tablero → **Revisar** → Aprobar
+5. Loguearse como coordinador → Tablero → **Revisar** → Aprobar
+6. Verificar que la versión queda en **Oficial vigente**
 
 ### Caso 2 — Rechazo automático por documento incompleto
 1. Profesor sube un `.docx` sin los 7 campos
@@ -313,6 +336,5 @@ El historial de versiones siempre se conserva.
 | Ver todas las instancias | ✓ | ✓ | — | — |
 | Ver sus instancias | — | — | ✓ | — |
 | Cargar planificación | — | — | ✓ | — |
-| Tomar revisión / aprobar / rechazar | ✓ | — | — | — |
+| Revisar (aprobar / rechazar) | ✓ | — | — | — |
 | Dar visto bueno | ✓ | ✓ | — | — |
-| Consulta pública (planifs oficiales) | ✓ | ✓ | ✓ | ✓ |
