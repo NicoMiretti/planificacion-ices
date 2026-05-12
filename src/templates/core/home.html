@@ -77,18 +77,11 @@
     {% endif %}
 
     <div class="row g-3" >
-        <div class="col-sm-6">
+        <div class="col-12">
             <a href="{% url 'instancias:mis_instancias' %}" class="rol-card">
                 <span class="rol-icon"><i class="bi bi-folder2-open"></i></span>
                 <div class="rol-label">Mis Instancias</div>
                 <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver convocatorias activas</div>
-            </a>
-        </div>
-        <div class="col-sm-6">
-            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
-                <span class="rol-icon"><i class="bi bi-search"></i></span>
-                <div class="rol-label">Consulta Pública</div>
-                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones aprobadas</div>
             </a>
         </div>
     </div>
@@ -142,25 +135,12 @@
                 <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver convocatorias y materias</div>
             </a>
         </div>
-        <div class="col-sm-12">
-            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
-                <span class="rol-icon"><i class="bi bi-search"></i></span>
-                <div class="rol-label">Consulta Pública</div>
-                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones oficiales</div>
-            </a>
-        </div>
     </div>
 
     {# ═══════════════ ALUMNO / GESTIÓN ═══════════════ #}
     {% else %}
-    <div class="row g-3" style="max-width:400px">
-        <div class="col-12">
-            <a href="{% url 'planificaciones:consulta_publica' %}" class="rol-card">
-                <span class="rol-icon"><i class="bi bi-search"></i></span>
-                <div class="rol-label">Consulta Pública</div>
-                <div class="text-muted" style="font-size:.8rem;margin-top:.3rem">Ver planificaciones oficiales aprobadas</div>
-            </a>
-        </div>
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle me-2"></i>Tu rol no tiene acceso a esta sección.
     </div>
     {% endif %}
 
