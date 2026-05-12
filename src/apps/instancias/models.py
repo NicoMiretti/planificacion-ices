@@ -35,18 +35,35 @@ class InstanciaQuerySet(models.QuerySet):
     def para_profesor(self, usuario):
         """
         Instancias donde el usuario (profesor) tiene materias asignadas.
-        Requiere que el usuario tenga un perfil_profesor.
+        Incluye:
+        - Instancias no cerradas cuya carrera tenga materias donde es titular hoy.
+        - Instancias históricas donde el profesor tiene al menos una Planificacion
+          registrada (cubre el caso de cambio de titular entre años).
         """
         if not hasattr(usuario, 'perfil_profesor'):
             return self.none()
 
+        from apps.planificaciones.models import Planificacion
+
         profesor = usuario.perfil_profesor
+
+        # Instancias activas/futuras: por catálogo actual
         carreras_profesor = Materia.objects.filter(
             profesor_titular=profesor,
             activo=True
         ).values_list('carrera_id', flat=True)
+        ids_activas = self.exclude(estado='cerrada').filter(
+            carreras__id__in=carreras_profesor
+        ).values_list('pk', flat=True)
 
-        return self.filter(carreras__id__in=carreras_profesor).distinct()
+        # Instancias históricas: donde tiene planificaciones registradas
+        ids_con_planif = Planificacion.objects.filter(
+            profesor=profesor
+        ).values_list('instancia_id', flat=True)
+
+        return self.filter(
+            models.Q(pk__in=ids_activas) | models.Q(pk__in=ids_con_planif)
+        ).distinct()
 
 
 class InstanciaManager(models.Manager):

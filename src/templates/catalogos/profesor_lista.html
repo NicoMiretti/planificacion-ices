@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Profesores{% endblock %}
+
+{% block content %}
+<div class="container ices-page">
+
+    <div class="ices-page-header d-flex justify-content-between align-items-start">
+        <div>
+            <h3 class="mb-1"><i class="bi bi-people me-2"></i>Profesores</h3>
+            <p class="text-muted mb-0">Gestión de profesores y sus perfiles</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'catalogos:catalogo' %}" class="btn btn-ices-outline btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Catálogo
+            </a>
+            <a href="{% url 'catalogos:profesor_crear' %}" class="btn btn-ices btn-sm">
+                <i class="bi bi-plus-circle me-1"></i>Nuevo Profesor
+            </a>
+        </div>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show mb-3">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if profesores %}
+    <div class="ices-card">
+        <div class="card-body p-0">
+            <table class="ices-table table mb-0">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Institución</th>
+                        <th>Legajo</th>
+                        <th class="text-center">Materias</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-end">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profesor in profesores %}
+                    <tr>
+                        <td class="fw-medium">{{ profesor.nombre }}</td>
+                        <td class="text-muted" style="font-size:.85rem">{{ profesor.email }}</td>
+                        <td><span class="badge bg-secondary">{{ profesor.institucion.codigo }}</span></td>
+                        <td>{{ profesor.legajo|default:"—" }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-light text-dark">{{ profesor.materias.count }}</span>
+                        </td>
+                        <td class="text-center">
+                            {% if profesor.activo %}
+                                <span class="ices-badge ices-badge-success">Activo</span>
+                            {% else %}
+                                <span class="ices-badge" style="background:#f1f5f9;color:#64748b;">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'catalogos:profesor_editar' profesor.pk %}"
+                               class="btn btn-ices-outline btn-sm me-1">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a href="{% url 'catalogos:profesor_eliminar' profesor.pk %}"
+                               class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert ices-alert alert-info d-flex align-items-center gap-2">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No hay profesores registrados. <a href="{% url 'catalogos:profesor_crear' %}">Agregar el primero</a>.</span>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

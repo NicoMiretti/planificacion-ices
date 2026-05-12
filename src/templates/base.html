@@ -65,6 +65,15 @@
                     </li>
                     {% endif %}
 
+                    {% if user.puede_gestionar %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/catalogos' in request.path %}active{% endif %}"
+                           href="{% url 'catalogos:catalogo' %}">
+                            <i class="bi bi-database me-1"></i>Catálogo
+                        </a>
+                    </li>
+                    {% endif %}
+
                     {% if user.es_revisor %}
                     <li class="nav-item">
                         <a class="nav-link {% if '/revisiones' in request.path %}active{% endif %}"

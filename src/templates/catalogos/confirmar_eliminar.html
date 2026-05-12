@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar {{ tipo }}{% endblock %}
+
+{% block content %}
+<div class="container ices-page" style="max-width: 560px;">
+
+    <div class="ices-card">
+        <div class="card-body p-4 text-center">
+            <div class="mb-3" style="font-size:3rem;color:#ef4444;">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h4 class="mb-2">¿Eliminar {{ tipo }}?</h4>
+            <p class="text-muted mb-4">
+                Estás por eliminar <strong>{{ objeto }}</strong>.
+                Esta acción no se puede deshacer.
+            </p>
+            <form method="post" class="d-flex gap-2 justify-content-center">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i>Sí, eliminar
+                </button>
+                <a href="{% url volver %}" class="btn btn-ices-outline">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

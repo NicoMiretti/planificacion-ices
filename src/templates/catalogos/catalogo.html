@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo{% endblock %}
+
+{% block content %}
+<div class="container ices-page">
+
+    <div class="ices-page-header">
+        <h3 class="mb-1"><i class="bi bi-database me-2"></i>Catálogo</h3>
+        <p class="text-muted mb-0">Gestión de carreras, profesores y materias</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="ices-card h-100">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="mb-3" style="font-size:2rem;color:var(--ices-blue);">
+                        <i class="bi bi-mortarboard"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Carreras</h5>
+                    <p class="text-muted small mb-4">Administrá las carreras académicas y sus coordinadores.</p>
+                    <a href="{% url 'catalogos:carrera_lista' %}" class="btn btn-ices btn-sm mt-auto">
+                        <i class="bi bi-arrow-right me-1"></i>Gestionar Carreras
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ices-card h-100">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="mb-3" style="font-size:2rem;color:var(--ices-blue);">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Profesores</h5>
+                    <p class="text-muted small mb-4">Administrá los perfiles de profesores y sus accesos al sistema.</p>
+                    <a href="{% url 'catalogos:profesor_lista' %}" class="btn btn-ices btn-sm mt-auto">
+                        <i class="bi bi-arrow-right me-1"></i>Gestionar Profesores
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ices-card h-100">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="mb-3" style="font-size:2rem;color:var(--ices-blue);">
+                        <i class="bi bi-book"></i>
+                    </div>
+                    <h5 class="fw-semibold mb-1">Materias</h5>
+                    <p class="text-muted small mb-4">Administrá las materias por carrera, régimen y titular.</p>
+                    <a href="{% url 'catalogos:materia_lista' %}" class="btn btn-ices btn-sm mt-auto">
+                        <i class="bi bi-arrow-right me-1"></i>Gestionar Materias
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
