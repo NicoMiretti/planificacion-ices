@@ -130,7 +130,14 @@
                                     <a href="{% url 'planificaciones:detalle' planif.pk %}"
                                        class="btn btn-ices-outline btn-sm">Ver</a>
                                 {% else %}
-                                    <span class="text-muted small">Sin planificación</span>
+                                    {% if instancia.estado == 'abierta' %}
+                                    <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
+                                       class="btn btn-ices btn-sm">
+                                        <i class="bi bi-upload me-1"></i>Cargar
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted">—</span>
+                                    {% endif %}
                                 {% endif %}
                                 {% endwith %}
                             {% elif instancia.estado == 'abierta' %}
@@ -157,7 +164,7 @@
                                         <i class="bi bi-eye me-1"></i>Ver
                                     </a>
                                 {% else %}
-                                    <span class="text-muted small">Sin planificación</span>
+                                    <span class="text-muted small">Pendiente</span>
                                 {% endif %}
                                 {% endwith %}
                             {% else %}
@@ -179,7 +186,7 @@
                                         <i class="bi bi-eye me-1"></i>Ver
                                     </a>
                                 {% else %}
-                                    <span class="text-muted small">Sin planificación</span>
+                                    <span class="text-muted small">Pendiente</span>
                                 {% endif %}
                                 {% endwith %}
                             {% else %}
