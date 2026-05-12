@@ -102,7 +102,7 @@
                 </thead>
                 <tbody>
                     {% for materia, planif in materias_con_planif %}
-                    {% with ultima=planif.versiones.last %}
+                    {% with ultima=planif.ultima_version %}
                     <tr>
                         <td class="fw-semibold">{{ materia.nombre }}</td>
                         <td class="text-muted" style="font-size:.85rem">{{ materia.carrera }}</td>
