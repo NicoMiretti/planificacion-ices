@@ -80,6 +80,14 @@
                     <i class="bi bi-people me-2"></i>Estado de aprobación (doble visto requerido)
                 </div>
                 <div class="card-body">
+
+                    {% if version.estado == 'rechazada' or version.estado == 'rechazada_auto' %}
+                    <div class="text-center py-3">
+                        <i class="bi bi-x-circle-fill fs-3" style="color:#b02a2a;"></i>
+                        <div class="fw-semibold mt-2" style="color:#b02a2a;">Planificación rechazada</div>
+                        <small class="text-muted">El proceso de aprobación se reiniciará cuando el profesor envíe una nueva versión.</small>
+                    </div>
+                    {% else %}
                     <div class="row text-center g-3">
 
                         {# Moderadora #}
@@ -161,6 +169,7 @@
                          data-otro-fecha="{% if otro_visto %}{{ otro_visto.fecha|date:'d/m/Y H:i' }}{% endif %}"
                          data-ya-aprobada="{% if ya_aprobada %}si{% else %}no{% endif %}">
                     </div>
+                    {% endif %}{# /else rechazada #}
                 </div>
             </div>
 
