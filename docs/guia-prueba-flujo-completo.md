@@ -174,9 +174,10 @@ Si faltan campos obligatorios:
 ### Bifurcación B — Envío exitoso
 
 ```
-[Borrador] → ENVIAR → [Enviada]
+[Borrador] → ENVIAR → [En Revisión]
 ```
 
+- Al enviar, la versión pasa **directamente** a `En Revisión` (no hay estado intermedio "Enviada")
 - Si la fecha de entrega superó el `fecha_limite` → se marca como **entrega tardía** con días de atraso
 - El profesor **no puede editar** la versión una vez enviada
 
@@ -186,13 +187,9 @@ Si faltan campos obligatorios:
 
 **Tablero → [versión] → Revisar**
 
-El tablero muestra un botón **Revisar** para cualquier versión donde el revisor todavía no dio el visto bueno (tanto si está `Enviada` como `En revisión`). El botón **Ver** aparece cuando el revisor ya registró su aprobación.
+El tablero muestra un botón **Revisar** para cualquier versión donde el revisor todavía no dio el visto bueno. El botón **Ver** aparece cuando el revisor ya registró su aprobación.
 
-Al hacer clic en **Revisar** sobre una versión en estado `Enviada`, el sistema la pasa automáticamente a `En revisión` y la asigna al revisor. No es un paso manual separado.
-
-```
-[Enviada] → clic en Revisar → [En revisión]  (transición automática)
-```
+Las versiones aparecen en el tablero en estado `En Revisión` (no hay estado previo "Enviada" — el envío las deja directamente en revisión).
 
 Una vez en revisión, el revisor tiene dos opciones:
 
@@ -223,7 +220,7 @@ El sistema requiere **doble visto bueno** (moderadora + coordinador de la carrer
 - El profesor sube una **nueva versión** desde el detalle de la planificación
 
 ```
-[Rechazada] → Profesor sube v2 → [Borrador v2] → ENVIAR → [Enviada v2] → ...
+[Rechazada] → Profesor sube v2 → [Borrador v2] → ENVIAR → [En Revisión v2] → ...
 ```
 
 ---
@@ -244,39 +241,42 @@ El historial de versiones siempre se conserva.
 ## Diagrama de estados completo (Version)
 
 ```
-                    ┌──────────────────────────────────────────────────┐
-                    │                                                  │
-              ┌─────▼─────┐                                           │
-         ─────►  Borrador  │                                           │
-              └─────┬─────┘                                           │
-                    │ ENVIAR                                           │
-           ┌────────┴────────┐                                         │
-           │                 │                                         │
-    Doc incompleto     Doc completo                                    │
-           │                 │                                         │
-    ┌──────▼──────┐   ┌──────▼──────┐                                 │
-    │  Rechazada  │   │   Enviada   │                                 │
-    │ (automático)│   └──────┬──────┘                                 │
-    └──────┬──────┘          │ auto al hacer clic Revisar               │
-           │          ┌──────▼──────┐                                 │
-     Nueva versión    │ En revisión │                                 │
-           │          └──────┬──────┘                                 │
-           │       ┌─────────┴─────────┐                              │
-           │   RECHAZAR           APROBAR                             │
-           │       │                   │                              │
-           │ ┌─────▼─────┐     ┌───────▼──────┐                      │
-           │ │ Rechazada │     │   Aprobada   │                      │
-           │ └─────┬─────┘     └───────┬──────┘                      │
-           │       │                   │ VB Mod + VB Coord            │
-     Nueva versión │            ┌──────▼──────┐                      │
-           │       │            │   Oficial   ├──────────────────────┘
-           └───────┘            │   vigente   │ (nueva versión aprobada
-                                └──────┬──────┘  en instancia futura)
-                                       │
-                                ┌──────▼──────┐
-                                │ Reemplazada │
-                                └─────────────┘
+              ┌────────────────────────────────────────────┐
+              │                                            │
+        ┌─────▼─────┐                                      │
+   ─────►  Borrador  │                                      │
+        └─────┬─────┘                                      │
+              │ ENVIAR                                      │
+     ┌────────┴────────┐                                    │
+     │                 │                                    │
+Doc incompleto    Doc completo                              │
+     │                 │                                    │
+┌────▼────────┐  ┌──────▼──────┐                           │
+│  Rechazada  │  │ En revisión │                           │
+│ (automático)│  └──────┬──────┘                           │
+└────┬────────┘         │                                   │
+     │         ┌────────┴────────┐                          │
+     │     RECHAZAR          APROBAR                        │
+     │         │                 │                          │
+     │  ┌──────▼──────┐  ┌───────▼──────┐                  │
+     │  │  Rechazada  │  │   Aprobada   │                  │
+     │  └──────┬──────┘  └───────┬──────┘                  │
+     │         │                 │ VB Mod + VB Coord        │
+Nueva versión  │          ┌──────▼──────┐                  │
+     │         │          │   Oficial   ├──────────────────┘
+     └─────────┘          │   vigente   │ (nueva versión aprobada
+                          └──────┬──────┘  en instancia futura)
+                                 │
+                          ┌──────▼──────┐
+                          │ Reemplazada │
+                          └─────────────┘
 ```
+
+**Estados (7):** `borrador` → `en_revision` → `aprobada` → `oficial` → `reemplazada`
+Desde `borrador` también: `rechazada_auto` (doc incompleto)
+Desde `en_revision` también: `rechazada` (revisor rechaza con observaciones)
+
+> El estado `enviada` fue eliminado — al enviar el doc pasa directamente a `en_revision`.
 
 ---
 
@@ -297,15 +297,15 @@ El historial de versiones siempre se conserva.
 4. Profesor sube v2 correcta → repite el flujo feliz
 
 ### Caso 3 — Rechazo con observaciones
-1. Profesor sube y envía una versión
-2. Moderadora toma revisión → rechaza con comentario
+1. Profesor sube y envía una versión (queda directamente en revisión)
+2. Moderadora → Tablero → **Revisar** → rechaza con comentario
 3. Profesor ve el rechazo y las observaciones
 4. Sube v2 → ciclo completo
 
 ### Caso 4 — Entrega tardía
 1. Crear instancia con `fecha_límite` = ayer
 2. Profesor carga y envía
-3. Verificar que la versión queda marcada como **entrega tardía** con días de atraso
+3. Verificar que la versión queda marcada como **entrega tardía** con días de atraso (estado: En Revisión)
 
 ### Caso 5 — Instancia sin profesores (validación)
 1. Crear materia SIN profesor titular
