@@ -228,6 +228,7 @@ class Command(BaseCommand):
                 nombre=nombre, anio_academico=anio,
                 defaults={
                     'periodo': periodo,
+                    'solo_regimen': periodo,  # por defecto, filtrar por el mismo régimen
                     'fecha_apertura': apertura,
                     'fecha_limite': limite,
                     'estado': 'cerrada' if cerrada else 'programada',
@@ -431,6 +432,18 @@ class Command(BaseCommand):
                 p.save()
                 visto(v, users['moderadora'], 'moderadora')
                 visto(v, coord, 'coordinador')
+
+        # ── Auto-completar planificaciones para todas las materias de cada instancia ──
+        # Garantiza que ninguna materia quede "Sin planificación" en la interfaz.
+        from apps.planificaciones.models import Planificacion as P
+        for instancia_obj in inst.values():
+            for materia in instancia_obj.materias_audiencia():
+                if materia.profesor_titular:
+                    P.objects.get_or_create(
+                        materia=materia,
+                        profesor=materia.profesor_titular,
+                        instancia=instancia_obj,
+                    )
 
     # ──────────────────────────────────────────────────────────────
 

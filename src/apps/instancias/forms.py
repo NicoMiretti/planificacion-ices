@@ -1,5 +1,5 @@
 from django import forms
-from apps.catalogos.models import Carrera
+from apps.catalogos.models import Carrera, Materia
 from .models import InstanciaPresentacion
 
 
@@ -11,9 +11,16 @@ class InstanciaForm(forms.ModelForm):
         help_text='Seleccioná las carreras incluidas en esta instancia.',
     )
 
+    solo_regimen = forms.ChoiceField(
+        choices=[('', 'Usar el mismo régimen que el período (recomendado)')] + list(Materia.Regimen.choices),
+        required=False,
+        label='Filtrar materias por régimen',
+        help_text='Por defecto se incluyen solo las materias cuyo régimen coincide con el período elegido.',
+    )
+
     class Meta:
         model = InstanciaPresentacion
-        fields = ['nombre', 'anio_academico', 'periodo', 'fecha_apertura', 'fecha_limite', 'carreras']
+        fields = ['nombre', 'anio_academico', 'periodo', 'fecha_apertura', 'fecha_limite', 'solo_regimen', 'carreras']
         widgets = {
             'fecha_apertura': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
             'fecha_limite': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),

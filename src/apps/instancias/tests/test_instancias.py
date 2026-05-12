@@ -165,7 +165,7 @@ class TestInstanciaAudiencia:
         instancia = InstanciaPresentacion.objects.create(
             nombre='Test Audiencia',
             anio_academico=2026,
-            periodo=InstanciaPresentacion.Periodo.ANUAL,
+            periodo=InstanciaPresentacion.Periodo.PRIMER_CUATRIMESTRE,
             fecha_apertura=date.today(),
             fecha_limite=date.today() + timedelta(days=30),
         )
@@ -215,7 +215,7 @@ class TestInstanciaAudiencia:
         instancia = InstanciaPresentacion.objects.create(
             nombre='Test Solo ICES',
             anio_academico=2026,
-            periodo=InstanciaPresentacion.Periodo.ANUAL,
+            periodo=InstanciaPresentacion.Periodo.PRIMER_CUATRIMESTRE,
             fecha_apertura=date.today(),
             fecha_limite=date.today() + timedelta(days=30),
             institucion=institucion,
@@ -231,7 +231,7 @@ class TestInstanciaAudiencia:
         instancia = InstanciaPresentacion.objects.create(
             nombre='Test Profesores',
             anio_academico=2026,
-            periodo=InstanciaPresentacion.Periodo.ANUAL,
+            periodo=InstanciaPresentacion.Periodo.PRIMER_CUATRIMESTRE,
             fecha_apertura=date.today(),
             fecha_limite=date.today() + timedelta(days=30),
         )

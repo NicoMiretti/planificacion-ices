@@ -193,16 +193,17 @@ class InstanciaPresentacion(models.Model):
         """
         Retorna las materias que deben presentar en esta instancia.
         Filtra por carreras + régimen + institución si aplica.
+        Cuando solo_regimen está vacío, usa el período de la instancia como régimen por defecto.
         """
         materias = Materia.objects.filter(
             carrera__in=self.carreras.all(),
             activo=True
         )
-        
-        # Filtrar por régimen si está especificado
-        if self.solo_regimen:
-            materias = materias.filter(regimen=self.solo_regimen)
-        
+
+        # Filtrar por régimen: usa solo_regimen si está seteado, sino el periodo de la instancia
+        regimen_efectivo = self.solo_regimen or self.periodo
+        materias = materias.filter(regimen=regimen_efectivo)
+
         # Filtrar por institución si está especificado
         if self.institucion:
             materias = materias.filter(carrera__institucion=self.institucion)
