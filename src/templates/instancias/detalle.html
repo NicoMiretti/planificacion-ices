@@ -127,10 +127,12 @@
                                     {% elif ultima.estado == 'enviada' %}
                                     <span class="ices-badge ices-badge-info me-2"><i class="bi bi-send"></i></span>
                                     {% endif %}
+                                    <a href="{% url 'planificaciones:detalle' planif.pk %}"
+                                       class="btn btn-ices-outline btn-sm">Ver</a>
+                                {% else %}
+                                    <span class="text-muted small">Sin planificación</span>
                                 {% endif %}
                                 {% endwith %}
-                                <a href="{% url 'planificaciones:detalle' planif.pk %}"
-                                   class="btn btn-ices-outline btn-sm">Ver</a>
                             {% elif instancia.estado == 'abierta' %}
                                 <a href="{% url 'planificaciones:cargar' instancia.pk materia.pk %}"
                                    class="btn btn-ices btn-sm">
@@ -138,6 +140,28 @@
                                 </a>
                             {% else %}
                                 <span class="text-muted">—</span>
+                            {% endif %}
+                        {% elif request.user.es_admin or request.user.es_moderadora or request.user.es_coordinador %}
+                            {% if planif %}
+                                {% with ultima=planif.versiones.last %}
+                                {% if ultima %}
+                                    {% if ultima.estado == 'en_revision' or ultima.estado == 'enviada' %}
+                                    <span class="ices-badge ices-badge-warning me-2"><i class="bi bi-hourglass-split"></i></span>
+                                    {% elif ultima.estado == 'oficial' or ultima.estado == 'aprobada' %}
+                                    <span class="ices-badge ices-badge-success me-2"><i class="bi bi-patch-check"></i></span>
+                                    {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
+                                    <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
+                                    {% endif %}
+                                    <a href="{% url 'revisiones:revisar' ultima.pk %}"
+                                       class="btn btn-ices-outline btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Ver
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted small">Sin planificación</span>
+                                {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <span class="text-muted small">Sin planificación</span>
                             {% endif %}
                         {% elif request.user.es_revisor %}
                             {% if planif %}
@@ -150,12 +174,14 @@
                                     {% elif ultima.estado == 'rechazada' or ultima.estado == 'rechazada_auto' %}
                                     <span class="ices-badge ices-badge-danger me-2"><i class="bi bi-x-circle"></i></span>
                                     {% endif %}
+                                    <a href="{% url 'revisiones:revisar' ultima.pk %}"
+                                       class="btn btn-ices-outline btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Ver
+                                    </a>
+                                {% else %}
+                                    <span class="text-muted small">Sin planificación</span>
                                 {% endif %}
                                 {% endwith %}
-                                <a href="{% url 'planificaciones:detalle' planif.pk %}"
-                                   class="btn btn-ices-outline btn-sm">
-                                    <i class="bi bi-eye me-1"></i>Ver
-                                </a>
                             {% else %}
                                 <span class="text-muted small">Sin planificación</span>
                             {% endif %}

@@ -29,12 +29,22 @@ def cargar_planificacion(request, instancia_id, materia_id):
         messages.error(request, 'No eres el titular de esta materia.')
         return redirect('instancias:mis_instancias')
 
-    # Obtener o crear la planificación
-    planificacion, _ = Planificacion.objects.get_or_create(
+    # Obtener la planificación existente (sin crear si no existe)
+    planificacion = Planificacion.objects.filter(
         materia=materia,
         profesor=profesor,
         instancia=instancia
-    )
+    ).first()
+
+    # Verificar que la última versión no esté enviada o en revisión
+    if planificacion:
+        ultima_version = planificacion.ultima_version
+        if ultima_version and ultima_version.estado in (Version.Estado.ENVIADA, Version.Estado.EN_REVISION):
+            messages.error(
+                request, 
+                'No puedes cargar una nueva versión mientras hay una versión enviada o en revisión.'
+            )
+            return redirect('planificaciones:detalle', pk=planificacion.pk)
 
     # Plantilla de la institución del profesor
     plantilla = Plantilla.vigente_para(profesor.institucion) if hasattr(Plantilla, 'vigente_para') else None
@@ -43,6 +53,17 @@ def cargar_planificacion(request, instancia_id, materia_id):
         form = SubirPlanificacionForm(request.POST, request.FILES)
         if form.is_valid():
             archivo = form.cleaned_data['archivo']
+
+            # Crear la planificación solo al guardar la primera versión
+            if not planificacion:
+                planificacion = Planificacion.objects.create(
+                    materia=materia,
+                    profesor=profesor,
+                    instancia=instancia
+                )
+            
+            # Eliminar borradores anteriores (solo puede haber un borrador vivo)
+            planificacion.versiones.filter(estado=Version.Estado.BORRADOR).delete()
 
             version = Version(
                 planificacion=planificacion,
@@ -62,7 +83,8 @@ def cargar_planificacion(request, instancia_id, materia_id):
         'planificacion': planificacion,
         'plantilla': plantilla,
         'form': form,
-        'versiones': planificacion.versiones.all(),
+        'versiones': planificacion.versiones.all() if planificacion else [],
+        'borrador_existente': planificacion.versiones.filter(estado=Version.Estado.BORRADOR).first() if planificacion else None,
     }
     return render(request, 'planificaciones/cargar.html', context)
 
@@ -80,8 +102,16 @@ def enviar_planificacion(request, version_id):
         return redirect('instancias:mis_instancias')
 
     # Verificar estado
-    if version.estado != Version.Estado.BORRADOR:
+    if version.estado == Version.Estado.ENVIADA:
         messages.error(request, 'Esta versión ya fue enviada.')
+        return redirect('planificaciones:detalle', pk=version.planificacion.pk)
+    
+    if version.estado == Version.Estado.EN_REVISION:
+        messages.error(request, 'Esta versión está en revisión y no puede modificarse.')
+        return redirect('planificaciones:detalle', pk=version.planificacion.pk)
+    
+    if version.estado != Version.Estado.BORRADOR:
+        messages.error(request, 'Solo se pueden enviar versiones en borrador.')
         return redirect('planificaciones:detalle', pk=version.planificacion.pk)
 
     # Validar documento

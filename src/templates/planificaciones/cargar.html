@@ -43,7 +43,7 @@
 
     <div class="ices-card mb-4">
         <div class="card-body p-4">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="uploadForm">
                 {% csrf_token %}
                 <div class="mb-4">
                     <label for="{{ form.archivo.id_for_label }}" class="form-label fw-semibold">
@@ -58,7 +58,7 @@
                     {% endif %}
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-ices">
+                    <button type="submit" class="btn btn-ices" id="submitBtn">
                         <i class="bi bi-floppy me-1"></i>Guardar como borrador
                     </button>
                     <a href="{% if planificacion.pk %}{% url 'planificaciones:detalle' planificacion.pk %}{% else %}{% url 'instancias:detalle' instancia.pk %}{% endif %}"
@@ -67,6 +67,43 @@
             </form>
         </div>
     </div>
+
+    {% if borrador_existente %}
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmarBorrado" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Descartar borrador anterior?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ya tienes un borrador guardado <strong>(v{{ borrador_existente.numero }})</strong>.</p>
+                    <p>Si continúas, el borrador anterior será <strong>eliminado permanentemente</strong>.</p>
+                    <p class="mb-0 text-muted"><small><i class="bi bi-info-circle me-1"></i>Asegúrate de tener todo lo que necesites del documento anterior.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ices-outline" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-ices" id="confirmarBtn">
+                        <i class="bi bi-trash me-1"></i>Descartar y continuar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const modal = new bootstrap.Modal(document.getElementById('confirmarBorrado'));
+        modal.show();
+    });
+    
+    document.getElementById('confirmarBtn').addEventListener('click', function() {
+        document.getElementById('uploadForm').submit();
+    });
+    </script>
+    {% endif %}
 
     <div class="ices-card">
         <div class="card-header">

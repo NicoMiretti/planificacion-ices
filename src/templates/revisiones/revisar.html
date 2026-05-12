@@ -186,9 +186,19 @@
                                 <small class="text-muted">{{ rev.fecha|date:"d/m/Y H:i" }}</small>
                             </div>
                             {% if rev.observaciones %}
+                            {% if rev.tipo == 'aprobar' %}
+                            <div class="mt-1 p-2 rounded" style="background:#d1f0e0;font-size:.85rem;color:var(--ices-success);">
+                                <i class="bi bi-check-circle-fill me-1"></i>{{ rev.observaciones }}
+                            </div>
+                            {% elif rev.tipo == 'rechazar' %}
                             <div class="mt-1 p-2 rounded" style="background:#fde8e8;font-size:.85rem;color:var(--ices-danger);">
                                 <i class="bi bi-chat-left-text me-1"></i>{{ rev.observaciones }}
                             </div>
+                            {% else %}
+                            <div class="mt-1 p-2 rounded" style="background:#f5f5f5;font-size:.85rem;color:#666;">
+                                <i class="bi bi-chat-left-text me-1"></i>{{ rev.observaciones }}
+                            </div>
+                            {% endif %}
                             {% endif %}
                             {% if rev.detalle_correccion %}
                             <div class="mt-1 p-2 rounded" style="background:#e0f0fb;font-size:.85rem;color:#1466a0;">
