@@ -50,19 +50,35 @@ class InstanciaForm(forms.ModelForm):
                 'La fecha límite no puede ser anterior a la fecha de apertura.'
             )
 
-        # Validar que existan materias con titular para la combinación carrera + régimen
+        # Validar que TODAS las materias de las carreras seleccionadas tengan profesor titular
         carreras = cleaned_data.get('carreras')
         solo_regimen = cleaned_data.get('solo_regimen')
         periodo = cleaned_data.get('periodo')
         if carreras:
             regimen_efectivo = solo_regimen or periodo
-            materias_con_titular = Materia.objects.filter(
+
+            # Obtener todas las materias activas de las carreras seleccionadas
+            materias_todas = Materia.objects.filter(
                 carrera__in=carreras,
-                profesor_titular__isnull=False,
                 activo=True,
             )
             if regimen_efectivo and regimen_efectivo != 'todos':
-                materias_con_titular = materias_con_titular.filter(regimen=regimen_efectivo)
+                materias_todas = materias_todas.filter(regimen=regimen_efectivo)
+
+            # Encontrar materias SIN profesor titular
+            materias_sin_profesor = materias_todas.filter(profesor_titular__isnull=True)
+
+            if materias_sin_profesor.exists():
+                materias_list = ', '.join([m.codigo for m in materias_sin_profesor[:5]])
+                if materias_sin_profesor.count() > 5:
+                    materias_list += f', ... (+{materias_sin_profesor.count() - 5} más)'
+                raise forms.ValidationError(
+                    f'No todas las materias tienen profesor asignado. Sin profesor: {materias_list}. '
+                    'Asigná un profesor titular a cada materia en el catálogo antes de crear la instancia.'
+                )
+
+            # Validar que existan materias con titular para la combinación carrera + régimen
+            materias_con_titular = materias_todas.filter(profesor_titular__isnull=False)
             if not materias_con_titular.exists():
                 raise forms.ValidationError(
                     'No hay materias con profesor titular asignado para las carreras y régimen seleccionados. '

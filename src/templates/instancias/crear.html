@@ -47,7 +47,7 @@
                            id="{{ form.nombre.id_for_label }}"
                            value="{{ form.nombre.value|default:'' }}"
                            class="form-control {% if form.nombre.errors %}is-invalid{% endif %}"
-                           placeholder="Ej: Planificaciones Anuales 2027">
+                           placeholder="Ej: Anuales; 1° Cuatrimestre; 2° Cuatrimestre">
                     {% for error in form.nombre.errors %}
                     <div class="invalid-feedback">{{ error }}</div>
                     {% endfor %}
