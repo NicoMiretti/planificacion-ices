@@ -69,9 +69,20 @@ class Command(BaseCommand):
             '--flush', action='store_true',
             help='Elimina todos los datos existentes antes de insertar.'
         )
+        parser.add_argument(
+            '--reset', action='store_true',
+            help='Vacía la base y deja solo admin, moderadora y coordinadores (sin datos de prueba).'
+        )
 
     @transaction.atomic
     def handle(self, *args, **options):
+        if options['reset']:
+            self._flush()
+            self.stdout.write('\n▶  Creando usuarios staff...')
+            self._create_staff()
+            self.stdout.write(self.style.SUCCESS('\n✅  Base reseteada. Solo quedan admin, moderadora y coordinadores.\n'))
+            return
+
         if options['flush']:
             self._flush()
 
@@ -112,6 +123,34 @@ class Command(BaseCommand):
         MaterialApoyo.objects.all().delete()
         Institucion.objects.all().delete()
         Usuario.objects.filter(is_superuser=False).delete()
+
+    # ──────────────────────────────────────────────────────────────
+
+    def _create_staff(self):
+        """Crea solo la moderadora y los coordinadores de base."""
+        from apps.usuarios.models import Usuario
+
+        def ensure(email, password, rol, nombre):
+            u, created = Usuario.objects.get_or_create(
+                email=email,
+                defaults={'rol': rol, 'nombre_completo': nombre}
+            )
+            if created:
+                u.set_password(password)
+                u.save()
+                self.stdout.write(f'  Creado: {email}')
+            else:
+                self.stdout.write(f'  Ya existe: {email}')
+            return u
+
+        ensure('moderadora@ices.edu',       'mod123',   'moderadora',   'Ana García')
+        ensure('coord.sistemas@ices.edu',   'coord123', 'coordinador',  'Carlos Rodríguez')
+        ensure('coord.contabilidad@ices.edu','coord123', 'coordinador', 'Laura Martínez')
+
+        self.stdout.write('\n Credenciales:')
+        self.stdout.write('  moderadora@ices.edu          mod123')
+        self.stdout.write('  coord.sistemas@ices.edu      coord123')
+        self.stdout.write('  coord.contabilidad@ices.edu  coord123')
 
     # ──────────────────────────────────────────────────────────────
 
