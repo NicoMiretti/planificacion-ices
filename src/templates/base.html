@@ -20,6 +20,9 @@
     <!-- ICES Custom CSS -->
     <link href="{% static 'css/ices.css' %}" rel="stylesheet">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -29,9 +32,7 @@
         <div class="container">
 
             <a class="navbar-brand" href="/">
-                <span style="display:inline-flex;align-items:center;justify-content:center;
-                             width:34px;height:34px;background:rgba(255,255,255,.18);
-                             border-radius:8px;font-size:1.05rem;font-weight:800;color:#fff;flex-shrink:0;">I</span>
+                <img src="{% static 'images/ices.svg' %}" alt="ICES" height="34" style="flex-shrink:0;">
                 <span class="brand-text">
                     <span class="brand-title">Planificaciones</span>
                     <span class="brand-subtitle">ICES / UCSE</span>
