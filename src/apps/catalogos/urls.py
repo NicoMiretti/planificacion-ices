@@ -30,4 +30,10 @@ urlpatterns = [
     path('materias/nueva/', views.materia_crear, name='materia_crear'),
     path('materias/<int:pk>/editar/', views.materia_editar, name='materia_editar'),
     path('materias/<int:pk>/eliminar/', views.materia_eliminar, name='materia_eliminar'),
+
+    # Coordinadores
+    path('coordinadores/', views.coordinador_lista, name='coordinador_lista'),
+    path('coordinadores/nuevo/', views.coordinador_crear, name='coordinador_crear'),
+    path('coordinadores/<int:pk>/editar/', views.coordinador_editar, name='coordinador_editar'),
+    path('coordinadores/<int:pk>/eliminar/', views.coordinador_eliminar, name='coordinador_eliminar'),
 ]

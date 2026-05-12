@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.usuarios.decorators import gestores
 from apps.catalogos.models import Carrera, Profesor, Materia, Institucion
-from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, InstitucionForm
+from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, InstitucionForm, CoordinadorForm
 
 # ─────────────────────── Hub ────────────────────────────────────
 
@@ -212,3 +212,54 @@ def materia_eliminar(request, pk):
         return redirect('catalogos:materia_lista')
     return render(request, 'catalogos/confirmar_eliminar.html',
                   {'objeto': materia, 'tipo': 'materia', 'volver': 'catalogos:materia_lista'})
+
+
+# ─────────────────────── Coordinadores ──────────────────────────
+
+@login_required
+@gestores
+def coordinador_lista(request):
+    from apps.usuarios.models import Usuario
+    coordinadores = Usuario.objects.filter(rol='coordinador').order_by('nombre_completo')
+    return render(request, 'catalogos/coordinador_lista.html', {'coordinadores': coordinadores})
+
+
+@login_required
+@gestores
+def coordinador_crear(request):
+    form = CoordinadorForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Coordinador creado correctamente.')
+        return redirect('catalogos:coordinador_lista')
+    return render(request, 'catalogos/coordinador_form.html', {'form': form, 'titulo': 'Nuevo Coordinador'})
+
+
+@login_required
+@gestores
+def coordinador_editar(request, pk):
+    from apps.usuarios.models import Usuario
+    coordinador = get_object_or_404(Usuario, pk=pk, rol='coordinador')
+    form = CoordinadorForm(request.POST or None, instance=coordinador)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Coordinador actualizado correctamente.')
+        return redirect('catalogos:coordinador_lista')
+    return render(request, 'catalogos/coordinador_form.html',
+                  {'form': form, 'titulo': 'Editar Coordinador', 'objeto': coordinador})
+
+
+@login_required
+@gestores
+def coordinador_eliminar(request, pk):
+    from apps.usuarios.models import Usuario
+    coordinador = get_object_or_404(Usuario, pk=pk, rol='coordinador')
+    if request.method == 'POST':
+        try:
+            coordinador.delete()
+            messages.success(request, 'Coordinador eliminado.')
+        except Exception:
+            messages.error(request, 'No se puede eliminar: el coordinador tiene carreras asociadas.')
+        return redirect('catalogos:coordinador_lista')
+    return render(request, 'catalogos/confirmar_eliminar.html',
+                  {'objeto': coordinador, 'tipo': 'coordinador', 'volver': 'catalogos:coordinador_lista'})

@@ -121,6 +121,74 @@ class ProfesorForm(forms.ModelForm):
         return profesor
 
 
+class CoordinadorForm(forms.Form):
+    """Formulario para crear/editar un Usuario con rol coordinador."""
+    nombre_completo = forms.CharField(
+        label='Nombre completo',
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+    email = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+    )
+    password = forms.CharField(
+        label='Contraseña',
+        required=False,
+        widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                          'autocomplete': 'new-password',
+                                          'placeholder': 'Dejar en blanco para no cambiar'}),
+        help_text='Solo completar si es un coordinador nuevo o si querés cambiar la contraseña.',
+    )
+
+    def __init__(self, *args, instance=None, **kwargs):
+        self.instance = instance  # Usuario existente o None
+        initial = kwargs.get('initial', {})
+        if instance:
+            initial.setdefault('nombre_completo', instance.nombre_completo)
+            initial.setdefault('email', instance.email)
+        kwargs['initial'] = initial
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        from apps.usuarios.models import Usuario
+        email = self.cleaned_data['email']
+        qs = Usuario.objects.filter(email=email)
+        if self.instance and self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError('Ya existe un usuario con este email.')
+        return email
+
+    def clean(self):
+        cleaned = super().clean()
+        if not self.instance:
+            if not cleaned.get('password'):
+                self.add_error('password', 'La contraseña es obligatoria para un coordinador nuevo.')
+        return cleaned
+
+    def save(self):
+        from apps.usuarios.models import Usuario
+        email = self.cleaned_data['email']
+        nombre = self.cleaned_data['nombre_completo']
+        password = self.cleaned_data.get('password')
+        if self.instance:
+            self.instance.email = email
+            self.instance.nombre_completo = nombre
+            if password:
+                self.instance.set_password(password)
+            self.instance.save()
+            return self.instance
+        else:
+            usuario = Usuario.objects.create_user(
+                email=email,
+                nombre_completo=nombre,
+                password=password,
+                rol='coordinador',
+            )
+            return usuario
+
+
 class MateriaForm(forms.ModelForm):
     class Meta:
         model = Materia
