@@ -65,25 +65,22 @@ def mis_instancias(request):
         planifs = Planificacion.objects.filter(
             instancia=inst, profesor=profesor
         ).prefetch_related('versiones')
-        total_mats = inst.materias_audiencia().filter(profesor_titular=profesor).count()
         estados = {'rechazadas': 0, 'en_revision': 0, 'enviadas': 0,
                    'borradores': 0, 'oficiales': 0, 'sin_cargar': 0}
-        planif_ids = set()
         for p in planifs:
-            planif_ids.add(p.materia_id)
             ultima = p.versiones.order_by('-numero').first()
-            if ultima:
-                if ultima.estado in ('rechazada', 'rechazada_auto'):
-                    estados['rechazadas'] += 1
-                elif ultima.estado == 'en_revision':
-                    estados['en_revision'] += 1
-                elif ultima.estado == 'enviada':
-                    estados['enviadas'] += 1
-                elif ultima.estado == 'borrador':
-                    estados['borradores'] += 1
-                elif ultima.estado in ('oficial', 'aprobada'):
-                    estados['oficiales'] += 1
-        estados['sin_cargar'] = total_mats - len(planif_ids)
+            if ultima is None:
+                estados['sin_cargar'] += 1
+            elif ultima.estado in ('rechazada', 'rechazada_auto'):
+                estados['rechazadas'] += 1
+            elif ultima.estado == 'en_revision':
+                estados['en_revision'] += 1
+            elif ultima.estado == 'enviada':
+                estados['enviadas'] += 1
+            elif ultima.estado == 'borrador':
+                estados['borradores'] += 1
+            elif ultima.estado in ('oficial', 'aprobada'):
+                estados['oficiales'] += 1
         return estados
 
     activas_list = []

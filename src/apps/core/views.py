@@ -29,65 +29,54 @@ def home(request):
             'enviadas': 0,
             'borradores': 0,
             'oficiales': 0,
+            'sin_cargar': 0,
         }
         alertas = []
         for p in planifs:
             ultima = p.versiones.order_by('-numero').first()
-            if ultima:
-                if ultima.estado in ('rechazada', 'rechazada_auto'):
-                    stats['rechazadas'] += 1
-                    alertas.append({
-                        'tipo': 'danger',
-                        'icono': 'bi-x-circle-fill',
-                        'texto': f'{p.materia.nombre}: planificación rechazada — necesita corrección.',
-                        'url': f'/planificaciones/{p.pk}/',
-                    })
-                elif ultima.estado == 'en_revision':
-                    stats['en_revision'] += 1
-                    alertas.append({
-                        'tipo': 'warning',
-                        'icono': 'bi-hourglass-split',
-                        'texto': f'{p.materia.nombre}: en revisión.',
-                        'url': f'/planificaciones/{p.pk}/',
-                    })
-                elif ultima.estado == 'enviada':
-                    stats['enviadas'] += 1
-                    alertas.append({
-                        'tipo': 'info',
-                        'icono': 'bi-send',
-                        'texto': f'{p.materia.nombre}: enviada, esperando que un revisor la tome.',
-                        'url': f'/planificaciones/{p.pk}/',
-                    })
-                elif ultima.estado == 'borrador':
-                    stats['borradores'] += 1
-                    alertas.append({
-                        'tipo': 'secondary',
-                        'icono': 'bi-file-earmark',
-                        'texto': f'{p.materia.nombre}: borrador guardado, todavía no enviada.',
-                        'url': f'/planificaciones/{p.pk}/',
-                    })
-                elif ultima.estado in ('oficial', 'aprobada'):
-                    stats['oficiales'] += 1
-
-        # Materias sin planificación en instancias abiertas
-        from apps.catalogos.models import Materia
-        pendientes_sin_planif = 0
-        for inst in activas.filter(estado='abierta'):
-            mats = inst.materias_audiencia().filter(profesor_titular=profesor)
-            planif_ids = Planificacion.objects.filter(
-                instancia=inst, profesor=profesor
-            ).values_list('materia_id', flat=True)
-            sin = mats.exclude(id__in=planif_ids).count()
-            pendientes_sin_planif += sin
-            if sin:
+            if ultima is None:
+                # Planificación asignada pero el profesor aún no subió nada
+                stats['sin_cargar'] += 1
                 alertas.append({
                     'tipo': 'warning',
                     'icono': 'bi-exclamation-triangle',
-                    'texto': f'Instancia {inst.nombre} {inst.anio_academico}: tenés {sin} materia{"s" if sin > 1 else ""} sin planificación cargada.',
-                    'url': f'/instancias/{inst.pk}/',
+                    'texto': f'{p.materia.nombre} ({p.instancia.nombre} {p.instancia.anio_academico}): tenés que cargar tu planificación.',
+                    'url': f'/instancias/{p.instancia.pk}/',
                 })
-
-        stats['sin_cargar'] = pendientes_sin_planif
+            elif ultima.estado in ('rechazada', 'rechazada_auto'):
+                stats['rechazadas'] += 1
+                alertas.append({
+                    'tipo': 'danger',
+                    'icono': 'bi-x-circle-fill',
+                    'texto': f'{p.materia.nombre}: planificación rechazada — necesita corrección.',
+                    'url': f'/planificaciones/{p.pk}/',
+                })
+            elif ultima.estado == 'en_revision':
+                stats['en_revision'] += 1
+                alertas.append({
+                    'tipo': 'warning',
+                    'icono': 'bi-hourglass-split',
+                    'texto': f'{p.materia.nombre}: en revisión.',
+                    'url': f'/planificaciones/{p.pk}/',
+                })
+            elif ultima.estado == 'enviada':
+                stats['enviadas'] += 1
+                alertas.append({
+                    'tipo': 'info',
+                    'icono': 'bi-send',
+                    'texto': f'{p.materia.nombre}: enviada, esperando que un revisor la tome.',
+                    'url': f'/planificaciones/{p.pk}/',
+                })
+            elif ultima.estado == 'borrador':
+                stats['borradores'] += 1
+                alertas.append({
+                    'tipo': 'secondary',
+                    'icono': 'bi-file-earmark',
+                    'texto': f'{p.materia.nombre}: borrador guardado, todavía no enviada.',
+                    'url': f'/planificaciones/{p.pk}/',
+                })
+            elif ultima.estado in ('oficial', 'aprobada'):
+                stats['oficiales'] += 1
         context['stats'] = stats
         context['alertas'] = alertas
 
