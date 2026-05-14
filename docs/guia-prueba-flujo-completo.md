@@ -80,10 +80,10 @@ Crear al menos uno por carrera:
 
 Crear al menos dos:
 
-| Nombre          | Email              | Contraseña | Institución | Legajo |
-|-----------------|--------------------|------------|-------------|--------|
-| Roberto Pérez   | perez@ices.edu     | prof123    | ICES        | P-001  |
-| Claudia Gómez   | gomez@ices.edu     | prof123    | ICES        | P-002  |
+| Nombre          | Email              | Contraseña | Institución |
+|-----------------|--------------------|------------|-------------|
+| Roberto Pérez   | perez@ices.edu     | prof123    | ICES        |
+| Claudia Gómez   | gomez@ices.edu     | prof123    | ICES        |
 
 > ⚠️ El formulario crea el usuario y el perfil de profesor en un solo paso.
 

@@ -18,9 +18,9 @@ class CarreraAdmin(admin.ModelAdmin):
 
 @admin.register(Profesor)
 class ProfesorAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'email', 'institucion', 'legajo', 'activo')
+    list_display = ('__str__', 'email', 'institucion', 'activo')
     list_filter = ('institucion', 'activo')
-    search_fields = ('usuario__email', 'usuario__nombre_completo', 'legajo')
+    search_fields = ('usuario__email', 'usuario__nombre_completo')
     autocomplete_fields = ('usuario',)
     
     def email(self, obj):

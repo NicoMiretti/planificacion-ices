@@ -195,17 +195,17 @@ class Command(BaseCommand):
             defaults={'coordinador': coord_cont}
         )
 
-        def prof(usuario_obj, legajo):
+        def prof(usuario_obj):
             p, _ = Profesor.objects.get_or_create(
                 usuario=usuario_obj,
-                defaults={'institucion': ices, 'legajo': legajo}
+                defaults={'institucion': ices}
             )
             return p
 
-        p_perez  = prof(u_perez,  'P-001')
-        p_gomez  = prof(u_gomez,  'P-002')
-        p_silva  = prof(u_silva,  'P-003')
-        p_torres = prof(u_torres, 'P-004')
+        p_perez  = prof(u_perez)
+        p_gomez  = prof(u_gomez)
+        p_silva  = prof(u_silva)
+        p_torres = prof(u_torres)
 
         def mat(nombre, carrera, anio, regimen, titular=None):
             Materia.objects.get_or_create(

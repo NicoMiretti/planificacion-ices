@@ -118,13 +118,11 @@ class TestProfesor:
         profesor = Profesor.objects.create(
             usuario=usuario_profesor,
             institucion=institucion_ices,
-            legajo='12345'
         )
         
         assert profesor.usuario == usuario_profesor
         assert profesor.email == 'profesor@ices.edu'
         assert profesor.nombre == 'María Profesora'
-        assert profesor.legajo == '12345'
 
     def test_profesor_str(self, institucion_ices, usuario_profesor):
         profesor = Profesor.objects.create(

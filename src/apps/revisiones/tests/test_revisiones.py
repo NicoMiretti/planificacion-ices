@@ -70,7 +70,6 @@ def profesor(usuario_profesor, institucion):
     return Profesor.objects.create(
         usuario=usuario_profesor,
         institucion=institucion,
-        legajo='P-REV'
     )
 
 

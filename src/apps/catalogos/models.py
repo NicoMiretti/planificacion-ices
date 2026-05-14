@@ -73,7 +73,6 @@ class Profesor(TimeStampedModel, ActivableModel):
         related_name='profesores',
         help_text='Institución para notificaciones y plantilla'
     )
-    legajo = models.CharField(max_length=50, blank=True)
 
     class Meta:
         verbose_name = 'profesor'

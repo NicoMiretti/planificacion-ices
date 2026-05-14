@@ -57,16 +57,10 @@
             <div class="card-body p-4">
                 <h6 class="text-muted text-uppercase small fw-semibold mb-3">Datos del perfil docente</h6>
 
-                <div class="mb-3">
+                <div class="mb-0">
                     <label class="form-label fw-medium">{{ form.institucion.label }} <span class="text-danger">*</span></label>
                     {{ form.institucion }}
                     {% if form.institucion.errors %}<div class="invalid-feedback d-block">{{ form.institucion.errors.0 }}</div>{% endif %}
-                </div>
-
-                <div class="mb-0">
-                    <label class="form-label fw-medium">{{ form.legajo.label }}</label>
-                    {{ form.legajo }}
-                    {% if form.legajo.errors %}<div class="invalid-feedback d-block">{{ form.legajo.errors.0 }}</div>{% endif %}
                 </div>
             </div>
         </div>

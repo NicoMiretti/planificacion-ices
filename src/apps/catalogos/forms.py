@@ -60,10 +60,9 @@ class ProfesorForm(forms.ModelForm):
 
     class Meta:
         model = Profesor
-        fields = ['institucion', 'legajo']
+        fields = ['institucion']
         widgets = {
             'institucion': forms.Select(attrs={'class': 'form-select'}),
-            'legajo': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
