@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Instancia – {{ instancia.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container ices-page" style="max-width: 640px;">
+
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'instancias:lista' %}">Instancias</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'instancias:detalle' instancia.pk %}">{{ instancia.nombre }}</a></li>
+            <li class="breadcrumb-item active">Eliminar</li>
+        </ol>
+    </nav>
+
+    <div class="ices-page-header">
+        <h3 class="mb-1 text-danger"><i class="bi bi-trash3 me-2"></i>Eliminar Instancia</h3>
+        <p class="text-muted mb-0">Esta acción es <strong>irreversible</strong>.</p>
+    </div>
+
+    {# ── Cuadro de impacto ── #}
+    <div class="alert border-danger bg-danger bg-opacity-10 d-flex gap-3 mb-4" style="border-left: 4px solid #dc2626 !important;">
+        <i class="bi bi-exclamation-octagon-fill text-danger fs-4 flex-shrink-0 mt-1"></i>
+        <div>
+            <strong class="d-block mb-2">Se eliminarán permanentemente:</strong>
+            <ul class="mb-2 small">
+                <li>La instancia <strong>{{ instancia.nombre }}</strong> ({{ instancia.get_periodo_display }} {{ instancia.anio_academico }})</li>
+                <li><strong>{{ total_planif }}</strong> planificación{{ total_planif|pluralize:"es" }}</li>
+                {% if planif_con_contenido %}
+                <li class="text-danger fw-semibold">
+                    <i class="bi bi-exclamation-circle me-1"></i>
+                    {{ planif_con_contenido }} de ellas ya tienen archivos subidos por profesores
+                </li>
+                {% endif %}
+                <li><strong>{{ total_versiones }}</strong> versión{{ total_versiones|pluralize:"es" }} cargada{{ total_versiones|pluralize:"s" }}</li>
+                <li>Todas las revisiones y aprobaciones asociadas</li>
+            </ul>
+            {% if total_versiones == 0 %}
+            <p class="mb-0 small text-success fw-semibold">
+                <i class="bi bi-check-circle me-1"></i>
+                No hay archivos cargados. Solo se eliminarán registros vacíos.
+            </p>
+            {% else %}
+            <p class="mb-0 small text-danger fw-semibold">
+                <i class="bi bi-x-circle me-1"></i>
+                Los archivos físicos de planificaciones quedarán en el servidor (no se borran del disco).
+            </p>
+            {% endif %}
+        </div>
+    </div>
+
+    {# ── Formulario de confirmación ── #}
+    <div class="ices-card">
+        <div class="card-body p-4">
+            <p class="mb-3">Para confirmar, escribí exactamente el nombre de la instancia:</p>
+            <p class="mb-3">
+                <code class="fs-6 bg-light px-2 py-1 rounded border">{{ instancia.nombre }}</code>
+            </p>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% if error_confirmacion %}
+                <div class="ices-alert ices-alert-danger mb-3">
+                    <i class="bi bi-x-circle me-1"></i>
+                    El nombre ingresado no coincide. Escribilo exactamente como aparece arriba.
+                </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <input type="text"
+                           name="confirmacion"
+                           id="confirmacion"
+                           class="form-control {% if error_confirmacion %}is-invalid{% endif %}"
+                           placeholder="Escribí el nombre para confirmar"
+                           autocomplete="off"
+                           autofocus>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            id="btn-eliminar"
+                            class="btn btn-danger"
+                            disabled>
+                        <i class="bi bi-trash3 me-1"></i>Eliminar definitivamente
+                    </button>
+                    <a href="{% url 'instancias:detalle' instancia.pk %}" class="btn btn-ices-outline">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+    const input = document.getElementById('confirmacion');
+    const btn = document.getElementById('btn-eliminar');
+    const nombreEsperado = "{{ instancia.nombre|escapejs }}";
+
+    input.addEventListener('input', function () {
+        btn.disabled = this.value !== nombreEsperado;
+    });
+})();
+</script>
+{% endblock %}

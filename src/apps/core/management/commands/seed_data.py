@@ -302,17 +302,17 @@ class Command(BaseCommand):
             defaults={'coordinador': users['coord_contabilidad']}
         )
 
-        def get_or_create_prof(usuario, institucion, legajo):
+        def get_or_create_prof(usuario, institucion):
             p, _ = Profesor.objects.get_or_create(
                 usuario=usuario,
-                defaults={'institucion': institucion, 'legajo': legajo}
+                defaults={'institucion': institucion}
             )
             return p
 
-        prof_perez   = get_or_create_prof(users['prof_perez'],  ices, 'P-001')
-        prof_gomez   = get_or_create_prof(users['prof_gomez'],  ices, 'P-002')
-        prof_silva   = get_or_create_prof(users['prof_silva'],  ices, 'P-003')
-        prof_torres  = get_or_create_prof(users['prof_torres'], ices, 'P-004')
+        prof_perez   = get_or_create_prof(users['prof_perez'],  ices)
+        prof_gomez   = get_or_create_prof(users['prof_gomez'],  ices)
+        prof_silva   = get_or_create_prof(users['prof_silva'],  ices)
+        prof_torres  = get_or_create_prof(users['prof_torres'], ices)
 
         def mat(nombre, carrera, anio, regimen, prof=None):
             m, _ = Materia.objects.get_or_create(

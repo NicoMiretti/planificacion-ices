@@ -25,10 +25,21 @@ def crear_planificaciones_al_agregar_carreras(sender, instance, action, pk_set, 
         activo=True,
     ).select_related('profesor_titular')
 
-    # Filtrar por el régimen efectivo de la instancia
-    regimen_efectivo = instance.solo_regimen or instance.periodo
-    if regimen_efectivo != 'todos':
-        materias = materias.filter(regimen=regimen_efectivo)
+    # Filtrar por el régimen según el período de la instancia
+    if instance.periodo != 'todos':
+        materias = materias.filter(regimen=instance.periodo)
+
+    # Filtrar por años de cursado por carrera si se especificaron
+    # anios_cursado es un dict {str(carrera_id): [años]}
+    if instance.anios_cursado and isinstance(instance.anios_cursado, dict):
+        from django.db.models import Q
+        filtro_anios = Q()
+        for carrera_id_str, anios in instance.anios_cursado.items():
+            cid = int(carrera_id_str)
+            if cid in pk_set and anios:
+                filtro_anios |= Q(carrera_id=cid, anio_cursado__in=anios)
+        if filtro_anios:
+            materias = materias.filter(filtro_anios)
 
     for materia in materias:
         if materia.profesor_titular:

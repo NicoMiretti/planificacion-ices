@@ -39,7 +39,7 @@ class Planificacion(models.Model):
     )
     instancia = models.ForeignKey(
         'instancias.InstanciaPresentacion',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='planificaciones'
     )
 

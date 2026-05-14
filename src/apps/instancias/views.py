@@ -4,6 +4,7 @@ Vistas para el módulo de instancias de presentación.
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import JsonResponse
 from django.utils import timezone
 
 from apps.usuarios.decorators import solo_moderadora, revisores
@@ -184,14 +185,20 @@ def detalle_instancia(request, pk):
 @solo_moderadora
 def crear_instancia(request):
     """Vista: moderadora da de alta una nueva instancia de presentación."""
+    import json
     if request.method == 'POST':
         form = InstanciaForm(request.POST)
+        # Extraer años previos por carrera para re-render en caso de error de validación
+        anios_previos = {}
+        for key in request.POST:
+            if key.startswith('anios_carrera_'):
+                cid = key.replace('anios_carrera_', '')
+                anios_previos[cid] = request.POST.getlist(key)
         if form.is_valid():
             instancia = form.save(commit=False)
             instancia.creada_por = request.user
             instancia.save()
             form.save_m2m()  # dispara el signal que auto-crea las planificaciones
-
             messages.success(
                 request,
                 f'Instancia "{instancia}" creada correctamente.'
@@ -199,5 +206,219 @@ def crear_instancia(request):
             return redirect('instancias:detalle', pk=instancia.pk)
     else:
         form = InstanciaForm()
+        anios_previos = {}
 
-    return render(request, 'instancias/crear.html', {'form': form})
+    return render(request, 'instancias/crear.html', {
+        'form': form,
+        'anios_previos_json': json.dumps(anios_previos),
+    })
+
+
+@login_required
+@solo_moderadora
+def ajax_anios_por_carreras(request):
+    """AJAX: devuelve los años de cursado disponibles para las carreras seleccionadas."""
+    from apps.catalogos.models import Materia
+    carrera_ids = request.GET.getlist('carreras[]')
+    if not carrera_ids:
+        return JsonResponse({'anios': []})
+    try:
+        carrera_ids = [int(cid) for cid in carrera_ids]
+    except (ValueError, TypeError):
+        return JsonResponse({'anios': []})
+    anios = list(
+        Materia.objects.filter(
+            carrera_id__in=carrera_ids,
+            activo=True,
+        ).values_list('anio_cursado', flat=True).distinct().order_by('anio_cursado')
+    )
+    return JsonResponse({'anios': anios})
+
+
+@login_required
+@solo_moderadora
+def editar_instancia(request, pk):
+    """Vista: moderadora edita una instancia existente."""
+    import json
+    from apps.planificaciones.models import Planificacion, Version
+
+    instancia = get_object_or_404(InstanciaPresentacion, pk=pk)
+
+    total_planif = instancia.planificaciones.count()
+    total_versiones = Version.objects.filter(planificacion__instancia=instancia).count()
+    planif_con_contenido = instancia.planificaciones.filter(versiones__isnull=False).distinct().count()
+
+    if request.method == 'POST':
+        anios_previos = {}
+        for key in request.POST:
+            if key.startswith('anios_carrera_'):
+                cid = key.replace('anios_carrera_', '')
+                anios_previos[cid] = request.POST.getlist(key)
+
+        carreras_antes = set(instancia.carreras.values_list('id', flat=True))
+        form = InstanciaForm(request.POST, instance=instancia)
+        if form.is_valid():
+            instancia_guardada = form.save()
+
+            # Limpiar planificaciones vacías de carreras que ya no están
+            carreras_despues = set(instancia_guardada.carreras.values_list('id', flat=True))
+            carreras_removidas = carreras_antes - carreras_despues
+            if carreras_removidas:
+                Planificacion.objects.filter(
+                    instancia=instancia_guardada,
+                    materia__carrera_id__in=carreras_removidas,
+                ).filter(versiones__isnull=True).delete()
+
+            # Crear planificaciones para toda la audiencia actual (nueva audiencia completa).
+            # Esto cubre: carreras nuevas, años nuevos en carreras existentes, y años
+            # que se habían quitado antes y ahora se vuelven a agregar.
+            # get_or_create garantiza que no se duplican las existentes.
+            creadas = 0
+            for materia in instancia_guardada.materias_audiencia():
+                if materia.profesor_titular:
+                    _, nueva = Planificacion.objects.get_or_create(
+                        materia=materia,
+                        profesor=materia.profesor_titular,
+                        instancia=instancia_guardada,
+                    )
+                    if nueva:
+                        creadas += 1
+
+            messages.success(
+                request,
+                f'Instancia "{instancia_guardada}" actualizada correctamente.'
+                + (f' Se crearon {creadas} planificación/es nuevas.' if creadas else '')
+            )
+            return redirect('instancias:detalle', pk=instancia_guardada.pk)
+    else:
+        form = InstanciaForm(instance=instancia)
+        anios_previos = {
+            str(k): [str(v) for v in vals]
+            for k, vals in (instancia.anios_cursado or {}).items()
+        }
+
+    return render(request, 'instancias/editar.html', {
+        'form': form,
+        'instancia': instancia,
+        'total_planif': total_planif,
+        'total_versiones': total_versiones,
+        'planif_con_contenido': planif_con_contenido,
+        'anios_previos_json': json.dumps(anios_previos),
+    })
+
+
+@login_required
+@solo_moderadora
+def eliminar_instancia(request, pk):
+    """Vista: moderadora elimina una instancia y todas sus planificaciones."""
+    from apps.planificaciones.models import Planificacion, Version
+
+    instancia = get_object_or_404(InstanciaPresentacion, pk=pk)
+
+    total_planif = instancia.planificaciones.count()
+    total_versiones = Version.objects.filter(planificacion__instancia=instancia).count()
+    planif_con_contenido = instancia.planificaciones.filter(versiones__isnull=False).distinct().count()
+
+    if request.method == 'POST':
+        confirmacion = request.POST.get('confirmacion', '').strip()
+        if confirmacion != instancia.nombre:
+            messages.error(
+                request,
+                'El nombre ingresado no coincide. La instancia no fue eliminada.'
+            )
+            return render(request, 'instancias/confirmar_eliminar.html', {
+                'instancia': instancia,
+                'total_planif': total_planif,
+                'total_versiones': total_versiones,
+                'planif_con_contenido': planif_con_contenido,
+                'error_confirmacion': True,
+            })
+
+        nombre = str(instancia)
+        instancia.delete()
+        messages.success(request, f'La instancia "{nombre}" y todas sus planificaciones fueron eliminadas.')
+        return redirect('instancias:lista')
+
+    return render(request, 'instancias/confirmar_eliminar.html', {
+        'instancia': instancia,
+        'total_planif': total_planif,
+        'total_versiones': total_versiones,
+        'planif_con_contenido': planif_con_contenido,
+        'error_confirmacion': False,
+    })
+
+
+@login_required
+@solo_moderadora
+def ajax_preview_edicion(request, pk):
+    """
+    AJAX GET: dado un conjunto propuesto de carreras + años por carrera,
+    devuelve cuántas planificaciones se crearían, cuántas se eliminarían
+    (sin archivos) y cuántas se conservarían aunque queden fuera (con archivos).
+    """
+    from apps.catalogos.models import Materia
+    from apps.planificaciones.models import Planificacion
+    from django.db.models import Q
+
+    instancia = get_object_or_404(InstanciaPresentacion, pk=pk)
+
+    # Leer parámetros de la petición AJAX
+    carrera_ids_raw = request.GET.getlist('carreras[]')
+    try:
+        carrera_ids = [int(c) for c in carrera_ids_raw]
+    except (ValueError, TypeError):
+        return JsonResponse({'error': 'Parámetros inválidos'}, status=400)
+
+    periodo = request.GET.get('periodo', instancia.periodo)
+
+    # Construir el dict anios_cursado propuesto {carrera_id: [años]}
+    anios_propuesto = {}
+    for key, val in request.GET.lists():
+        if key.startswith('anios_carrera_'):
+            try:
+                cid = int(key.replace('anios_carrera_', ''))
+                anios_propuesto[cid] = [int(v) for v in val]
+            except (ValueError, TypeError):
+                pass
+
+    # ── Audiencia PROPUESTA ──────────────────────────────────────────────────
+    materias_qs = Materia.objects.filter(
+        carrera_id__in=carrera_ids,
+        activo=True,
+        profesor_titular__isnull=False,
+    )
+    if periodo and periodo != 'todos':
+        materias_qs = materias_qs.filter(regimen=periodo)
+
+    if anios_propuesto:
+        filtro = Q()
+        for cid, anios in anios_propuesto.items():
+            if anios:
+                filtro |= Q(carrera_id=cid, anio_cursado__in=anios)
+        if filtro:
+            materias_qs = materias_qs.filter(filtro)
+
+    ids_propuestos = set(materias_qs.values_list('id', flat=True))
+
+    # ── Planificaciones ACTUALES ─────────────────────────────────────────────
+    planifs_actuales = list(
+        Planificacion.objects.filter(instancia=instancia)
+        .select_related('materia')
+        .prefetch_related('versiones')
+    )
+    ids_actuales = {p.materia_id for p in planifs_actuales}
+
+    # Cuántas se van a CREAR (materia en propuesta pero sin planificación existente)
+    a_crear = len(ids_propuestos - ids_actuales)
+
+    # Cuántas se van a ELIMINAR (planificación existe, materia queda fuera, sin versiones)
+    ids_removidos = ids_actuales - ids_propuestos
+    planifs_removidas = [p for p in planifs_actuales if p.materia_id in ids_removidos]
+    a_eliminar = sum(1 for p in planifs_removidas if not p.versiones.exists())
+    conservadas_con_archivos = sum(1 for p in planifs_removidas if p.versiones.exists())
+
+    return JsonResponse({
+        'a_crear': a_crear,
+        'a_eliminar': a_eliminar,
+        'conservadas_con_archivos': conservadas_con_archivos,
+    })

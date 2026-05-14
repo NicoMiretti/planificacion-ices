@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Nueva Instancia{% endblock %}
+{% block title %}Editar Instancia – {{ instancia.nombre }}{% endblock %}
 
 {% block content %}
 <div class="container ices-page" style="max-width: 720px;">
@@ -8,13 +8,35 @@
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'instancias:lista' %}">Instancias</a></li>
-            <li class="breadcrumb-item active">Nueva Instancia</li>
+            <li class="breadcrumb-item"><a href="{% url 'instancias:detalle' instancia.pk %}">{{ instancia.nombre }}</a></li>
+            <li class="breadcrumb-item active">Editar</li>
         </ol>
     </nav>
 
     <div class="ices-page-header">
-        <h3 class="mb-1"><i class="bi bi-plus-circle me-2"></i>Nueva Instancia de Presentación</h3>
-        <p class="text-muted mb-0">Al crear la instancia, se inicializarán automáticamente las planificaciones para cada materia con profesor titular asignado.</p>
+        <h3 class="mb-1"><i class="bi bi-pencil-square me-2"></i>Editar Instancia</h3>
+        <p class="text-muted mb-0">{{ instancia.nombre }} &mdash; {{ instancia.get_periodo_display }} {{ instancia.anio_academico }}</p>
+    </div>
+
+    {# ── Alerta de impacto ── #}
+    <div class="alert border-warning bg-warning bg-opacity-10 d-flex gap-3 mb-4" style="border-left: 4px solid #f59e0b !important;">
+        <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+        <div>
+            <strong class="d-block mb-1">Atención: esta es una operación sensible</strong>
+            <p class="mb-1 small">Esta instancia tiene asociadas:</p>
+            <ul class="mb-1 small">
+                <li><strong>{{ total_planif }}</strong> planificación{{ total_planif|pluralize:"es" }} generada{{ total_planif|pluralize:"s" }}</li>
+                {% if planif_con_contenido %}
+                <li><strong>{{ planif_con_contenido }}</strong> con archivos ya subidos por profesores</li>
+                {% endif %}
+                <li><strong>{{ total_versiones }}</strong> versión{{ total_versiones|pluralize:"es" }} cargada{{ total_versiones|pluralize:"s" }}</li>
+            </ul>
+            <p class="mb-0 small">
+                Cambiar <strong>carreras</strong> o <strong>años de cursado</strong> puede afectar qué planificaciones están incluidas.
+                Las planificaciones sin archivos de carreras que quites serán eliminadas automáticamente.
+                Las que ya tienen archivos cargados <strong>no se eliminan</strong>.
+            </p>
+        </div>
     </div>
 
     {% if messages %}
@@ -23,7 +45,7 @@
     {% endfor %}
     {% endif %}
 
-    <form method="post" novalidate>
+    <form method="post" id="editar-instancia-form" novalidate>
         {% csrf_token %}
 
         {% if form.non_field_errors %}
@@ -98,7 +120,7 @@
                         <input type="date"
                                name="{{ form.fecha_apertura.html_name }}"
                                id="{{ form.fecha_apertura.id_for_label }}"
-                               value="{{ form.fecha_apertura.value|default:'' }}"
+                               value="{{ form.fecha_apertura.value|date:'Y-m-d' }}"
                                class="form-control {% if form.fecha_apertura.errors %}is-invalid{% endif %}">
                         {% for error in form.fecha_apertura.errors %}
                         <div class="invalid-feedback">{{ error }}</div>
@@ -111,7 +133,7 @@
                         <input type="date"
                                name="{{ form.fecha_limite.html_name }}"
                                id="{{ form.fecha_limite.id_for_label }}"
-                               value="{{ form.fecha_limite.value|default:'' }}"
+                               value="{{ form.fecha_limite.value|date:'Y-m-d' }}"
                                class="form-control {% if form.fecha_limite.errors %}is-invalid{% endif %}">
                         {% for error in form.fecha_limite.errors %}
                         <div class="invalid-feedback">{{ error }}</div>
@@ -149,7 +171,7 @@
                 </div>
                 <p class="text-muted small mt-2 mb-0">
                     <i class="bi bi-info-circle me-1"></i>
-                    Se crearán planificaciones para las materias de las carreras y años seleccionados que tengan profesor titular asignado.
+                    Quitar una carrera eliminará las planificaciones vacías asociadas; las que ya tienen archivos se conservan.
                 </p>
             </div>
         </div>
@@ -171,15 +193,43 @@
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-ices">
-                <i class="bi bi-check-circle me-1"></i>Crear Instancia
+            <button type="button" class="btn btn-ices" id="btn-previsualizar">
+                <i class="bi bi-check-circle me-1"></i>Guardar cambios
             </button>
-            <a href="{% url 'instancias:lista' %}" class="btn btn-ices-outline">
+            <a href="{% url 'instancias:detalle' instancia.pk %}" class="btn btn-ices-outline">
                 Cancelar
             </a>
         </div>
 
     </form>
+</div>
+
+{# ── Modal de confirmación de impacto ── #}
+<div class="modal fade" id="modalConfirmarEdicion" tabindex="-1" aria-labelledby="modalConfirmarEdicionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-semibold" id="modalConfirmarEdicionLabel">
+                    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Confirmar cambios
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="modal-impacto-body">
+                <div class="text-center py-3">
+                    <span class="spinner-border spinner-border-sm me-2"></span> Calculando impacto...
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-ices-outline" data-bs-dismiss="modal">Revisar</button>
+                <button type="submit"
+                        form="editar-instancia-form"
+                        class="btn btn-ices"
+                        id="btn-confirmar-guardar">
+                    <i class="bi bi-check-circle me-1"></i>Confirmar y guardar
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -283,7 +333,6 @@
         if (errDiv) errDiv.classList.toggle('d-none', hayMarcado);
     }
 
-    // Escuchar cambios en carreras
     document.querySelectorAll('.carrera-checkbox').forEach(function (cb) {
         cb.addEventListener('change', function () {
             const cid = this.value;
@@ -296,7 +345,6 @@
         });
     });
 
-    // Inicializar: cargar años de carreras ya seleccionadas (re-render tras error)
     document.querySelectorAll('.carrera-checkbox:checked').forEach(function (cb) {
         const cid = cb.value;
         const nombre = cb.closest('.carrera-item').dataset.carreraNombre;
@@ -304,6 +352,66 @@
     });
 
     actualizarPlaceholder();
+
+    // ── Preview de impacto antes de guardar ─────────────────────────────────
+    const previewUrl = "{% url 'instancias:ajax_preview' instancia.pk %}";
+    const btnPrevisualizar = document.getElementById('btn-previsualizar');
+    const btnConfirmar = document.getElementById('btn-confirmar-guardar');
+    const modalBody = document.getElementById('modal-impacto-body');
+    const modalEl = document.getElementById('modalConfirmarEdicion');
+
+    btnPrevisualizar.addEventListener('click', function () {
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+        // Recolectar parámetros actuales del form
+        const params = new URLSearchParams();
+
+        document.querySelectorAll('.carrera-checkbox:checked').forEach(function (cb) {
+            params.append('carreras[]', cb.value);
+        });
+
+        const periodo = document.querySelector('[name="{{ form.periodo.html_name }}"]');
+        if (periodo) params.set('periodo', periodo.value);
+
+        document.querySelectorAll('[name^="anios_carrera_"]').forEach(function (cb) {
+            if (cb.checked) params.append(cb.name, cb.value);
+        });
+
+        // Mostrar spinner y abrir modal
+        modalBody.innerHTML = '<div class="text-center py-3"><span class="spinner-border spinner-border-sm me-2"></span> Calculando impacto...</div>';
+        modal.show();
+
+        fetch(previewUrl + '?' + params.toString())
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                let html = '';
+
+                if (data.a_crear === 0 && data.a_eliminar === 0 && data.conservadas_con_archivos === 0) {
+                    html = '<p class="mb-0"><i class="bi bi-check-circle text-success me-2"></i>No se generarán ni eliminarán planificaciones con estos cambios.</p>';
+                } else {
+                    html = '<ul class="mb-0 ps-3">';
+                    if (data.a_crear > 0) {
+                        html += '<li class="text-success mb-1"><i class="bi bi-plus-circle me-1"></i><strong>' + data.a_crear + '</strong> planificación' + (data.a_crear !== 1 ? 'es' : '') + ' nueva' + (data.a_crear !== 1 ? 's' : '') + ' se crearán automáticamente.</li>';
+                    }
+                    if (data.a_eliminar > 0) {
+                        html += '<li class="text-warning mb-1"><i class="bi bi-dash-circle me-1"></i><strong>' + data.a_eliminar + '</strong> planificación' + (data.a_eliminar !== 1 ? 'es' : '') + ' vacía' + (data.a_eliminar !== 1 ? 's' : '') + ' (sin archivos) se eliminarán.</li>';
+                    }
+                    if (data.conservadas_con_archivos > 0) {
+                        html += '<li class="text-danger mb-1"><i class="bi bi-exclamation-circle me-1"></i><strong>' + data.conservadas_con_archivos + '</strong> planificación' + (data.conservadas_con_archivos !== 1 ? 'es' : '') + ' con archivos ya subidos quedan fuera de la audiencia pero <strong>no se eliminan</strong>.</li>';
+                    }
+                    html += '</ul>';
+                }
+                modalBody.innerHTML = html;
+            })
+            .catch(function () {
+                modalBody.innerHTML = '<p class="text-danger mb-0"><i class="bi bi-x-circle me-1"></i>Error al calcular el impacto. Podés guardar igualmente o cancelar.</p>';
+            });
+    });
+
+    btnConfirmar.addEventListener('click', function () {
+        // El botón es type=submit con form="editar-instancia-form",
+        // el browser maneja el submit nativo incluyendo CSRF.
+    });
 })();
 </script>
 {% endblock %}

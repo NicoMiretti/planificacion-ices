@@ -96,6 +96,7 @@ class InstanciaPresentacion(models.Model):
     """
     
     class Periodo(models.TextChoices):
+        TODOS = 'todos', 'Todos los regímenes'
         ANUAL = 'anual', 'Anual'
         PRIMER_CUATRIMESTRE = '1cuat', '1° Cuatrimestre'
         SEGUNDO_CUATRIMESTRE = '2cuat', '2° Cuatrimestre'
@@ -113,7 +114,7 @@ class InstanciaPresentacion(models.Model):
         help_text='Año académico (ej: 2026)'
     )
     periodo = models.CharField(
-        max_length=10,
+        max_length=5,
         choices=Periodo.choices
     )
     
@@ -132,11 +133,10 @@ class InstanciaPresentacion(models.Model):
         blank=True,
         help_text='Filtrar por institución (vacío = todas)'
     )
-    solo_regimen = models.CharField(
-        max_length=10,
-        choices=Materia.Regimen.choices,
+    anios_cursado = models.JSONField(
+        default=list,
         blank=True,
-        help_text='Filtrar materias por régimen (vacío = todos)'
+        help_text='Años de cursado incluidos (lista de enteros, ej: [1,2,3]). Vacío = todos los años.'
     )
     
     # Fechas
@@ -210,25 +210,32 @@ class InstanciaPresentacion(models.Model):
         """
         Retorna las materias que deben presentar en esta instancia.
         Filtra por carreras + régimen + institución si aplica.
-        Cuando solo_regimen está vacío, usa el período de la instancia como régimen por defecto.
+        Cuando periodo = 'todos', no filtra por régimen.
         """
         materias = Materia.objects.filter(
             carrera__in=self.carreras.all(),
             activo=True
         )
 
-        # Filtrar por régimen:
-        # - solo_regimen = 'todos'  → sin filtro (todas las materias)
-        # - solo_regimen = <valor>  → filtrar por ese régimen
-        # - solo_regimen vacío     → usar el periodo de la instancia como régimen
-        regimen_efectivo = self.solo_regimen or self.periodo
-        if regimen_efectivo != 'todos':
-            materias = materias.filter(regimen=regimen_efectivo)
+        # Filtrar por régimen según el período elegido
+        if self.periodo != 'todos':
+            materias = materias.filter(regimen=self.periodo)
 
         # Filtrar por institución si está especificado
         if self.institucion:
             materias = materias.filter(carrera__institucion=self.institucion)
-        
+
+        # Filtrar por años de cursado por carrera si se especificaron
+        # anios_cursado es un dict {str(carrera_id): [años]}
+        if self.anios_cursado and isinstance(self.anios_cursado, dict):
+            from django.db.models import Q
+            filtro_anios = Q()
+            for carrera_id_str, anios in self.anios_cursado.items():
+                if anios:
+                    filtro_anios |= Q(carrera_id=int(carrera_id_str), anio_cursado__in=anios)
+            if filtro_anios:
+                materias = materias.filter(filtro_anios)
+
         return materias.select_related('carrera', 'profesor_titular')
 
     def profesores_audiencia(self):

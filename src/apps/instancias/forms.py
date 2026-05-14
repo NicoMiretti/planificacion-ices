@@ -6,24 +6,14 @@ from .models import InstanciaPresentacion
 class InstanciaForm(forms.ModelForm):
     carreras = forms.ModelMultipleChoiceField(
         queryset=Carrera.objects.filter(activo=True).order_by('nombre'),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input carrera-checkbox'}),
         label='Carreras',
         help_text='Seleccioná las carreras incluidas en esta instancia.',
     )
 
-    solo_regimen = forms.ChoiceField(
-        choices=[
-            ('', 'Usar el mismo régimen que el período (recomendado)'),
-            ('todos', 'Todas las materias (todos los regímenes)'),
-        ] + list(Materia.Regimen.choices),
-        required=False,
-        label='Filtrar materias por régimen',
-        help_text='Por defecto se incluyen solo las materias cuyo régimen coincide con el período elegido.',
-    )
-
     class Meta:
         model = InstanciaPresentacion
-        fields = ['nombre', 'anio_academico', 'periodo', 'fecha_apertura', 'fecha_limite', 'solo_regimen', 'carreras']
+        fields = ['nombre', 'anio_academico', 'periodo', 'fecha_apertura', 'fecha_limite', 'carreras']
         widgets = {
             'fecha_apertura': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
             'fecha_limite': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
@@ -50,39 +40,58 @@ class InstanciaForm(forms.ModelForm):
                 'La fecha límite no puede ser anterior a la fecha de apertura.'
             )
 
-        # Validar que TODAS las materias de las carreras seleccionadas tengan profesor titular
+        # Leer años por carrera desde el POST y validar
         carreras = cleaned_data.get('carreras')
-        solo_regimen = cleaned_data.get('solo_regimen')
         periodo = cleaned_data.get('periodo')
+        anios_cursado = {}  # dict {str(carrera_id): [años]}
+
         if carreras:
-            regimen_efectivo = solo_regimen or periodo
+            for carrera in carreras:
+                key = f'anios_carrera_{carrera.pk}'
+                valores = self.data.getlist(key)
+                if not valores:
+                    raise forms.ValidationError(
+                        f'Seleccioná al menos un año para la carrera "{carrera}".'
+                    )
+                try:
+                    anios_carrera = [int(v) for v in valores]
+                except (ValueError, TypeError):
+                    raise forms.ValidationError(
+                        f'Valores de año inválidos para la carrera "{carrera}".'
+                    )
+                anios_cursado[str(carrera.pk)] = anios_carrera
 
-            # Obtener todas las materias activas de las carreras seleccionadas
-            materias_todas = Materia.objects.filter(
-                carrera__in=carreras,
-                activo=True,
-            )
-            if regimen_efectivo and regimen_efectivo != 'todos':
-                materias_todas = materias_todas.filter(regimen=regimen_efectivo)
-
-            # Encontrar materias SIN profesor titular
-            materias_sin_profesor = materias_todas.filter(profesor_titular__isnull=True)
-
-            if materias_sin_profesor.exists():
-                materias_list = ', '.join([m.nombre for m in materias_sin_profesor[:5]])
-                if materias_sin_profesor.count() > 5:
-                    materias_list += f', ... (+{materias_sin_profesor.count() - 5} más)'
-                raise forms.ValidationError(
-                    f'No todas las materias tienen profesor asignado. Sin profesor: {materias_list}. '
-                    'Asigná un profesor titular a cada materia en el catálogo antes de crear la instancia.'
+                # Validar materias para esta carrera y sus años seleccionados
+                materias_carrera = Materia.objects.filter(
+                    carrera=carrera,
+                    activo=True,
                 )
+                if periodo and periodo != 'todos':
+                    materias_carrera = materias_carrera.filter(regimen=periodo)
+                materias_carrera = materias_carrera.filter(anio_cursado__in=anios_carrera)
 
-            # Validar que existan materias con titular para la combinación carrera + régimen
-            materias_con_titular = materias_todas.filter(profesor_titular__isnull=False)
-            if not materias_con_titular.exists():
-                raise forms.ValidationError(
-                    'No hay materias con profesor titular asignado para las carreras y régimen seleccionados. '
-                    'Asigná profesores titulares en el catálogo antes de crear la instancia.'
-                )
+                materias_sin_profesor = materias_carrera.filter(profesor_titular__isnull=True)
+                if materias_sin_profesor.exists():
+                    materias_list = ', '.join([m.nombre for m in materias_sin_profesor[:5]])
+                    if materias_sin_profesor.count() > 5:
+                        materias_list += f', ... (+{materias_sin_profesor.count() - 5} más)'
+                    raise forms.ValidationError(
+                        f'En "{carrera}" hay materias sin profesor asignado: {materias_list}. '
+                        'Asigná un profesor titular antes de crear la instancia.'
+                    )
 
+                if not materias_carrera.filter(profesor_titular__isnull=False).exists():
+                    raise forms.ValidationError(
+                        f'En "{carrera}" no hay materias con profesor titular para los años y régimen seleccionados.'
+                    )
+
+        cleaned_data['anios_cursado'] = anios_cursado
         return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.anios_cursado = self.cleaned_data.get('anios_cursado', {})
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
