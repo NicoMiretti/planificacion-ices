@@ -3,8 +3,35 @@ Modelos para el circuito de revisión:
 - Revision: registra cada acción (tomar, aprobar, rechazar, corregir)
 - VistoBueno: control de doble aprobación (moderadora + coordinador)
 """
+import os
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
+from simple_history.models import HistoricalRecords
+
+
+def correccion_path(instance, filename):
+    """
+    Ruta estandarizada para archivos de correcciones:
+      correcciones/{anio}/{institucion}/carrera_{id}/materia_{id}/prof_{id}_v{n}_corr.ext
+
+    Ejemplo:
+      correcciones/2026/ices/carrera_3/materia_12/prof_7_v2_corr.docx
+    """
+    ext = os.path.splitext(filename)[1].lower() or '.docx'
+    version = instance.version
+    if version:
+        p    = version.planificacion
+        anio = p.instancia.anio_academico
+        cod  = p.materia.carrera.institucion.codigo.lower()
+        return (
+            f"correcciones/{anio}/{cod}/"
+            f"carrera_{p.materia.carrera_id}/"
+            f"materia_{p.materia_id}/"
+            f"prof_{p.profesor_id}_v{version.numero}_corr{ext}"
+        )
+    ts = timezone.now().strftime('%Y%m%d%H%M%S')
+    return f"correcciones/sin_clasificar/{ts}{ext}"
 
 
 class Revision(models.Model):
@@ -46,12 +73,13 @@ class Revision(models.Model):
         help_text='Descripción de la corrección aplicada (para corrección leve)'
     )
     archivo_corregido = models.FileField(
-        upload_to='correcciones/',
+        upload_to=correccion_path,
         null=True,
         blank=True,
         help_text='Documento con la corrección leve (opcional)'
     )
     fecha = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ['-fecha']
@@ -82,6 +110,7 @@ class VistoBueno(models.Model):
         help_text="'moderadora' o 'coordinador'"
     )
     fecha = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     class Meta:
         unique_together = ('version', 'rol')
