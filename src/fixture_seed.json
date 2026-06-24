@@ -1,0 +1,2768 @@
+[
+  {
+    "model": "usuarios.usuario",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$fQSuCklDJeHAHvZLoBwPzo$UD1225ISS3rfUvJfzJdbL3nAkAUWAHbPUIaf6CBc6Cs=",
+      "last_login": "2026-05-12T17:20:18.357227+00:00",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-05-12T17:18:33.969004+00:00",
+      "email": "admin@ices.edu",
+      "rol": "admin",
+      "nombre_completo": "Admin",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 32,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hjNfXMPaLybNM1nRRkhrrc$CzkZEt8vxDozR0/dl7lp2C2VTi6Q+Uki8flO4Z0YW0Q=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:44.697529+00:00",
+      "email": "sofia.giusti@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Giusti Sofia",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 33,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$GjDnm5eCdDqMZ7nQKiNhiC$x6KnAS8XaFIUvix+FQlxEJuEvEwl+MWqJhQq92jr11c=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:54.854670+00:00",
+      "email": "agustina.gomez@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Gomez Agustina",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 34,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$ZtpihKYrDn5UQxFfBhsTPS$undnkf2pDAm9vK2NNGY7HO8sWJ4xBWhHjicXxghCFU8=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:58:04.817825+00:00",
+      "email": "daniela.gonzalez@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Gonzalez Daniela",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 39,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$eluVeLWDok6PbuGbzqh6u2$OFGxvABnNvG89+b31coO22qfPoV+zKhmVaPa4tCuYuA=",
+      "last_login": "2026-05-14T20:57:31.194199+00:00",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:14.443516+00:00",
+      "email": "matias.maretto@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Maretto Matias",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$br1jJbcN96gJhdTnLRIMUK$UhBLVdi+PQgLP39S8AdXOgtipvmZqFJM0O89YX9dYjg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-12T19:48:09.846476+00:00",
+      "email": "matias.maretto@gmail.com",
+      "rol": "coordinador",
+      "nombre_completo": "Matias Maretto",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$NfKsJ0hoMlHkebVht1FywE$9D1xYuVH0D89pc3gpTH/IGZeewdyUv2xkuyFu0fpPUw=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:50:09.512446+00:00",
+      "email": "alejandro.aguirre@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Aguirre Alejandro",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$d7WXhOJBc6KmX9ih4hCY7H$6PrtjPUR1JqoUavGyxL8d3XyQy/buhptS0fZZD2L024=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:50:26.345510+00:00",
+      "email": "alvaro.aguirre@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Aguirre Alvaro",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$HZLC1gxEqdUoXDxzexyjEF$ciHBFD11oqJV4vQHrRe1omWeNMYoD2qnNdSJJe/2QnY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:50:45.271451+00:00",
+      "email": "guillermo.agusti@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Agusti Guillermo",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$6tHu75OrWMkgDHNMPjqj01$5qzg83nkuy98BWwmlr/qqDhk44capojtxZ4SZRXxDtA=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:50:53.870474+00:00",
+      "email": "erica.albertinazzi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Albertinazzi Erica",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$LBZu8MXfW16PoCiF7aNRxR$jaMUpghnAF7ZStcJCSzY2OqFHAUcSCnsCVIB7zww9Qg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:02.562486+00:00",
+      "email": "maria.albertinazzi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Albertinazzi M. Laura",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$yGiKT8BlCLfWibkkfkQNAh$yGtpa1PqTuaxmSgnJezF+vud7JFyGyKagJaq0LnwlO0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:29.102453+00:00",
+      "email": "eugenia.arismendi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Arismendi Eugenia",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$Itppd9KVla5ZxYlUEENwoC$tX3b4R8B20nwibEx62PdL8CMTvDoSyPN30Jjuo86Qbg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:40.152045+00:00",
+      "email": "mauro.auer@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Auer Mauro",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$iLvAhoGKulqNJX3idiKHpG$TH28UdXgJffaQ5HzrA5THWIrLvbL2bCmG1DCcJIj0MQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:46.762749+00:00",
+      "email": "mariano.avenatti@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Avenatti Mariano",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 13,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$MzozvvRhFCLJvrcwct6avw$RPRbBCoIFj0vE3uTfhsI+k6DNKQ7Hav37QS16CPzdTk=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:53.348681+00:00",
+      "email": "lorena.ballari@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Ballari Lorena",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 14,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$5t7EKSJnfQy1i3EzCWG75Q$tU98YMlBEMBU+38cawA3pemigk9sk1FalcWtQDuTMuA=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:51:59.012214+00:00",
+      "email": "melina.ballari@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Ballari Melina",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 15,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$23gEfEuFDtFDBsfZCOahRa$n6Q+07nowwHGR/79IXOBTJ6wZ3VowVZlaSVdGUDDEw4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:52:05.160354+00:00",
+      "email": "gabriela.barra@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Barra Gabriela",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 16,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$n5HPkYXCmWtu3pHnsLUhkn$I2urHWF9ZvgymPkza06ApC2mQ04l11B3nXG3QJHKfRI=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:52:44.367466+00:00",
+      "email": "mariano.baudino@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Baudino Mariano",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 17,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$TNMw0EL9mVqsu6MmkjeeVS$VchRtylexzB8dS3wQ9iT0n4zzSHNwZpmG2TkKlmFmfc=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:53:33.130603+00:00",
+      "email": "roman.berardi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Berardi Roman",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 18,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$gNl189mFJCj5v1GZkbSB9b$pKFUEOwu2WKzUDjrYkBfOHpeAV7i1jQRtwSlqOjZfCQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:53:48.183539+00:00",
+      "email": "rogelio.biolatto@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Biolatto Rogelio",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 19,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$6622eu8j0IelYEJeaLuxF3$fQ0BoUyR68HDm03ulchU5WxCZwGFXhjlSfMBURosx5g=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:53:58.138431+00:00",
+      "email": "veronica.bocco@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Bocco Veronica",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 20,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$zRw1w0k76botVUzPMBgouV$1RYiMjL9g9dJl2TB0dE4nPhUfroZs9eEoJrwrmVXCcQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:54:13.636100+00:00",
+      "email": "luis.bonansea@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Bonansea Luis",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 21,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$liuT2wqvnFfrNYzIkz4PC2$IoPrPcBJ1GtJOjwOu2SKflawP/GV3zoaXZhraizSemw=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:54:59.952433+00:00",
+      "email": "maria.bonzi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Bonzi Maria Victoria",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 22,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$uQ0jnfdpUrDti1ONjlXWo7$1uUDgw9KeVR8Jk9P/itvEdfhv1hM+ap1wgMAjthDYwE=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:55:06.885888+00:00",
+      "email": "emiliano.buffet@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Buffet Emiliano",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 23,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$y4iVi2uRfyFr1VE2yl3rKL$CgkjMEeiZIUE9q/3sKkAlBpUxQsKVV4Azo1BKaAjRUI=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:55:15.414508+00:00",
+      "email": "roxana.caneva@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Caneva Roxana",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 24,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$HpL6McPtCuckfwvzw5TQ0O$yrZAgmQw8hZquWNZnp1tU5NZsX6uDH+H6QiWW1VnDjA=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:55:26.949350+00:00",
+      "email": "juan.carignano@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Carignano Juan Ignacio",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 25,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$zNeLuu2j9zRiG2Acky4BL2$jeqIbA7GOxyUmw4DGHgRbDh0hoIHpPkomIlr5Kcuu7A=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:55:40.251314+00:00",
+      "email": "judith.centurion@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Centurion Arce Judith",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 26,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$i19wgYz6m5CD7dfrUQsWks$6QkwCQ+zKnEtIdjVtHrvmUjCpJU1tGV2LudkYl6wKE0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:56:33.646713+00:00",
+      "email": "emilia.chiapero@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Chiapero Emilia",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 27,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$WEbc3fRurg7R33mhA2qpJt$eU+8Q5MqsjyUJDC9/cT+Zz9+NHfub7kvch1SOLXoq+I=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:56:58.499978+00:00",
+      "email": "ainelen.cortassa@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Cortassa Ainelen",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 28,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$mmN56zjkDnqJYW1NjASjyt$prDBTvvSzcW9blVjdsub8qJIdZCdDn2i1o56dcUuNy4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:12.768986+00:00",
+      "email": "hector.deluchi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Deluchi Hector",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 29,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$wp9ZK9oOnr6mbfTTN5m93m$lpOXzCGQMDoCgy3m86eCh7Z45ahYc6vh58vQkhs/yVs=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:19.058450+00:00",
+      "email": "clarisa.espertino@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Espertino Clarisa",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 30,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$jAUYP2kRRdSZFAAdyZ8nFI$0gRKpfxiy1wAPy75t6IggC0ssuGl7am5MMsDXB6slu4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:28.063721+00:00",
+      "email": "pablo.fontanessi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Fontanessi Pablo",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 31,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$8l5fd7R36JEenOGcLheUaH$NJ5asWiKXJU9rqkF2vAM2ZxldjTyWqkSXSZlofLh288=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:57:35.998627+00:00",
+      "email": "luisina.giorgis@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Giorgis Luisina",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 35,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$FZzQ3q67oj8XtEcPIgK2s3$ynhki4KzkYoE6ft+gSK4QxshEk3WkANvu0eMi8IMARk=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:58:12.318380+00:00",
+      "email": "melisa.gramaglia@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Gramaglia Melisa",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 36,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$wSInnkKVCgbpy7MkERAk13$tdig0HEWkEiOB7dBHYYWCWkLQS13uL7SVoVKJ3HvBEg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:58:23.217732+00:00",
+      "email": "gonzalo.jausoro@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Jausoro Gonzalo",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 37,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$5XUAR0DY2VB99wNWnixrXX$wAcdyc4336+aHLViuR9iv+uv71iTyFBNl1sZOvjDx3s=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:58:30.450759+00:00",
+      "email": "mariela.lencina@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Lencina Mariela",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 38,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$yyNDTttUyx6UiTfJUFw24L$sy0Uj1hcFxoGSrzDCh/HwJ0iMPuiD3P9Yxka1kF9rsI=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:07.320702+00:00",
+      "email": "gabriel.majluf@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Majluf Gabriel",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 40,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$iHSfsLsoiszfoWyPYKVNyh$1kZWx7HP1kXSGW4w496ymLU3ZbKG7g1nvbo+0zJZCz0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:20.253677+00:00",
+      "email": "lorena.martino@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Martino Lorena",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 41,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$dAFp7veFi5ue5eJ07gGfRB$Yr+89weZCgu3pgCwCUhFpCRFKOPUL/PO3uodtlSOlTY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:30.624920+00:00",
+      "email": "maria.miller@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Miller Maria Laura",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 42,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$ww8lhxbPKXS3PTXrlMotpu$fTIngC2EquGmveSTfGaGUpiPQ7u9ItN/Y07d13vK5MU=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:37.821527+00:00",
+      "email": "claudia.palomeque@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Palomeque Claudia",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 43,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$d19eIT8a3fRhesWTMJkuIs$b+5B0+QnoZcv9Aj9cTccb3kgNZ2vOfq+ctsNYG5Z9Oc=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:44.822517+00:00",
+      "email": "fernando.peralta@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Peralta Fernando",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 44,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hv4vfRtujnP7X0vLiXkekM$3o3mXb8fXDg4GMi6UBFnRnz42anTx1Kpg+VApSxnX4c=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T00:59:51.708912+00:00",
+      "email": "hector.piaggio@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Piaggio Héctor Marcelo",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 45,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$44O8BT5bs7OaXvDtUNiVmG$pxxDpWG6HOIXvZpRw5Sn0WxjUXFL8ELachBEdyZedKg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:00:32.364717+00:00",
+      "email": "luciana.pignocco@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Pignocco Luciana",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 46,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$Rq1zV2CSpXKpf31bZpBrPw$lf467dtk9ska7Ye9KIxJQ1MwwKe5Xfskhr36v+eeqn4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:00:38.826197+00:00",
+      "email": "juan.pittacolo@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Pittacolo Juan",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 47,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hIRruPlfZchSKTRlDeV8QZ$PjUZliTTJ3oXYsXSBzCK9uEJMtaTk/U++ZhLhypJUEo=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:00:45.142203+00:00",
+      "email": "micaela.rambaudo@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Rambaudo Micaela",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 48,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$l9XRH02Vw0U1YrxdzMAcqg$SnDmEK9YXTtFkVFBSb6GyDfenpMPBBfgxE1RO8wccnM=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:00:52.124387+00:00",
+      "email": "julio.ravazzani@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Ravazzani Julio",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 49,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hviSAwG4BoymKhv5jdLhjg$XiqfTvZBMD8eNegYQsq6Ic5m1ckIFXyeZyrzwrl16x0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:01:17.956581+00:00",
+      "email": "laura.riberi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Riberi Laura",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 50,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$qiNUP2UmzU4u3QTe0m9xwU$+8kwy2xmzaRcrq+gNTn9t24XMd5y/u3Ki6DJZa98vOE=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:01:25.240818+00:00",
+      "email": "carolina.ricarte@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Ricarte Carolina",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 51,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$RHjFMxgaMPiqLcvBlc4k44$UBwIxrvSXBZCetdiV9J6ba7UwivjoS9Ez/Ht+fKsMeE=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:01:37.991598+00:00",
+      "email": "pamela.romero@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Romero Pamela",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 52,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$QDeQtAkTW5hY3PuPVz0H6G$KMm64qjI8RgCcWN/mjmyv8v+DDaaVKQzNakOav0zDvs=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:01:57.510589+00:00",
+      "email": "andrea.ruiz@ies.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Ruiz Andrea",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 53,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$a0rrHLTNb1TRQnYlSzB5XJ$o0DNazVPGkdtcv+sBZKP4kVKY5nuzK8Tnw3/o70tQj4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:02:33.477162+00:00",
+      "email": "marcos.sosa@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Sosa Marcos",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 54,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$Ogi2zdLEWKuIpg3GyDB5Vo$55vTykqXi+/YfzV0Z+47d28MGblJQHtA/W9+bfwc3JA=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:02:44.259648+00:00",
+      "email": "oscar.spila@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Spila Oscar",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 55,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$K7F47al4eHFSL9UC1iFOhf$vL3GU1Ap/2a4cU9NxJl8vQad5cnWwt/gO/RmTmFYb7U=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:02:52.317081+00:00",
+      "email": "vicente.spinassi@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Spinassi Vicente",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 56,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hyAcJJDQMJ8iW68GVBUe2s$7Wbdpf3gxe3kARFqD1GowbPSuJUwwpjdHUSRkLUOai8=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:02:59.554910+00:00",
+      "email": "cecilia.vera@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Vera Candiotti Cecilia",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 57,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$2g4KxoLH8jUzQ5PIQPjfkZ$pbMP1irqGcqA5SXRbBeEyJ2p9oq4FVGHeaPSHenFzAg=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:03:04.056861+00:00",
+      "email": "alexis.walker@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Walker Alexis",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 58,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$lkxUgoyUaYXkjIKj2XL5im$QkTjeXZEgsdiDQ1jUEdmfDndpBIZzbUrZfNTmoF8HCo=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-14T01:03:13.751313+00:00",
+      "email": "ariatna.weishein@ices.edu.ar",
+      "rol": "profesor",
+      "nombre_completo": "Weishein Ariatna",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "usuarios.usuario",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$hOiUHckTAk3URZqsIEGVTC$uN/eMYqgdSeF6raK1HMhYErvbMTkN4KEaozpjVKP4Yc=",
+      "last_login": "2026-05-14T20:24:09.494412+00:00",
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-12T17:22:16.330700+00:00",
+      "email": "ariatna.weishein@ices.edu",
+      "rol": "moderadora",
+      "nombre_completo": "Ariatna Weishein",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.institucion",
+    "pk": 1,
+    "fields": {
+      "nombre": "Instituto Cooperativo de Enseñanza Superior",
+      "codigo": "ICES",
+      "fecha_creacion": "2024-01-01T00:00:00+00:00",
+      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.carrera",
+    "pk": 1,
+    "fields": {
+      "fecha_creacion": "2026-05-12T19:49:06.647030+00:00",
+      "fecha_modificacion": "2026-05-12T19:49:06.647043+00:00",
+      "activo": true,
+      "nombre": "Tecnicatura Superior en Desarrollo de Software",
+      "coordinador": 3,
+      "institucion": 1,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.carrera",
+    "pk": 2,
+    "fields": {
+      "fecha_creacion": "2026-05-13T23:42:29.581771+00:00",
+      "fecha_modificacion": "2026-05-13T23:42:29.581790+00:00",
+      "activo": true,
+      "nombre": "Tecnicatura Superior en Gestión de las Organizaciones",
+      "coordinador": 3,
+      "institucion": 1,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.carrera",
+    "pk": 3,
+    "fields": {
+      "fecha_creacion": "2026-05-13T23:42:39.675377+00:00",
+      "fecha_modificacion": "2026-05-13T23:42:39.675392+00:00",
+      "activo": true,
+      "nombre": "Tecnicatura Universitaria en Gestión de Recursos Humanos",
+      "coordinador": 3,
+      "institucion": 1,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.carrera",
+    "pk": 4,
+    "fields": {
+      "fecha_creacion": "2026-05-13T23:42:46.881811+00:00",
+      "fecha_modificacion": "2026-05-13T23:42:46.881826+00:00",
+      "activo": true,
+      "nombre": "Tecnicatura Universitaria en Gestión en Cooperativas y Mutuales",
+      "coordinador": 3,
+      "institucion": 1,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 2,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:50:11.602499+00:00",
+      "fecha_modificacion": "2026-05-14T00:50:11.602517+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 5,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 3,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:50:28.113700+00:00",
+      "fecha_modificacion": "2026-05-14T00:50:28.113714+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 6,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 4,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:50:47.202239+00:00",
+      "fecha_modificacion": "2026-05-14T00:50:47.202250+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 7,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 5,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:50:55.703943+00:00",
+      "fecha_modificacion": "2026-05-14T00:50:55.703966+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 8,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 6,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:51:04.313275+00:00",
+      "fecha_modificacion": "2026-05-14T00:51:04.313286+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 9,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 7,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:51:30.910344+00:00",
+      "fecha_modificacion": "2026-05-14T00:51:30.910356+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 10,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 8,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:51:41.914109+00:00",
+      "fecha_modificacion": "2026-05-14T00:51:41.914130+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 11,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 9,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:51:48.611588+00:00",
+      "fecha_modificacion": "2026-05-14T00:51:48.611612+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 12,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 10,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:51:55.207726+00:00",
+      "fecha_modificacion": "2026-05-14T00:51:55.207749+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 13,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 11,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:52:00.810394+00:00",
+      "fecha_modificacion": "2026-05-14T00:52:00.810444+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 14,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 12,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:52:07.001566+00:00",
+      "fecha_modificacion": "2026-05-14T00:52:07.001581+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 15,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 13,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:52:46.203452+00:00",
+      "fecha_modificacion": "2026-05-14T00:52:46.203462+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 16,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 14,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:53:35.306657+00:00",
+      "fecha_modificacion": "2026-05-14T00:53:35.306673+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 17,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 15,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:53:50.007615+00:00",
+      "fecha_modificacion": "2026-05-14T00:53:50.007632+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 18,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 16,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:54:00.248612+00:00",
+      "fecha_modificacion": "2026-05-14T00:54:00.248628+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 19,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 17,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:54:15.513982+00:00",
+      "fecha_modificacion": "2026-05-14T00:54:15.513996+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 20,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 18,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:55:01.805599+00:00",
+      "fecha_modificacion": "2026-05-14T00:55:01.805609+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 21,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 19,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:55:08.705091+00:00",
+      "fecha_modificacion": "2026-05-14T00:55:08.705113+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 22,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 20,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:55:17.412834+00:00",
+      "fecha_modificacion": "2026-05-14T00:55:17.412848+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 23,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 21,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:55:28.809457+00:00",
+      "fecha_modificacion": "2026-05-14T00:55:28.809467+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 24,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 22,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:55:42.100524+00:00",
+      "fecha_modificacion": "2026-05-14T00:55:42.100536+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 25,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 23,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:56:35.501376+00:00",
+      "fecha_modificacion": "2026-05-14T00:56:35.501387+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 26,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 24,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:00.406370+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:00.406381+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 27,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 25,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:14.798347+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:14.798368+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 28,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 26,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:21.198190+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:21.198211+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 29,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 27,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:29.906398+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:29.906432+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 30,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 28,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:37.902783+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:37.902793+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 31,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 29,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:46.604884+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:46.604897+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 32,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 30,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:57:56.806848+00:00",
+      "fecha_modificacion": "2026-05-14T00:57:56.806861+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 33,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 31,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:58:06.712079+00:00",
+      "fecha_modificacion": "2026-05-14T00:58:06.712093+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 34,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 32,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:58:14.206083+00:00",
+      "fecha_modificacion": "2026-05-14T00:58:14.206093+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 35,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 33,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:58:25.112444+00:00",
+      "fecha_modificacion": "2026-05-14T00:58:25.112458+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 36,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 34,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:58:32.312435+00:00",
+      "fecha_modificacion": "2026-05-14T00:58:32.312447+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 37,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 35,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:09.212581+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:09.212594+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 38,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 36,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:16.311120+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:16.311135+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 39,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 37,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:22.105586+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:22.105598+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 40,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 38,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:32.512507+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:32.512518+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 41,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 39,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:39.706680+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:39.706691+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 42,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 40,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:46.713315+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:46.713325+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 43,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 41,
+    "fields": {
+      "fecha_creacion": "2026-05-14T00:59:53.604788+00:00",
+      "fecha_modificacion": "2026-05-14T00:59:53.604817+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 44,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 42,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:00:34.207614+00:00",
+      "fecha_modificacion": "2026-05-14T01:00:34.207627+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 45,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 43,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:00:40.813298+00:00",
+      "fecha_modificacion": "2026-05-14T01:00:40.813308+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 46,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 44,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:00:47.012860+00:00",
+      "fecha_modificacion": "2026-05-14T01:00:47.012873+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 47,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 45,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:00:54.011564+00:00",
+      "fecha_modificacion": "2026-05-14T01:00:54.011580+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 48,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 46,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:01:19.810948+00:00",
+      "fecha_modificacion": "2026-05-14T01:01:19.810958+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 49,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 47,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:01:27.310364+00:00",
+      "fecha_modificacion": "2026-05-14T01:01:27.310377+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 50,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 48,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:01:39.906662+00:00",
+      "fecha_modificacion": "2026-05-14T01:01:39.906673+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 51,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 49,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:01:59.547938+00:00",
+      "fecha_modificacion": "2026-05-14T01:01:59.547961+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 52,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 50,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:02:35.298347+00:00",
+      "fecha_modificacion": "2026-05-14T01:02:35.298362+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 51,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:02:46.198108+00:00",
+      "fecha_modificacion": "2026-05-14T01:02:46.198121+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 54,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 52,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:02:54.247609+00:00",
+      "fecha_modificacion": "2026-05-14T01:02:54.247626+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 55,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 53,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:03:01.502177+00:00",
+      "fecha_modificacion": "2026-05-14T01:03:01.502189+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 56,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 54,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:03:05.909217+00:00",
+      "fecha_modificacion": "2026-05-14T01:03:05.909227+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 57,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.profesor",
+    "pk": 55,
+    "fields": {
+      "fecha_creacion": "2026-05-14T01:03:15.613158+00:00",
+      "fecha_modificacion": "2026-05-14T01:03:15.613173+00:00",
+      "activo": true,
+      "institucion": 1,
+      "usuario": 58,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 3,
+    "fields": {
+      "fecha_creacion": "2026-05-14T14:56:17.962743+00:00",
+      "fecha_modificacion": "2026-05-14T14:56:17.962758+00:00",
+      "activo": true,
+      "nombre": "Cooperativismo",
+      "anio_cursado": 1,
+      "regimen": "2cuat",
+      "carrera": 1,
+      "profesor_titular": 9,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 4,
+    "fields": {
+      "fecha_creacion": "2026-05-14T14:56:55.181996+00:00",
+      "fecha_modificacion": "2026-05-14T14:56:55.182017+00:00",
+      "activo": true,
+      "nombre": "Matemática",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 5,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 2,
+    "fields": {
+      "fecha_creacion": "2026-05-14T14:55:14.646104+00:00",
+      "fecha_modificacion": "2026-05-14T14:57:07.901745+00:00",
+      "activo": true,
+      "nombre": "Comunicación",
+      "anio_cursado": 1,
+      "regimen": "1cuat",
+      "carrera": 1,
+      "profesor_titular": 37,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 5,
+    "fields": {
+      "fecha_creacion": "2026-05-14T14:59:40.761606+00:00",
+      "fecha_modificacion": "2026-05-14T14:59:40.761622+00:00",
+      "activo": true,
+      "nombre": "Inglés Técnico I",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 12,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 6,
+    "fields": {
+      "fecha_creacion": "2026-05-14T14:59:56.182217+00:00",
+      "fecha_modificacion": "2026-05-14T14:59:56.182230+00:00",
+      "activo": true,
+      "nombre": "Administración",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 50,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 7,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:00:11.434906+00:00",
+      "fecha_modificacion": "2026-05-14T15:00:11.434923+00:00",
+      "activo": true,
+      "nombre": "Tecnología de la Información",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 36,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 8,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:00:34.612475+00:00",
+      "fecha_modificacion": "2026-05-14T15:00:34.612494+00:00",
+      "activo": true,
+      "nombre": "Lógica y Estructura de Datos",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 54,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 9,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:00:49.394088+00:00",
+      "fecha_modificacion": "2026-05-14T15:00:49.394101+00:00",
+      "activo": true,
+      "nombre": "Ingeniería de Software I",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 36,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 10,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:01:02.761768+00:00",
+      "fecha_modificacion": "2026-05-14T15:01:02.761783+00:00",
+      "activo": true,
+      "nombre": "Sistemas Operativos",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 45,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 11,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:01:27.446567+00:00",
+      "fecha_modificacion": "2026-05-14T15:01:27.446578+00:00",
+      "activo": true,
+      "nombre": "Cálculo I",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 12,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:01:55.192680+00:00",
+      "fecha_modificacion": "2026-05-14T15:02:13.461351+00:00",
+      "activo": true,
+      "nombre": "Problemática Socio Contemporáneas",
+      "anio_cursado": 2,
+      "regimen": "1cuat",
+      "carrera": 1,
+      "profesor_titular": 24,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 13,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:03:26.715451+00:00",
+      "fecha_modificacion": "2026-05-14T15:03:26.715463+00:00",
+      "activo": true,
+      "nombre": "Filosofía",
+      "anio_cursado": 2,
+      "regimen": "2cuat",
+      "carrera": 1,
+      "profesor_titular": 46,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 14,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:03:56.335979+00:00",
+      "fecha_modificacion": "2026-05-14T15:03:56.335991+00:00",
+      "activo": true,
+      "nombre": "Inglés Técnico II",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 12,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 15,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:04:13.652277+00:00",
+      "fecha_modificacion": "2026-05-14T15:04:13.652291+00:00",
+      "activo": true,
+      "nombre": "Innovación y Desarrollo Emprendedor",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 44,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 16,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:04:25.244290+00:00",
+      "fecha_modificacion": "2026-05-14T15:04:25.244302+00:00",
+      "activo": true,
+      "nombre": "Estadística",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 17,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:04:43.548257+00:00",
+      "fecha_modificacion": "2026-05-14T15:04:43.548268+00:00",
+      "activo": true,
+      "nombre": "Programación I",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 21,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 18,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:05:00.938900+00:00",
+      "fecha_modificacion": "2026-05-14T15:05:00.938915+00:00",
+      "activo": true,
+      "nombre": "Ingeniería de Software II",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 54,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 19,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:05:10.082385+00:00",
+      "fecha_modificacion": "2026-05-14T15:05:10.082399+00:00",
+      "activo": true,
+      "nombre": "Bases de Datos I",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 2,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 20,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:05:20.864391+00:00",
+      "fecha_modificacion": "2026-05-14T15:05:20.864406+00:00",
+      "activo": true,
+      "nombre": "Práctica Profesionalizante I",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 35,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 21,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:05:36.800440+00:00",
+      "fecha_modificacion": "2026-05-14T15:05:36.800458+00:00",
+      "activo": true,
+      "nombre": "Cálculo II",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 22,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:07:14.680490+00:00",
+      "fecha_modificacion": "2026-05-14T15:07:29.732016+00:00",
+      "activo": true,
+      "nombre": "Ética y Responsabilidad Social",
+      "anio_cursado": 3,
+      "regimen": "1cuat",
+      "carrera": 1,
+      "profesor_titular": 43,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 23,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:08:00.580010+00:00",
+      "fecha_modificacion": "2026-05-14T15:08:16.524556+00:00",
+      "activo": true,
+      "nombre": "Derecho y Legislación Laboral",
+      "anio_cursado": 3,
+      "regimen": "2cuat",
+      "carrera": 1,
+      "profesor_titular": 11,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 24,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:09:06.734915+00:00",
+      "fecha_modificacion": "2026-05-14T15:09:06.734926+00:00",
+      "activo": true,
+      "nombre": "Redes y Comunicación",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 15,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 25,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:09:19.032551+00:00",
+      "fecha_modificacion": "2026-05-14T15:09:19.032606+00:00",
+      "activo": true,
+      "nombre": "Programación II",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 36,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 26,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:09:30.350973+00:00",
+      "fecha_modificacion": "2026-05-14T15:09:30.350991+00:00",
+      "activo": true,
+      "nombre": "Gestión de Proyectos de Software",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 42,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 27,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:09:45.006676+00:00",
+      "fecha_modificacion": "2026-05-14T15:09:45.006687+00:00",
+      "activo": true,
+      "nombre": "Bases de Datos II",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 2,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 28,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:10:29.531563+00:00",
+      "fecha_modificacion": "2026-05-14T15:10:29.531575+00:00",
+      "activo": true,
+      "nombre": "Práctica Profesionalizante II",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 19,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 29,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:10:41.616527+00:00",
+      "fecha_modificacion": "2026-05-14T15:10:41.616542+00:00",
+      "activo": true,
+      "nombre": "Matemática Discreta",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 1,
+      "profesor_titular": 28,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 30,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:14:11.023379+00:00",
+      "fecha_modificacion": "2026-05-14T15:14:11.023401+00:00",
+      "activo": true,
+      "nombre": "Comunicación",
+      "anio_cursado": 1,
+      "regimen": "1cuat",
+      "carrera": 2,
+      "profesor_titular": 37,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 31,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:14:53.084817+00:00",
+      "fecha_modificacion": "2026-05-14T15:14:53.084830+00:00",
+      "activo": true,
+      "nombre": "UDI - Derecho Público",
+      "anio_cursado": 1,
+      "regimen": "2cuat",
+      "carrera": 2,
+      "profesor_titular": 10,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 32,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:15:23.113330+00:00",
+      "fecha_modificacion": "2026-05-14T15:15:23.113344+00:00",
+      "activo": true,
+      "nombre": "Economía",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 14,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 33,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:15:38.100165+00:00",
+      "fecha_modificacion": "2026-05-14T15:15:38.100197+00:00",
+      "activo": true,
+      "nombre": "Matemática y Estadística",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 34,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:16:03.912069+00:00",
+      "fecha_modificacion": "2026-05-14T15:16:03.912083+00:00",
+      "activo": true,
+      "nombre": "Contabilidad",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 6,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 35,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:16:12.911628+00:00",
+      "fecha_modificacion": "2026-05-14T15:16:12.911645+00:00",
+      "activo": true,
+      "nombre": "Informática",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 45,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 36,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:16:24.814754+00:00",
+      "fecha_modificacion": "2026-05-14T15:16:24.814766+00:00",
+      "activo": true,
+      "nombre": "Gestión del Capital Humano",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 47,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 37,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:16:37.348526+00:00",
+      "fecha_modificacion": "2026-05-14T15:16:37.348538+00:00",
+      "activo": true,
+      "nombre": "Administración General",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 23,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 38,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:16:52.086360+00:00",
+      "fecha_modificacion": "2026-05-14T15:16:52.086378+00:00",
+      "activo": true,
+      "nombre": "Gestión de la Producción",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 42,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 39,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:17:31.676493+00:00",
+      "fecha_modificacion": "2026-05-14T15:17:31.676511+00:00",
+      "activo": true,
+      "nombre": "Doctrina e Historia del Cooperativismo",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 9,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 40,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:17:40.434380+00:00",
+      "fecha_modificacion": "2026-05-14T15:17:40.434403+00:00",
+      "activo": true,
+      "nombre": "Derecho Privado",
+      "anio_cursado": 1,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 33,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 41,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:20:48.975384+00:00",
+      "fecha_modificacion": "2026-05-14T15:20:48.975396+00:00",
+      "activo": true,
+      "nombre": "Problemática Socio Contemporáneas",
+      "anio_cursado": 2,
+      "regimen": "1cuat",
+      "carrera": 2,
+      "profesor_titular": 52,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 42,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:21:17.901327+00:00",
+      "fecha_modificacion": "2026-05-14T15:21:17.901344+00:00",
+      "activo": true,
+      "nombre": "UDI - Historia Económica",
+      "anio_cursado": 2,
+      "regimen": "2cuat",
+      "carrera": 2,
+      "profesor_titular": 52,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 43,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:21:53.120446+00:00",
+      "fecha_modificacion": "2026-05-14T15:21:53.120458+00:00",
+      "activo": true,
+      "nombre": "Innovación y Desarrollo Emprendedor",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 44,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 44,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:22:31.983012+00:00",
+      "fecha_modificacion": "2026-05-14T15:22:31.983022+00:00",
+      "activo": true,
+      "nombre": "Inglés Técnico",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 12,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 45,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:22:44.203549+00:00",
+      "fecha_modificacion": "2026-05-14T15:22:44.203563+00:00",
+      "activo": true,
+      "nombre": "Legislación Comercial y Tributaria",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 33,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 46,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:22:56.596035+00:00",
+      "fecha_modificacion": "2026-05-14T15:22:56.596052+00:00",
+      "activo": true,
+      "nombre": "Gestión de Comercialización e Investigación Comercial",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 13,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 47,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:23:04.260821+00:00",
+      "fecha_modificacion": "2026-05-14T15:23:04.260837+00:00",
+      "activo": true,
+      "nombre": "Gestión de Costos",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 25,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 48,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:23:15.752354+00:00",
+      "fecha_modificacion": "2026-05-14T15:23:15.752372+00:00",
+      "activo": true,
+      "nombre": "Gestión Contable",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 3,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 49,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:23:27.833787+00:00",
+      "fecha_modificacion": "2026-05-14T15:23:27.833800+00:00",
+      "activo": true,
+      "nombre": "Práctica Profesionalizante I",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 39,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 50,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:24:12.505674+00:00",
+      "fecha_modificacion": "2026-05-14T15:24:12.505688+00:00",
+      "activo": true,
+      "nombre": "Legislación Cooperativas y Mutuales",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 10,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 51,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:24:24.344843+00:00",
+      "fecha_modificacion": "2026-05-14T15:24:24.344862+00:00",
+      "activo": true,
+      "nombre": "Matemática y Estadística",
+      "anio_cursado": 2,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 53,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 52,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:25:17.327966+00:00",
+      "fecha_modificacion": "2026-05-14T15:25:17.327997+00:00",
+      "activo": true,
+      "nombre": "Ética y Responsabilidad Social",
+      "anio_cursado": 3,
+      "regimen": "1cuat",
+      "carrera": 2,
+      "profesor_titular": 24,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 53,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:25:40.146816+00:00",
+      "fecha_modificacion": "2026-05-14T15:25:40.146836+00:00",
+      "activo": true,
+      "nombre": "Legislación Laboral",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 11,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 54,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:25:52.916250+00:00",
+      "fecha_modificacion": "2026-05-14T15:25:52.916269+00:00",
+      "activo": true,
+      "nombre": "Estrategia Empresarial",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 7,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 55,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:26:04.820449+00:00",
+      "fecha_modificacion": "2026-05-14T15:26:04.820459+00:00",
+      "activo": true,
+      "nombre": "Sistemas de Información para la Gestión de las Organizaciones",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 45,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 56,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:26:12.522555+00:00",
+      "fecha_modificacion": "2026-05-14T15:26:12.522565+00:00",
+      "activo": true,
+      "nombre": "Gestión Financiera",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 32,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 57,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:26:22.802326+00:00",
+      "fecha_modificacion": "2026-05-14T15:26:22.802339+00:00",
+      "activo": true,
+      "nombre": "Evaluación y Administración de Proyectos de Inversión",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 25,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 58,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:26:36.283418+00:00",
+      "fecha_modificacion": "2026-05-14T15:26:36.283432+00:00",
+      "activo": true,
+      "nombre": "Control de Gestión",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 3,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 59,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:26:47.723577+00:00",
+      "fecha_modificacion": "2026-05-14T15:26:47.723592+00:00",
+      "activo": true,
+      "nombre": "Práctica Profesionalizante II",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 39,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 60,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:27:05.833642+00:00",
+      "fecha_modificacion": "2026-05-14T15:27:05.833654+00:00",
+      "activo": true,
+      "nombre": "Impuesto a la Renta y Patrimonio",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 4,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 61,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:27:19.327553+00:00",
+      "fecha_modificacion": "2026-05-14T15:27:19.327570+00:00",
+      "activo": true,
+      "nombre": "Cooperativismo",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": 40,
+      "modificado_por": null
+    }
+  },
+  {
+    "model": "catalogos.materia",
+    "pk": 62,
+    "fields": {
+      "fecha_creacion": "2026-05-14T15:27:30.073438+00:00",
+      "fecha_modificacion": "2026-05-14T15:27:30.073449+00:00",
+      "activo": true,
+      "nombre": "Gestión de Seguridad, Salud Ocupacional y Medio Ambiente",
+      "anio_cursado": 3,
+      "regimen": "anual",
+      "carrera": 2,
+      "profesor_titular": null,
+      "modificado_por": null
+    }
+  }
+]
