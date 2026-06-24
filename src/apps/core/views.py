@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 @login_required
@@ -40,7 +41,7 @@ def home(request):
                     'tipo': 'warning',
                     'icono': 'bi-exclamation-triangle',
                     'texto': f'{p.materia.nombre} ({p.instancia.nombre} {p.instancia.anio_academico}): tenés que cargar tu planificación.',
-                    'url': f'/instancias/{p.instancia.pk}/',
+                    'url': reverse('instancias:detalle', kwargs={'pk': p.instancia.pk}),
                 })
             elif ultima.estado in ('rechazada', 'rechazada_auto'):
                 stats['rechazadas'] += 1
@@ -48,7 +49,7 @@ def home(request):
                     'tipo': 'danger',
                     'icono': 'bi-x-circle-fill',
                     'texto': f'{p.materia.nombre}: planificación rechazada — necesita corrección.',
-                    'url': f'/planificaciones/{p.pk}/',
+                    'url': reverse('planificaciones:detalle', kwargs={'pk': p.pk}),
                 })
             elif ultima.estado == 'en_revision':
                 stats['en_revision'] += 1
@@ -56,7 +57,7 @@ def home(request):
                     'tipo': 'warning',
                     'icono': 'bi-hourglass-split',
                     'texto': f'{p.materia.nombre}: en revisión.',
-                    'url': f'/planificaciones/{p.pk}/',
+                    'url': reverse('planificaciones:detalle', kwargs={'pk': p.pk}),
                 })
             elif ultima.estado == 'borrador':
                 stats['borradores'] += 1
@@ -64,7 +65,7 @@ def home(request):
                     'tipo': 'secondary',
                     'icono': 'bi-file-earmark',
                     'texto': f'{p.materia.nombre}: borrador guardado, todavía no enviada.',
-                    'url': f'/planificaciones/{p.pk}/',
+                    'url': reverse('planificaciones:detalle', kwargs={'pk': p.pk}),
                 })
             elif ultima.estado in ('oficial', 'aprobada'):
                 stats['oficiales'] += 1
@@ -106,14 +107,14 @@ def home(request):
                 'tipo': 'warning',
                 'icono': 'bi-hourglass-split',
                 'texto': f'{esperando_mi_visto} planificación{"es" if esperando_mi_visto > 1 else ""} en revisión esperando tu aceptación.',
-                'url': '/revisiones/',
+                'url': reverse('revisiones:tablero'),
             })
         if tardias:
             alertas.append({
                 'tipo': 'danger',
                 'icono': 'bi-clock-history',
                 'texto': f'{tardias} planificación{"es" if tardias > 1 else ""} con entrega tardía.',
-                'url': '/revisiones/?tardia=1',
+                'url': reverse('revisiones:tablero') + '?tardia=1',
             })
 
         context['stats'] = {
