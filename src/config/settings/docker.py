@@ -71,20 +71,17 @@ SECURE_BROWSER_XSS_FILTER      = True
 SECURE_CONTENT_TYPE_NOSNIFF    = True
 X_FRAME_OPTIONS                = 'DENY'
 
-# Solo activar cookies seguras si hay HTTPS (cuando hay SSL en nginx).
-# Con HTTP puro, CSRF_COOKIE_SECURE=True hace que el browser nunca mande
-# la cookie → Django rechaza todos los formularios con 403.
-_https = SECURE_SSL_REDIRECT or SECURE_HSTS_SECONDS > 0
-SESSION_COOKIE_SECURE = _https
-CSRF_COOKIE_SECURE    = _https
-
-# HSTS: habilitar solo si el contenedor está detrás de HTTPS (nginx/traefik)
+# HSTS y SSL redirect — solo activar si hay HTTPS en el proxy externo
 SECURE_HSTS_SECONDS            = int(os.getenv('SECURE_HSTS_SECONDS', '0'))
 SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
 SECURE_HSTS_PRELOAD            = SECURE_HSTS_SECONDS > 0
-
-# SSL redirect: desactivar si el proxy externo (nginx/traefik) ya maneja HTTPS
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False').lower() in ('true', '1', 'yes')
+
+# Cookies seguras solo con HTTPS. Con HTTP puro deben ser False, de lo contrario
+# el browser nunca envía la CSRF cookie → Django rechaza formularios con 403.
+_https = SECURE_SSL_REDIRECT or SECURE_HSTS_SECONDS > 0
+SESSION_COOKIE_SECURE = _https
+CSRF_COOKIE_SECURE    = _https
 
 # Si hay proxy inverso (nginx/traefik con HTTPS), descomentar:
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
