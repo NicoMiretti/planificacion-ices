@@ -20,9 +20,16 @@ urlpatterns = [
     path('revisiones/', include('apps.revisiones.urls')),
 ]
 
-# Media files en desarrollo
+# Media files: siempre activo (en dev DEBUG lo resuelve también; en producción
+# detrás de nginx con sub-path, path_info ya viene sin el prefijo SCRIPT_NAME,
+# por eso el patrón usa '/media/' directamente).
+from django.views.static import serve as _serve
+from django.urls import re_path as _re_path
+urlpatterns += [
+    _re_path(r'^media/(?P<path>.*)$', _serve, {'document_root': settings.MEDIA_ROOT}),
+]
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     
     # Debug toolbar

@@ -51,10 +51,19 @@ MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Con FORCE_SCRIPT_NAME='/planificaciones', los templates generan URLs con el
+# prefijo incluido. STATIC_URL debe tenerlo para que el browser pida la URL
+# correcta (que nginx enruta a Django).
+# WHITENOISE_STATIC_PREFIX='/static/' le dice a whitenoise que sus archivos
+# están en '/static/...' dentro del request.path_info (ya con prefix stripeado
+# por Django), independientemente de STATIC_URL.
+STATIC_URL              = '/planificaciones/static/'
+WHITENOISE_STATIC_PREFIX = '/static/'
+
 # ─── Archivos de media ────────────────────────────────────────────────────────
 
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL  = '/media/'
+MEDIA_URL  = '/planificaciones/media/'
 
 # ─── Seguridad ────────────────────────────────────────────────────────────────
 
