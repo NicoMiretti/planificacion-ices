@@ -13,10 +13,7 @@
       "date_joined": "2026-05-12T17:18:33.969004+00:00",
       "email": "admin@ices.edu",
       "rol": "admin",
-      "nombre_completo": "Admin",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Admin"
     }
   },
   {
@@ -33,10 +30,7 @@
       "date_joined": "2026-05-14T00:57:44.697529+00:00",
       "email": "sofia.giusti@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Giusti Sofia",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Giusti Sofia"
     }
   },
   {
@@ -53,10 +47,7 @@
       "date_joined": "2026-05-14T00:57:54.854670+00:00",
       "email": "agustina.gomez@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Gomez Agustina",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Gomez Agustina"
     }
   },
   {
@@ -73,10 +64,7 @@
       "date_joined": "2026-05-14T00:58:04.817825+00:00",
       "email": "daniela.gonzalez@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Gonzalez Daniela",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Gonzalez Daniela"
     }
   },
   {
@@ -93,10 +81,7 @@
       "date_joined": "2026-05-14T00:59:14.443516+00:00",
       "email": "matias.maretto@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Maretto Matias",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Maretto Matias"
     }
   },
   {
@@ -113,10 +98,7 @@
       "date_joined": "2026-05-12T19:48:09.846476+00:00",
       "email": "matias.maretto@gmail.com",
       "rol": "coordinador",
-      "nombre_completo": "Matias Maretto",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Matias Maretto"
     }
   },
   {
@@ -133,10 +115,7 @@
       "date_joined": "2026-05-14T00:50:09.512446+00:00",
       "email": "alejandro.aguirre@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Aguirre Alejandro",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Aguirre Alejandro"
     }
   },
   {
@@ -153,10 +132,7 @@
       "date_joined": "2026-05-14T00:50:26.345510+00:00",
       "email": "alvaro.aguirre@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Aguirre Alvaro",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Aguirre Alvaro"
     }
   },
   {
@@ -173,10 +149,7 @@
       "date_joined": "2026-05-14T00:50:45.271451+00:00",
       "email": "guillermo.agusti@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Agusti Guillermo",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Agusti Guillermo"
     }
   },
   {
@@ -193,10 +166,7 @@
       "date_joined": "2026-05-14T00:50:53.870474+00:00",
       "email": "erica.albertinazzi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Albertinazzi Erica",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Albertinazzi Erica"
     }
   },
   {
@@ -213,10 +183,7 @@
       "date_joined": "2026-05-14T00:51:02.562486+00:00",
       "email": "maria.albertinazzi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Albertinazzi M. Laura",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Albertinazzi M. Laura"
     }
   },
   {
@@ -233,10 +200,7 @@
       "date_joined": "2026-05-14T00:51:29.102453+00:00",
       "email": "eugenia.arismendi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Arismendi Eugenia",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Arismendi Eugenia"
     }
   },
   {
@@ -253,10 +217,7 @@
       "date_joined": "2026-05-14T00:51:40.152045+00:00",
       "email": "mauro.auer@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Auer Mauro",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Auer Mauro"
     }
   },
   {
@@ -273,10 +234,7 @@
       "date_joined": "2026-05-14T00:51:46.762749+00:00",
       "email": "mariano.avenatti@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Avenatti Mariano",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Avenatti Mariano"
     }
   },
   {
@@ -293,10 +251,7 @@
       "date_joined": "2026-05-14T00:51:53.348681+00:00",
       "email": "lorena.ballari@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Ballari Lorena",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ballari Lorena"
     }
   },
   {
@@ -313,10 +268,7 @@
       "date_joined": "2026-05-14T00:51:59.012214+00:00",
       "email": "melina.ballari@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Ballari Melina",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ballari Melina"
     }
   },
   {
@@ -333,10 +285,7 @@
       "date_joined": "2026-05-14T00:52:05.160354+00:00",
       "email": "gabriela.barra@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Barra Gabriela",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Barra Gabriela"
     }
   },
   {
@@ -353,10 +302,7 @@
       "date_joined": "2026-05-14T00:52:44.367466+00:00",
       "email": "mariano.baudino@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Baudino Mariano",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Baudino Mariano"
     }
   },
   {
@@ -373,10 +319,7 @@
       "date_joined": "2026-05-14T00:53:33.130603+00:00",
       "email": "roman.berardi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Berardi Roman",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Berardi Roman"
     }
   },
   {
@@ -393,10 +336,7 @@
       "date_joined": "2026-05-14T00:53:48.183539+00:00",
       "email": "rogelio.biolatto@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Biolatto Rogelio",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Biolatto Rogelio"
     }
   },
   {
@@ -413,10 +353,7 @@
       "date_joined": "2026-05-14T00:53:58.138431+00:00",
       "email": "veronica.bocco@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Bocco Veronica",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Bocco Veronica"
     }
   },
   {
@@ -433,10 +370,7 @@
       "date_joined": "2026-05-14T00:54:13.636100+00:00",
       "email": "luis.bonansea@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Bonansea Luis",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Bonansea Luis"
     }
   },
   {
@@ -453,10 +387,7 @@
       "date_joined": "2026-05-14T00:54:59.952433+00:00",
       "email": "maria.bonzi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Bonzi Maria Victoria",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Bonzi Maria Victoria"
     }
   },
   {
@@ -473,10 +404,7 @@
       "date_joined": "2026-05-14T00:55:06.885888+00:00",
       "email": "emiliano.buffet@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Buffet Emiliano",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Buffet Emiliano"
     }
   },
   {
@@ -493,10 +421,7 @@
       "date_joined": "2026-05-14T00:55:15.414508+00:00",
       "email": "roxana.caneva@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Caneva Roxana",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Caneva Roxana"
     }
   },
   {
@@ -513,10 +438,7 @@
       "date_joined": "2026-05-14T00:55:26.949350+00:00",
       "email": "juan.carignano@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Carignano Juan Ignacio",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Carignano Juan Ignacio"
     }
   },
   {
@@ -533,10 +455,7 @@
       "date_joined": "2026-05-14T00:55:40.251314+00:00",
       "email": "judith.centurion@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Centurion Arce Judith",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Centurion Arce Judith"
     }
   },
   {
@@ -553,10 +472,7 @@
       "date_joined": "2026-05-14T00:56:33.646713+00:00",
       "email": "emilia.chiapero@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Chiapero Emilia",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Chiapero Emilia"
     }
   },
   {
@@ -573,10 +489,7 @@
       "date_joined": "2026-05-14T00:56:58.499978+00:00",
       "email": "ainelen.cortassa@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Cortassa Ainelen",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Cortassa Ainelen"
     }
   },
   {
@@ -593,10 +506,7 @@
       "date_joined": "2026-05-14T00:57:12.768986+00:00",
       "email": "hector.deluchi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Deluchi Hector",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Deluchi Hector"
     }
   },
   {
@@ -613,10 +523,7 @@
       "date_joined": "2026-05-14T00:57:19.058450+00:00",
       "email": "clarisa.espertino@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Espertino Clarisa",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Espertino Clarisa"
     }
   },
   {
@@ -633,10 +540,7 @@
       "date_joined": "2026-05-14T00:57:28.063721+00:00",
       "email": "pablo.fontanessi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Fontanessi Pablo",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Fontanessi Pablo"
     }
   },
   {
@@ -653,10 +557,7 @@
       "date_joined": "2026-05-14T00:57:35.998627+00:00",
       "email": "luisina.giorgis@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Giorgis Luisina",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Giorgis Luisina"
     }
   },
   {
@@ -673,10 +574,7 @@
       "date_joined": "2026-05-14T00:58:12.318380+00:00",
       "email": "melisa.gramaglia@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Gramaglia Melisa",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Gramaglia Melisa"
     }
   },
   {
@@ -693,10 +591,7 @@
       "date_joined": "2026-05-14T00:58:23.217732+00:00",
       "email": "gonzalo.jausoro@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Jausoro Gonzalo",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Jausoro Gonzalo"
     }
   },
   {
@@ -713,10 +608,7 @@
       "date_joined": "2026-05-14T00:58:30.450759+00:00",
       "email": "mariela.lencina@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Lencina Mariela",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Lencina Mariela"
     }
   },
   {
@@ -733,10 +625,7 @@
       "date_joined": "2026-05-14T00:59:07.320702+00:00",
       "email": "gabriel.majluf@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Majluf Gabriel",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Majluf Gabriel"
     }
   },
   {
@@ -753,10 +642,7 @@
       "date_joined": "2026-05-14T00:59:20.253677+00:00",
       "email": "lorena.martino@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Martino Lorena",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Martino Lorena"
     }
   },
   {
@@ -773,10 +659,7 @@
       "date_joined": "2026-05-14T00:59:30.624920+00:00",
       "email": "maria.miller@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Miller Maria Laura",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Miller Maria Laura"
     }
   },
   {
@@ -793,10 +676,7 @@
       "date_joined": "2026-05-14T00:59:37.821527+00:00",
       "email": "claudia.palomeque@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Palomeque Claudia",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Palomeque Claudia"
     }
   },
   {
@@ -813,10 +693,7 @@
       "date_joined": "2026-05-14T00:59:44.822517+00:00",
       "email": "fernando.peralta@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Peralta Fernando",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Peralta Fernando"
     }
   },
   {
@@ -833,10 +710,7 @@
       "date_joined": "2026-05-14T00:59:51.708912+00:00",
       "email": "hector.piaggio@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Piaggio Héctor Marcelo",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Piaggio Héctor Marcelo"
     }
   },
   {
@@ -853,10 +727,7 @@
       "date_joined": "2026-05-14T01:00:32.364717+00:00",
       "email": "luciana.pignocco@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Pignocco Luciana",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Pignocco Luciana"
     }
   },
   {
@@ -873,10 +744,7 @@
       "date_joined": "2026-05-14T01:00:38.826197+00:00",
       "email": "juan.pittacolo@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Pittacolo Juan",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Pittacolo Juan"
     }
   },
   {
@@ -893,10 +761,7 @@
       "date_joined": "2026-05-14T01:00:45.142203+00:00",
       "email": "micaela.rambaudo@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Rambaudo Micaela",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Rambaudo Micaela"
     }
   },
   {
@@ -913,10 +778,7 @@
       "date_joined": "2026-05-14T01:00:52.124387+00:00",
       "email": "julio.ravazzani@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Ravazzani Julio",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ravazzani Julio"
     }
   },
   {
@@ -933,10 +795,7 @@
       "date_joined": "2026-05-14T01:01:17.956581+00:00",
       "email": "laura.riberi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Riberi Laura",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Riberi Laura"
     }
   },
   {
@@ -953,10 +812,7 @@
       "date_joined": "2026-05-14T01:01:25.240818+00:00",
       "email": "carolina.ricarte@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Ricarte Carolina",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ricarte Carolina"
     }
   },
   {
@@ -973,10 +829,7 @@
       "date_joined": "2026-05-14T01:01:37.991598+00:00",
       "email": "pamela.romero@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Romero Pamela",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Romero Pamela"
     }
   },
   {
@@ -993,10 +846,7 @@
       "date_joined": "2026-05-14T01:01:57.510589+00:00",
       "email": "andrea.ruiz@ies.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Ruiz Andrea",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ruiz Andrea"
     }
   },
   {
@@ -1013,10 +863,7 @@
       "date_joined": "2026-05-14T01:02:33.477162+00:00",
       "email": "marcos.sosa@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Sosa Marcos",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Sosa Marcos"
     }
   },
   {
@@ -1033,10 +880,7 @@
       "date_joined": "2026-05-14T01:02:44.259648+00:00",
       "email": "oscar.spila@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Spila Oscar",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Spila Oscar"
     }
   },
   {
@@ -1053,10 +897,7 @@
       "date_joined": "2026-05-14T01:02:52.317081+00:00",
       "email": "vicente.spinassi@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Spinassi Vicente",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Spinassi Vicente"
     }
   },
   {
@@ -1073,10 +914,7 @@
       "date_joined": "2026-05-14T01:02:59.554910+00:00",
       "email": "cecilia.vera@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Vera Candiotti Cecilia",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Vera Candiotti Cecilia"
     }
   },
   {
@@ -1093,10 +931,7 @@
       "date_joined": "2026-05-14T01:03:04.056861+00:00",
       "email": "alexis.walker@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Walker Alexis",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Walker Alexis"
     }
   },
   {
@@ -1113,10 +948,7 @@
       "date_joined": "2026-05-14T01:03:13.751313+00:00",
       "email": "ariatna.weishein@ices.edu.ar",
       "rol": "profesor",
-      "nombre_completo": "Weishein Ariatna",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Weishein Ariatna"
     }
   },
   {
@@ -1133,10 +965,7 @@
       "date_joined": "2026-05-12T17:22:16.330700+00:00",
       "email": "ariatna.weishein@ices.edu",
       "rol": "moderadora",
-      "nombre_completo": "Ariatna Weishein",
-      "fecha_creacion": "2024-01-01T00:00:00+00:00",
-      "fecha_modificacion": "2024-01-01T00:00:00+00:00",
-      "modificado_por": null
+      "nombre_completo": "Ariatna Weishein"
     }
   },
   {

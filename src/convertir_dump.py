@@ -59,14 +59,14 @@ def convert_table(table_name, rows):
             field_name = normalize_col(col)
             fields[field_name] = val
 
-        # Agregar campos faltantes con defaults
-        if 'fecha_creacion' not in fields:
-            fields['fecha_creacion'] = DEFAULT_TS
-        if 'fecha_modificacion' not in fields:
-            fields['fecha_modificacion'] = DEFAULT_TS
-
-        # modificado_por: siempre null (campo nuevo, FK nullable)
-        fields['modificado_por'] = None
+        # Solo TimeStampedModel tiene estos campos (no Usuario/AbstractUser)
+        if table_name != 'usuarios_usuario':
+            if 'fecha_creacion' not in fields:
+                fields['fecha_creacion'] = DEFAULT_TS
+            if 'fecha_modificacion' not in fields:
+                fields['fecha_modificacion'] = DEFAULT_TS
+            # modificado_por: null (campo nuevo, FK nullable)
+            fields['modificado_por'] = None
 
         fixtures.append({
             'model': model_name,
