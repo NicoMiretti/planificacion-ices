@@ -13,6 +13,13 @@ SECRET_KEY = os.environ['SECRET_KEY']   # obligatorio — sin default
 
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h.strip()]
 
+# Le indica a Django que todas sus URLs viven bajo este prefijo.
+# Necesario cuando nginx hace proxy_pass con strip del prefijo (trailing slash).
+FORCE_SCRIPT_NAME = os.getenv('SCRIPT_NAME', '')
+
+# Necesario para que request.build_absolute_uri() y CSRF funcionen bien detrás del proxy
+USE_X_FORWARDED_HOST = True
+
 # Necesario para Django 4+ con proxy/dominio propio
 CSRF_TRUSTED_ORIGINS = [
     o.strip()
