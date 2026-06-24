@@ -70,8 +70,13 @@ MEDIA_URL  = '/planificaciones/media/'
 SECURE_BROWSER_XSS_FILTER      = True
 SECURE_CONTENT_TYPE_NOSNIFF    = True
 X_FRAME_OPTIONS                = 'DENY'
-SESSION_COOKIE_SECURE          = True
-CSRF_COOKIE_SECURE             = True
+
+# Solo activar cookies seguras si hay HTTPS (cuando hay SSL en nginx).
+# Con HTTP puro, CSRF_COOKIE_SECURE=True hace que el browser nunca mande
+# la cookie → Django rechaza todos los formularios con 403.
+_https = SECURE_SSL_REDIRECT or SECURE_HSTS_SECONDS > 0
+SESSION_COOKIE_SECURE = _https
+CSRF_COOKIE_SECURE    = _https
 
 # HSTS: habilitar solo si el contenedor está detrás de HTTPS (nginx/traefik)
 SECURE_HSTS_SECONDS            = int(os.getenv('SECURE_HSTS_SECONDS', '0'))
