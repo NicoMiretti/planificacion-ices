@@ -1,360 +1,522 @@
-# Guía de Uso: Sistema de Planificación ICES
+# Guía de Usuario — Moderadora
+## Sistema de Planificaciones Académicas · ICES / UCSE
 
-Esta guía está diseñada para la **moderadora** y describe todos los flujos posibles del sistema, con puntos de observación para detectar mejoras.
+**Versión del documento:** 1.0  
+**Fecha:** Junio 2026  
+**Audiencia:** Secretaría Académica (rol Moderadora)  
+**URL del sistema:** http://190.13.88.96/planificaciones/
 
 ---
 
-## Setup Inicial
+## Índice
 
-### 1. Cargar datos de prueba
+1. [Acceso al sistema](#1-acceso-al-sistema)
+2. [Panel de inicio](#2-panel-de-inicio)
+3. [Ciclo de vida de una convocatoria](#3-ciclo-de-vida-de-una-convocatoria)
+4. [Gestión de Instancias de Presentación](#4-gestión-de-instancias-de-presentación)
+   - 4.1 [Ver listado de instancias](#41-ver-listado-de-instancias)
+   - 4.2 [Crear una nueva instancia](#42-crear-una-nueva-instancia)
+   - 4.3 [Ver detalle de una instancia](#43-ver-detalle-de-una-instancia)
+   - 4.4 [Editar una instancia](#44-editar-una-instancia)
+   - 4.5 [Eliminar una instancia](#45-eliminar-una-instancia)
+5. [Circuito de revisión](#5-circuito-de-revisión)
+   - 5.1 [Tablero de revisión](#51-tablero-de-revisión)
+   - 5.2 [Revisar una planificación](#52-revisar-una-planificación)
+   - 5.3 [Dar visto bueno (aprobar)](#53-dar-visto-bueno-aprobar)
+   - 5.4 [Rechazar con observaciones](#54-rechazar-con-observaciones)
+   - 5.5 [Aplicar corrección leve](#55-aplicar-corrección-leve)
+   - 5.6 [Doble aprobación con el Coordinador](#56-doble-aprobación-con-el-coordinador)
+6. [Gestión de catálogos](#6-gestión-de-catálogos)
+   - 6.1 [Tipos de Planificación](#61-tipos-de-planificación)
+   - 6.2 [Carreras](#62-carreras)
+   - 6.3 [Materias](#63-materias)
+   - 6.4 [Profesores](#64-profesores)
+7. [Estados de las planificaciones](#7-estados-de-las-planificaciones)
+8. [Escenarios frecuentes](#8-escenarios-frecuentes)
+   - 8.1 [Inicio de un nuevo ciclo lectivo](#81-inicio-de-un-nuevo-ciclo-lectivo)
+   - 8.2 [Profesor que no cargó su planificación](#82-profesor-que-no-cargó-su-planificación)
+   - 8.3 [Planificación con campos obligatorios faltantes](#83-planificación-con-campos-obligatorios-faltantes)
+   - 8.4 [El coordinador aún no dio su visto bueno](#84-el-coordinador-aún-no-dio-su-visto-bueno)
+   - 8.5 [Corrección de un error tipográfico menor](#85-corrección-de-un-error-tipográfico-menor)
+   - 8.6 [Se incorpora un nuevo profesor al plantel](#86-se-incorpora-un-nuevo-profesor-al-plantel)
+   - 8.7 [Se cambia el titular de una materia](#87-se-cambia-el-titular-de-una-materia)
+9. [Preguntas frecuentes](#9-preguntas-frecuentes)
 
-```bash
-cd src
-docker-compose exec web python manage.py seed_data --catalogo
+---
+
+## 1. Acceso al sistema
+
+Ingresar desde cualquier navegador a:
+
+```
+http://190.13.88.96/planificaciones/
 ```
 
-**Qué se crea:**
-- 1 moderadora: `moderadora@ices.edu` / `mod123`
-- 2 coordinadores de carrera
-- 2 carreras (Sistemas e Información)
-- 15 materias con profesores titulares asignados
-- **Sin instancias ni planificaciones** (se crean al hacer la instancia)
+Utilizar las siguientes credenciales:
 
-### 2. Acceder como moderadora
+| Campo | Valor |
+|-------|-------|
+| Email | ariatna.weishein@ices.edu |
+| Contraseña | `Mod@Ices2026` (temporal — se recomienda cambiarla) |
+
+> **Para cambiar la contraseña:** hacer clic en el nombre de usuario en la barra superior → *Mi perfil* → *Cambiar contraseña*. También puede hacerse desde el panel de administración en `/planificaciones/admin/`.
+
+---
+
+## 2. Panel de inicio
+
+Al iniciar sesión, el sistema muestra un **panel de inicio** con un resumen del estado general:
+
+- **Instancias activas:** convocatorias abiertas o programadas en el ciclo actual.
+- **Planificaciones pendientes de revisión:** cantidad de documentos esperando revisión.
+- **Accesos rápidos:** botones directos al tablero de revisión y a la gestión de instancias.
+
+La barra de navegación superior contiene los accesos a todos los módulos:
+
+| Sección | Descripción |
+|---------|-------------|
+| **Inicio** | Panel con resumen del estado general |
+| **Convocatorias** | Gestión de instancias de presentación |
+| **Revisión** | Tablero de planificaciones pendientes de revisión |
+| **Catálogos** | ABM de tipos de planificación, carreras, materias y profesores |
+
+---
+
+## 3. Ciclo de vida de una convocatoria
+
+El flujo completo de una convocatoria sigue estas etapas:
 
 ```
-URL: http://localhost:8000
-Email: moderadora@ices.edu
-Contraseña: mod123
+[Moderadora crea instancia]
+         ↓
+   Estado: PROGRAMADA
+   (antes de la fecha de apertura)
+         ↓
+   Estado: ABIERTA
+   (entre fecha_apertura y fecha_limite)
+   → Profesores pueden subir sus planificaciones
+         ↓
+   [Profesor sube documento Word]
+   → El sistema valida los campos obligatorios automáticamente
+   → Si pasa: estado planificación = EN REVISIÓN
+   → Si falla: estado = RECHAZADA AUTOMÁTICAMENTE (el profesor corrige y reenvía)
+         ↓
+   [Moderadora y Coordinador revisan]
+   → Cualquiera de los dos puede:
+       • Dar VISTO BUENO (ambos deben hacerlo para aprobar)
+       • RECHAZAR con observaciones (el profesor reenvía una nueva versión)
+       • Moderadora puede aplicar CORRECCIÓN LEVE (sin devolver al profesor)
+         ↓
+   [Cuando AMBOS dan visto bueno]
+   → Estado planificación = OFICIAL VIGENTE ✓
+         ↓
+   [Moderadora cierra la instancia]
+   Estado: CERRADA
 ```
 
 ---
 
-## Flujo Principal: Camino Feliz
+## 4. Gestión de Instancias de Presentación
 
-### Fase 1: Moderadora crea Instancia
+Una **instancia de presentación** es una convocatoria formal que define:
+- Qué carreras y años deben presentar planificaciones.
+- En qué período del año (anual, 1° o 2° cuatrimestre, o todos).
+- Las fechas de apertura y cierre.
+- El tipo de planificación requerido (con sus secciones obligatorias).
 
-1. Desde el home → **Instancias → + Nueva Instancia**
-2. Completar:
-   - **Nombre**: "Anuales 2026" (o similar)
-   - **Año académico**: 2026
-   - **Período**: "Anual" (o Cuatrimestre)
-   - **Fecha apertura**: hoy
-   - **Fecha límite**: 30 días de ahora
-   - **Carreras**: Seleccionar ambas (Sistemas e Información)
-3. **Crear Instancia**
+### 4.1 Ver listado de instancias
 
-**Observación esperada:**
-- Se crea la instancia
-- Se auto-crean planificaciones vacías (una por materia + carrera + profesor)
-- Redirige al detalle de la instancia
-- Muestra todas las materias con profesores titulares
+**Ruta:** Menú superior → *Convocatorias*
 
-**Puntos a observar:**
-- ¿Los nombres de carreras/materias son claros?
-- ¿El resumen inicial es útil (cuántas planificaciones hay)?
-- ¿Las fechas se muestran en formato correcto?
+Se muestra una tabla con todas las instancias. Es posible filtrar por:
+- **Año académico**
+- **Estado** (Programada / Abierta / Cerrada)
 
----
+Cada fila muestra: nombre, año, período, fechas, estado y acciones disponibles.
 
-### Fase 2: Profesores cargan versiones
+### 4.2 Crear una nueva instancia
 
-1. Ir a **Instancias → [nombre instancia creada]**
-2. **Como profesor 1** (perez@ices.edu / prof123):
-   - Home → Mis Instancias → [instancia]
-   - Ver la materia asignada
-   - **Cargar primera versión** → sube un .docx de prueba
-   - Verifica estado: `Borrador`
-   - **Enviar** → cambiar a estado `En Revisión`
+**Ruta:** Menú superior → *Convocatorias* → botón **Nueva instancia**
 
-**Observación esperada:**
-- El estado cambia de `Borrador` → `En Revisión`
-- La planificación desaparece de "Mis Instancias" (está en revisión)
-- Aparece en tablero de revisores como "Revisar"
+El formulario solicita los siguientes campos:
 
-**Puntos a observar:**
-- ¿El flujo de carga es intuitivo?
-- ¿Se entiende la diferencia entre Borrador y Enviar?
-- ¿El mensaje de confirmación es claro?
+| Campo | Descripción | Ejemplo |
+|-------|-------------|---------|
+| **Nombre** | Título descriptivo de la convocatoria | "Planificaciones 1° Cuatrimestre 2026" |
+| **Año académico** | Año al que corresponde | 2026 |
+| **Período** | Régimen de las materias incluidas | 1° Cuatrimestre |
+| **Tipo de planificación** | Define los campos obligatorios del documento Word | "Planificación ICES" |
+| **Carreras** | Selección múltiple de carreras incluidas | Tecnicatura en Desarrollo de Software |
+| **Años de cursado** | Qué años incluir (1°, 2°, 3°...). Si se deja vacío, incluye todos | 1, 2 |
+| **Fecha de apertura** | A partir de cuándo los profesores pueden cargar documentos | 01/03/2026 |
+| **Fecha límite** | Fecha hasta la que el envío es considerado en término | 31/03/2026 |
 
----
+> **Nota:** Los años de cursado disponibles se cargan dinámicamente según las carreras seleccionadas. Al cambiar la selección de carreras, los checkboxes de años se actualizan automáticamente.
 
-### Fase 3: Doble visto bueno (Moderadora + Coordinador)
+Al guardar, el sistema:
+1. Crea la instancia en estado **Programada** (o **Abierta** si la fecha de apertura ya pasó).
+2. Genera automáticamente una planificación vacía por cada combinación materia–profesor titular dentro de la audiencia definida.
 
-El sistema requiere que **tanto la moderadora como el coordinador de la carrera** aprueben la versión.
+> **Importante:** Si una materia no tiene profesor titular asignado en el catálogo, no se generará planificación para ella. Verificar el catálogo de materias antes de crear la instancia.
 
-**Como moderadora:**
-1. **Revisiones → Tablero**
-2. Click en **Revisar**
-3. **Aprobar** → registra el visto bueno de la moderadora
+### 4.3 Ver detalle de una instancia
 
-**Como coordinador** (coord.sistemas@ices.edu / coord123):
-1. **Revisiones → Tablero**
-2. Click en **Revisar** (o **Ver** si la moderadora ya aprobó)
-3. **Aprobar** → registra el visto bueno del coordinador
+**Ruta:** En el listado, hacer clic en el nombre de la instancia o en el ícono de detalle.
 
-**Observación esperada:**
-- Cuando ambos dieron visto bueno, el estado cambia automáticamente a `Oficial`
-- No hay botón manual de "Marcar Oficial" — el sistema lo hace solo al completarse el doble VB
-- La planificación desaparece del tablero
+La vista de detalle muestra:
+- Datos generales de la convocatoria.
+- Una tabla con **todas las materias de la audiencia** y el estado de cada planificación.
 
-**Puntos a observar:**
-- ¿Es claro que se necesitan dos aprobaciones?
-- ¿El estado intermedio (solo un VB) es visible?
+La tabla incluye columnas de filtro por carrera y año de cursado (visible cuando hay más de una carrera o año).
 
----
+Los estados posibles en la columna de planificación son:
 
-## Bifurcaciones y Casos Especiales
+| Estado visible | Significado |
+|----------------|-------------|
+| Sin cargar | El profesor aún no subió nada |
+| Borrador | Subido pero aún no enviado a revisión |
+| En revisión | Aguardando revisión |
+| Rechazada | El revisor la rechazó; el profesor debe reenviar |
+| Rechazada automáticamente | El sistema la rechazó por campos faltantes |
+| Oficial vigente ✓ | Aprobada por ambos revisores |
 
-### Caso A: Profesor envía después de fecha límite
+### 4.4 Editar una instancia
 
-1. Crear instancia con `fecha_limite` = ayer
-2. Profesor carga un .docx y **Envía**
-3. El sistema permite el envío pero lo marca como **entrega tardía**
+**Ruta:** Detalle de instancia → botón **Editar**
 
-**Observación esperada:**
-- El envío no está bloqueado por la fecha límite
-- La versión queda en `En Revisión` con indicación de entrega tardía (días de atraso)
+Se pueden modificar todos los campos del formulario original. Al guardar:
+- Si se **agregan** carreras o años nuevos, se crean las planificaciones faltantes automáticamente.
+- Si se **eliminan** carreras, solo se borran las planificaciones que **no tienen contenido** (sin versiones subidas). Las planificaciones con documentos se conservan.
 
-**Puntos a observar:**
-- ¿Se muestra cuántos días tarde fue la entrega?
-- ¿Está claro en el tablero que es una entrega tardía?
+> **Advertencia:** No se recomienda modificar las fechas de una instancia con planificaciones ya en revisión.
+
+### 4.5 Eliminar una instancia
+
+**Ruta:** Listado de instancias → ícono de eliminar (o desde el detalle)
+
+El sistema muestra un resumen de lo que se eliminará (cantidad de planificaciones, versiones y documentos). Se solicita confirmación explícita antes de proceder.
+
+> **Advertencia:** La eliminación es irreversible. Solo se recomienda eliminar instancias **sin contenido cargado** (creadas por error o duplicadas).
 
 ---
 
-### Caso B: Revisor rechaza
+## 5. Circuito de revisión
 
-**Fase 3b:**
-1. En el tablero: **Revisar**
-2. Cargar comentario en "Razón del rechazo"
-3. **Rechazar** → estado `Rechazada`
+### 5.1 Tablero de revisión
 
-**Observación esperada:**
-- Panel de aprobación cambia a rojo
-- Muestra: "El proceso de aprobación se reiniciará cuando el profesor envíe una nueva versión"
-- Profesor ve la planificación como `Rechazada` en Mis Instancias
+**Ruta:** Menú superior → *Revisión*
 
-**Puntos a observar:**
-- ¿El profesor entiende que puede reenviar?
-- ¿El mensaje de rechazo es accesible?
+El tablero muestra todas las versiones de planificaciones que se encuentran actualmente **en estado "En Revisión"**, es decir, documentos enviados por los profesores que aguardan revisión.
 
----
+Cada fila muestra:
+- Nombre del profesor y la materia.
+- Carrera e instancia a la que corresponde.
+- Fecha de envío.
+- Indicador de **entrega tardía** (si fue enviado después de la fecha límite).
+- Si la moderadora ya dio su visto bueno.
 
-### Caso C: Profesor reenvía después de rechazo
+**Filtros disponibles:**
+- Por **carrera**
+- Por **entrega tardía** (ver solo las que llegaron fuera de término)
 
-**Fase 2c:**
-1. Profesor ve planificación rechazada
-2. **Cargar nueva versión** (crea nueva versión en `Borrador`)
-3. Edita y **Enviar** → nuevo estado `En Revisión`
-4. Vuelve al tablero de revisores
-5. Revisor **Aprobar** → `Aprobada`
+> Las planificaciones se ordenan por estado y luego por fecha de envío (las más antiguas primero).
 
-**Observación esperada:**
-- El historial de versiones se mantiene
-- Solo la última versión se muestra activa
-- Los números de versión aumentan (v1, v2, etc.)
+### 5.2 Revisar una planificación
 
-**Puntos a observar:**
-- ¿Es obvio que puede reenviar?
-- ¿Ve claramente qué versión está siendo revisada?
+**Ruta:** Tablero → hacer clic en la fila de la planificación
 
----
+La vista de revisión muestra:
 
-### Caso D: Corrección leve (Moderadora)
+1. **Datos del documento:** materia, profesor, carrera, instancia, versión.
+2. **Enlace de descarga** del archivo Word para su lectura.
+3. **Estado de vistos buenos:** quién ya aprobó (moderadora / coordinador) y quién falta.
+4. **Historial completo** de acciones sobre la planificación (envíos, rechazos, correcciones, aprobaciones de versiones anteriores).
+5. **Sección de campos faltantes:** si el sistema detectó secciones obligatorias ausentes en el documento al momento del envío, se listan aquí como referencia.
+6. **Acciones disponibles** (ver secciones siguientes).
 
-> Solo la **moderadora** puede aplicar correcciones leves (no el coordinador).
+### 5.3 Dar visto bueno (aprobar)
 
-1. En el tablero: **Revisar**
-2. Completar el campo de detalle con la corrección aplicada
-3. **Aplicar corrección leve** → registra la nota en el historial
+Cuando la planificación es correcta, la moderadora puede dar su **visto bueno** haciendo clic en el botón **"Dar visto bueno"**.
 
-**Observación esperada:**
-- La versión **permanece en `En Revisión`** (no vuelve a Borrador)
-- El historial muestra la corrección aplicada
-- El coordinador puede continuar revisando la misma versión
+**Regla de negocio — Doble aprobación:**
+- La planificación requiere visto bueno de **dos revisores**: la **moderadora** y el **coordinador** de la carrera correspondiente.
+- Cuando ambos hayan dado el visto bueno, la planificación pasa automáticamente al estado **Oficial Vigente**.
+- Si solo uno ha dado el visto bueno, el estado permanece en **En Revisión** y se muestra quién falta.
 
-**Puntos a observar:**
-- ¿Es claro que la versión sigue en revisión?
-- ¿Se diferencia visualmente de un rechazo?
+> El visto bueno no puede darse dos veces por el mismo revisor en la misma versión. El sistema lo previene.
 
----
+### 5.4 Rechazar con observaciones
 
-### Caso E: Profesor intenta crear instancia sin profesores
+Cuando la planificación presenta problemas que requieren corrección por parte del profesor:
 
-**Bifurcación en Fase 1:**
-1. Ir a **Instancias → + Nueva Instancia**
-2. Seleccionar una carrera que tenga materias sin profesor
-3. **Crear Instancia**
+1. Hacer clic en el botón **"Rechazar"** en la vista de revisión.
+2. Completar el campo de **observaciones** (obligatorio). Describir claramente qué debe corregir el profesor.
+3. Confirmar la acción.
 
-**Observación esperada:**
-- Error: lista las materias sin profesor
-- Bloquea la creación hasta que todos tengan profesor
+**Consecuencias:**
+- La versión pasa al estado **Rechazada**.
+- El profesor deberá subir una **nueva versión** del documento, que comenzará el ciclo de revisión desde el inicio.
+- Los vistos buenos anteriores sobre esa versión se descartan (aplica a la nueva versión).
 
-**Puntos a observar:**
-- ¿El mensaje de error es claro?
-- ¿Se entiende la razón del bloqueo?
+> No es posible rechazar una versión que ya fue aprobada (estado Oficial o Aprobada).
 
----
+### 5.5 Aplicar corrección leve
 
-### Caso F: Rechazada automáticamente (por validación)
+La corrección leve permite que la moderadora realice una modificación menor al documento **sin devolver la planificación al profesor**. Es exclusiva del rol de moderadora.
 
-**Nota:** Este caso ocurre internamente si hay datos inconsistentes. En el flujo normal no debería ocurrir si el seed está correcto.
+**Cuándo usarla:** errores tipográficos, datos de formato, ajustes menores que no afectan el contenido académico.
 
-**Observación esperada:**
-- Estado `Rechazada automáticamente`
-- Mensaje: "El sistema detectó un problema..."
+**Pasos:**
+1. En la vista de revisión, localizar la sección **"Corrección leve"**.
+2. Completar el campo **"Detalle de la corrección"** (obligatorio). Describir qué se modificó y por qué.
+3. Opcionalmente, adjuntar el **archivo Word corregido** (si la corrección implica reemplazar el documento).
+4. Hacer clic en **"Aplicar corrección leve"**.
 
----
+**Consecuencias:**
+- Se registra la corrección en el historial de la planificación con el detalle y el usuario que la realizó.
+- La versión **permanece en estado En Revisión** (no se rechaza ni se aprueba automáticamente).
+- Si se adjuntó un archivo, este queda disponible para descarga en el historial.
+- La moderadora puede luego dar su visto bueno sobre la misma versión.
 
-## Estadísticas y Vistas
+> **No usar** corrección leve para cambios de contenido académico significativos. En esos casos, rechazar la planificación para que el profesor la corrija.
 
-### Instancia - Vista de detalle
+### 5.6 Doble aprobación con el Coordinador
 
-En **Instancias → [instancia]**, observar:
+El coordinador de cada carrera tiene acceso al tablero de revisión para **las planificaciones de sus propias carreras**. El proceso de doble aprobación funciona así:
 
-| Métrica | Observación |
-|---|---|
-| **Pendientes** | Planificaciones en `Borrador` (profesor aún edita) |
-| **En Revisión** | Esperando revisor |
-| **Aprobadas** | Listas para oficializar |
-| **Rechazadas** | Esperan reenvío del profesor |
+1. Tanto la moderadora como el coordinador pueden revisar la planificación de forma **independiente y en cualquier orden**.
+2. Cada uno da su visto bueno por separado.
+3. Cuando **ambos** lo han hecho, el sistema marca la planificación como **Oficial Vigente** automáticamente.
+4. Si uno rechaza la planificación, **ambos vistos buenos se invalidan** para esa versión (el profesor deberá reenviar una nueva versión).
 
-**Puntos a observar:**
-- ¿Las categorizaciones son claras?
-- ¿Faltan estados intermedios?
-- ¿Sería útil filtrar por carrera/profesor?
-
-### Tablero de Revisión
-
-En **Revisiones → Tablero**, observar:
-
-| Columna | Observación |
-|---|---|
-| **Materia** | Nombre completo visible? |
-| **Carrera** | Se sabe de qué carrera es? |
-| **Profesor** | Quién es el titular |
-| **Instancia** | En cuál período |
-| **Estado** | Solo `En Revisión` (no hay otras) |
-| **Visto Bueno** | ¿Quién ya vio? |
-| **Acciones** | Revisar → lleva al detalle |
-
-**Puntos a observar:**
-- ¿Falta información importante?
-- ¿Hay demasiadas columnas?
-- ¿El botón Revisar es obvio?
+**Visibilidad de vistos buenos:** en la vista de revisión se muestra siempre el estado de ambos revisores (quién aprobó y quién no).
 
 ---
 
-## Casos Límite para Probar
+## 6. Gestión de catálogos
 
-### 1. Profesor sin instancias asignadas
-- Login como profesor con materia no en instancias
-- Esperado: "Sin instancias disponibles"
+**Ruta:** Menú superior → *Catálogos*
 
-### 2. Cambiar entre instancias
-- Profesor carga v1 en instancia A, v1 en instancia B
-- Esperado: ambas son independientes (diferentes historiales)
+La sección de catálogos permite mantener actualizados los datos maestros del sistema. Solo la moderadora (y el administrador) tienen acceso.
 
-### 3. Revisor sin permisos
-- Login como revisor diferente (otro usuario)
-- Intentar revisar → ¿ve todas o solo su región/carrera?
+### 6.1 Tipos de Planificación
 
-### 4. Coordinador ve sus instancias
-- Coordinador login
-- Esperado: ¿ve las instancias de sus carreras?
+Los tipos de planificación definen **qué secciones son obligatorias** en los documentos Word que presentan los profesores. El sistema valida automáticamente estos campos al momento del envío.
 
-### 5. Profesor intenta acceder a instancia cerrada
-- Después de fecha límite
-- Intenta cargar versión → debe bloquearse
-- Intenta enviar borrador → ¿sigue permitido?
+**Atributos:**
 
----
+| Campo | Descripción |
+|-------|-------------|
+| Título | Nombre del tipo (ej: "Planificación ICES") |
+| Descripción | Descripción interna |
+| Secciones obligatorias | Lista de textos que deben aparecer en el documento |
+| Link a documentación | URL con guía o plantilla para los profesores |
 
-## Flujo Completo (Walkthrough Recomendado)
+**Crear un tipo:** *Catálogos → Tipos de Planificación → Nuevo*
 
-**Tiempo: ~15 minutos**
+**Editar:** Si el tipo está siendo usado en instancias activas, el sistema muestra una advertencia y solicita confirmación antes de guardar. Los cambios en las secciones obligatorias afectan a futuras validaciones.
 
-1. ✅ Seed data
-2. ✅ Login como moderadora
-3. ✅ Crear instancia "TEST 2026"
-4. ✅ Login como profesor 1 (perez@)
-   - Cargar versión 1
-   - Enviar
-5. ✅ Login como revisor (moderadora en rol revisor)
-   - Revisar tablero
-   - Aprobar
-6. ✅ Login como profesor 2 (gomez@)
-   - Cargar versión 1
-   - Enviar
-7. ✅ Login como revisor
-   - Rechazar con comentario
-8. ✅ Login como profesor 2
-   - Ver rechazo
-   - Cargar versión 2
-   - Enviar
-8. ✅ Login como revisor (moderadora)
-    - Aprobar v2 (primer VB)
-9. ✅ Login como coordinador
-    - Aprobar v2 (segundo VB) → pasa automáticamente a Oficial
-10. ✅ Login como moderadora
-    - Ver instancia → verificar estado Oficial
+**Eliminar:** No es posible eliminar un tipo que esté vinculado a una instancia de presentación existente.
 
----
+### 6.2 Carreras
 
-## Puntos de Mejora Observados
+Gestión del listado de carreras académicas.
 
-A medida que uses el sistema, completa esta tabla:
+**Atributos:**
 
-| Punto | Sección | Descripción | Impacto | Estado |
-|---|---|---|---|---|
-| Ej: Botón pequeño | Tablero | El botón "Revisar" es muy pequeño | Medium | [ ] TODO |
-| | | | | |
-| | | | | |
+| Campo | Descripción |
+|-------|-------------|
+| Nombre | Nombre oficial de la carrera |
+| Institución | ICES o UCSE |
+| Coordinador | Usuario con rol Coordinador asignado a esta carrera |
+| Activo | Si la carrera aparece disponible en nuevas instancias |
 
----
+> El coordinador asignado a una carrera es quien recibe las planificaciones para revisión en esa carrera.
 
-## Credenciales de Test (post-seed --catalogo)
+### 6.3 Materias
 
-| Rol | Email | Contraseña | Institución |
-|---|---|---|---|
-| Moderadora | moderadora@ices.edu | mod123 | ICES |
-| Coordinador 1 | coord.sistemas@ices.edu | coord123 | Sistemas |
-| Coordinador 2 | coord.contabilidad@ices.edu | coord123 | Contabilidad |
-| Profesor 1 | perez@ices.edu | prof123 | Varios |
-| Profesor 2 | gomez@ices.edu | prof123 | Varios |
-| Profesor 3 | silva@ices.edu | prof123 | Varios |
-| Profesor 4 | torres@ices.edu | prof123 | Varios |
+Gestión del listado de materias por carrera.
+
+**Atributos:**
+
+| Campo | Descripción |
+|-------|-------------|
+| Nombre | Nombre de la materia |
+| Carrera | Carrera a la que pertenece |
+| Año de cursado | Año de la carrera (1° a 5°) |
+| Régimen | Anual, 1° Cuatrimestre o 2° Cuatrimestre |
+| Profesor titular | Profesor asignado como titular (puede ser vacío) |
+| Activo | Si la materia aparece en nuevas convocatorias |
+
+> Si una materia no tiene profesor titular asignado, **no se generará planificación automática** para esa materia cuando se crea una instancia. Asignar el titular antes de crear la convocatoria.
+
+### 6.4 Profesores
+
+Gestión de los perfiles de profesores. Cada profesor está vinculado a un usuario del sistema.
+
+**Atributos:**
+
+| Campo | Descripción |
+|-------|-------------|
+| Usuario | Cuenta de acceso del profesor (email, contraseña) |
+| Institución | Institución a la que pertenece |
+| Activo | Si el profesor aparece como titular disponible |
+
+> Para crear un nuevo profesor, primero debe existir un **usuario** con rol `Profesor`. El perfil de profesor se crea a partir de ese usuario.
 
 ---
 
-## Troubleshooting
+## 7. Estados de las planificaciones
 
-### "No hay materias con profesor titular asignado"
-- El seed no corrió bien, o no seleccionaste carreras con profesores
-- Solución: Vuelve a cargar datos con `seed_data --reset` y `--catalogo`
+Cada planificación transita por los siguientes estados:
 
-### "La instancia ha cerrado"
-- La fecha límite pasó
-- Solución: Crea una nueva con fecha futura
+```
+BORRADOR
+   │
+   │ El profesor envía el documento
+   ▼
+Validación automática de campos obligatorios
+   │
+   ├─ Campos OK ──────────────────► EN REVISIÓN
+   │                                    │
+   └─ Campos faltantes ─► RECHAZADA     ├─ Moderadora o coordinador rechaza
+                          AUTOMÁTICA    │   → vuelve al profesor (nueva versión)
+                            │           │
+                     Profesor corrige   ├─ Moderadora da visto bueno
+                     y reenvía          │   (falta coordinador) → sigue EN REVISIÓN
+                            │           │
+                            └──────────►├─ Coordinador da visto bueno
+                                        │   (falta moderadora) → sigue EN REVISIÓN
+                                        │
+                                        └─ AMBOS dan visto bueno → OFICIAL VIGENTE ✓
+```
 
-### "El proceso de aprobación se reiniciará..."
-- La planificación fue rechazada
-- Solución: Profesor carga nueva versión
-
-### Planificación desaparece después de enviar
-- Está en estado `En Revisión`, no es error
-- Es esperado: sale del listado "Mis Instancias" hasta que se resuelva
+| Estado | Significado |
+|--------|-------------|
+| **Borrador** | El profesor lo guardó pero no lo envió formalmente |
+| **En Revisión** | Esperando revisión de moderadora y coordinador |
+| **Rechazada automática** | El sistema detectó secciones obligatorias faltantes |
+| **Rechazada** | Un revisor la rechazó con observaciones |
+| **Oficial vigente** | Aprobada por ambos revisores — proceso completo |
 
 ---
 
-## Notas para el Equipo
+## 8. Escenarios frecuentes
 
-- **Estado Oficial**: se asigna automáticamente cuando moderadora + coordinador aprueban (no hay botón manual)
-- **Correcciones leves**: vuelven a Borrador (no crean nueva versión oficial)
-- **Rechazo automático**: debería no ocurrir (es fallback de seguridad)
-- **Media files**: en Render plan Free se pierden, usar S3 para producción
+### 8.1 Inicio de un nuevo ciclo lectivo
+
+**Contexto:** Comienza el año académico y se deben convocar a los profesores para que presenten sus planificaciones.
+
+**Pasos:**
+1. Verificar que el catálogo de materias esté actualizado: *Catálogos → Materias*. Confirmar que cada materia tiene asignado su profesor titular para el ciclo.
+2. Verificar que exista el tipo de planificación correspondiente: *Catálogos → Tipos de Planificación*.
+3. Ir a *Convocatorias → Nueva instancia*.
+4. Completar el formulario con el nombre, año, período, tipo de planificación, carreras, años de cursado y fechas.
+5. Guardar. El sistema crea todas las planificaciones automáticamente.
+6. Comunicar a los profesores las fechas de la convocatoria.
+
+### 8.2 Profesor que no cargó su planificación
+
+**Contexto:** La fecha límite pasó y el sistema muestra que un profesor no subió nada.
+
+**Verificación:**
+1. Ir al detalle de la instancia (*Convocatorias → [nombre de la instancia]*).
+2. Buscar la materia del profesor en cuestión. Si aparece **"Sin cargar"**, no ha subido nada.
+
+**Opciones:**
+- Contactar al profesor directamente para que suba el documento. Las entregas posteriores a la fecha límite son aceptadas pero quedan marcadas como **tardías**.
+- Si la instancia está cerrada, la planificación queda sin contenido en el historial.
+
+### 8.3 Planificación con campos obligatorios faltantes
+
+**Contexto:** Un profesor subió su documento pero el sistema lo rechazó automáticamente.
+
+**Qué sucedió:** Al enviar, el sistema analizó el documento Word y detectó que faltan una o más secciones listadas como obligatorias en el tipo de planificación.
+
+**Acción de la moderadora:**
+- En general, no es necesaria ninguna acción: el profesor recibirá la notificación y deberá corregir y reenviar.
+- Para ver los detalles, ir al detalle de la instancia y hacer clic en la planificación rechazada.
+
+**Si la detección es incorrecta** (el documento sí contiene el campo pero el sistema no lo reconoció):
+- Revisar *Catálogos → Tipos de Planificación* y verificar que el texto de la sección obligatoria coincida exactamente con lo que figura en el documento (mayúsculas, tildes, puntuación).
+- Corregir el tipo si es necesario y pedir al profesor que reenvíe el mismo documento.
+
+### 8.4 El coordinador aún no dio su visto bueno
+
+**Contexto:** La moderadora ya aprobó varias planificaciones pero el coordinador no las ha revisado.
+
+**Verificación:** Tablero de revisión → columna de vistos buenos. Las planificaciones con solo el visto bueno de la moderadora muestran que falta el coordinador.
+
+**Acción:**
+- Comunicarse con el coordinador para que acceda al sistema y revise las planificaciones de sus carreras en el tablero de revisión.
+- El coordinador accede con sus propias credenciales y visualizará exclusivamente las planificaciones de las carreras que coordina.
+
+> La moderadora **no puede dar el visto bueno en nombre del coordinador**.
+
+### 8.5 Corrección de un error tipográfico menor
+
+**Contexto:** La planificación está en revisión y la moderadora detecta un error tipográfico que no justifica devolvérsela al profesor.
+
+**Pasos:**
+1. Descargar el documento Word desde la vista de revisión, corregir el error y guardar el archivo.
+2. En la vista de revisión → sección **"Corrección leve"**.
+3. Completar el detalle: describir qué se corrigió (ej: *"Corrección tipográfica en ítem 3.2: 'objetivoss' → 'objetivos'"*).
+4. Adjuntar el archivo Word corregido.
+5. Hacer clic en **"Aplicar corrección leve"**.
+6. Dar el visto bueno normalmente.
+
+### 8.6 Se incorpora un nuevo profesor al plantel
+
+**Contexto:** Se suma un nuevo docente y debe poder acceder al sistema.
+
+**Pasos:**
+1. Ir al panel de administración: http://190.13.88.96/planificaciones/admin/
+2. En *Usuarios → Agregar usuario*, completar: email, contraseña temporal, rol **Profesor**, nombre completo.
+3. Guardar el usuario.
+4. Ir a *Catálogos → Profesores → Nuevo profesor*.
+5. Seleccionar el usuario recién creado e indicar la institución. Guardar.
+6. Si el profesor es titular de alguna materia, ir a *Catálogos → Materias* y asignarle las materias correspondientes.
+
+### 8.7 Se cambia el titular de una materia
+
+**Contexto:** Un profesor deja de dictar una materia y es reemplazado por otro.
+
+**Pasos:**
+1. Ir a *Catálogos → Materias → [nombre de la materia] → Editar*.
+2. Cambiar el campo **Profesor titular** al nuevo docente. Guardar.
+
+**Impacto en convocatorias activas:**
+- Las instancias ya abiertas **no se ven afectadas automáticamente**. Las planificaciones existentes quedan asignadas al profesor anterior.
+- Si se desea incluir al nuevo profesor en la convocatoria activa, editar la instancia: el sistema creará la planificación para el nuevo titular si no existía.
 
 ---
 
-**Última actualización**: May 12, 2026  
-**Versión del sistema**: Post-refactor (estado `enviada` eliminado)
+## 9. Preguntas frecuentes
+
+**¿Puedo dar el visto bueno y rechazar al mismo tiempo?**  
+No. Son acciones excluyentes. Una vez dado el visto bueno no puede revertirse en la misma versión. Si se detecta un problema después de aprobar, la alternativa es coordinarse con el otro revisor para rechazar, o usar corrección leve si el error es menor.
+
+**¿Qué pasa si rechazo una planificación que el coordinador ya aprobó?**  
+El rechazo anula el proceso: la versión pasa a estado Rechazada y el visto bueno del coordinador queda sin efecto. Cuando el profesor suba una nueva versión, ambos revisores deberán volver a aprobarla.
+
+**¿Puedo modificar las fechas de una instancia después de que los profesores empezaron a cargar?**  
+Técnicamente sí. Se recomienda hacerlo con precaución y comunicar el cambio a los profesores. Extender la fecha límite solo suma tiempo disponible; no afecta retroactivamente las entregas ya realizadas.
+
+**¿Cómo sé si un documento fue entregado tarde?**  
+En el tablero de revisión las entregas tardías están marcadas con un indicador visual. También hay un filtro *"Solo tardías"* disponible en el tablero.
+
+**¿El sistema envía notificaciones por email a los profesores?**  
+El módulo de notificaciones está integrado. Las acciones de rechazo y aprobación generan notificaciones internas en el sistema. Consultar con el administrador si el envío de correos electrónicos está configurado.
+
+**¿Puedo ver el historial de una planificación de años anteriores?**  
+Sí. Desde el detalle de cualquier instancia (incluso las cerradas) se puede acceder a cada planificación y ver su historial completo de versiones, envíos, rechazos y aprobaciones.
+
+**¿Qué sucede si elimino un tipo de planificación que estaba en uso?**  
+El sistema no lo permite. Mostrará un mensaje de error indicando que el tipo está vinculado a instancias existentes.
+
+**¿Pueden haber varias instancias abiertas al mismo tiempo?**  
+Sí. Por ejemplo, puede coexistir una instancia para materias anuales y otra para materias del 1° cuatrimestre. Cada una es independiente.
+
+---
+
+*Documento elaborado en base al código fuente del sistema. Versión 1.0 — Junio 2026.*
