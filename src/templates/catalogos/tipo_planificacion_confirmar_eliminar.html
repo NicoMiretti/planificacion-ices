@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar tipo de planificación{% endblock %}
+
+{% block content %}
+<div class="container ices-page" style="max-width: 560px;">
+
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalogos:catalogo' %}">Catálogo</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'catalogos:tipo_planificacion_lista' %}">Tipos de Planificación</a></li>
+            <li class="breadcrumb-item active">Eliminar</li>
+        </ol>
+    </nav>
+
+    <div class="ices-page-header">
+        <h3 class="mb-1 text-danger"><i class="bi bi-trash me-2"></i>Eliminar tipo de planificación</h3>
+    </div>
+
+    {% if en_uso %}
+    <div class="ices-card">
+        <div class="card-body p-4">
+            <div class="alert alert-danger d-flex align-items-start gap-2 mb-3">
+                <i class="bi bi-x-octagon-fill mt-1"></i>
+                <div>
+                    <strong>No se puede eliminar "{{ tipo.titulo }}".</strong><br>
+                    Está asignado a {{ tipo.instancias.count }} instancia(s) de presentación:
+                    <ul class="mt-1 mb-0">
+                        {% for inst in tipo.instancias.all|slice:":5" %}
+                        <li>{{ inst }}</li>
+                        {% endfor %}
+                        {% if tipo.instancias.count > 5 %}
+                        <li><em>...y {{ tipo.instancias.count|add:"-5" }} más</em></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <p class="text-muted mb-3">
+                Para poder eliminar este tipo, primero reasigná o eliminá las instancias que lo usan.
+            </p>
+            <a href="{% url 'catalogos:tipo_planificacion_lista' %}" class="btn btn-ices-outline">
+                <i class="bi bi-arrow-left me-1"></i>Volver
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="ices-card">
+        <div class="card-body p-4">
+            <p class="mb-1">¿Confirmás que querés eliminar el tipo de planificación?</p>
+            <p class="fw-semibold mb-4">{{ tipo.titulo }}</p>
+            {% if tipo.descripcion %}
+            <p class="text-muted small mb-4">{{ tipo.descripcion }}</p>
+            {% endif %}
+            <p class="text-muted small mb-4">Esta acción no se puede deshacer.</p>
+            <form method="post" class="d-flex gap-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    <i class="bi bi-trash me-1"></i>Sí, eliminar
+                </button>
+                <a href="{% url 'catalogos:tipo_planificacion_lista' %}" class="btn btn-ices-outline">Cancelar</a>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

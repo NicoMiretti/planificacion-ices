@@ -3,6 +3,7 @@ Modelo de usuario personalizado con autenticación por email y roles.
 """
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class UsuarioManager(BaseUserManager):
@@ -61,6 +62,7 @@ class Usuario(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UsuarioManager()
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'usuario'

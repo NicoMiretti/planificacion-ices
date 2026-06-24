@@ -1,5 +1,19 @@
 from django.contrib import admin
-from .models import Institucion, Carrera, Materia, Profesor, Plantilla, MaterialApoyo
+from .models import Institucion, Carrera, Materia, Profesor, Plantilla, MaterialApoyo, TipoPlanificacion
+
+
+@admin.register(TipoPlanificacion)
+class TipoPlanificacionAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'campos_count', 'instancias_count', 'fecha_modificacion')
+    search_fields = ('titulo', 'descripcion')
+
+    @admin.display(description='Campos obligatorios')
+    def campos_count(self, obj):
+        return len(obj.campos_obligatorios)
+
+    @admin.display(description='Instancias asignadas')
+    def instancias_count(self, obj):
+        return obj.instancias.count()
 
 
 @admin.register(Institucion)

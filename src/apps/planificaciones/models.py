@@ -3,26 +3,37 @@ Modelos para el circuito de planificaciones:
 - Planificacion: agrupa todas las versiones de una materia/instancia
 - Version: una versión específica con FSM de estados
 """
+import os
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django_fsm import FSMField, transition
+from simple_history.models import HistoricalRecords
+
+from apps.core.models import TimeStampedModel
 
 
 def version_path(instance, filename):
-    """Ruta: media/planificaciones/<anio>/carrera_<id>/materia_<id>/prof_<id>_v<n>_<ts>.docx"""
-    p = instance.planificacion
+    """
+    Ruta estandarizada para archivos de planificación:
+      planificaciones/{anio}/{institucion}/carrera_{id}/materia_{id}/prof_{id}_v{n}.ext
+
+    Ejemplo:
+      planificaciones/2026/ices/carrera_3/materia_12/prof_7_v2.docx
+    """
+    ext = os.path.splitext(filename)[1].lower() or '.docx'
+    p   = instance.planificacion
     anio = p.instancia.anio_academico
-    ts = timezone.now().strftime('%Y%m%d%H%M%S')
+    cod  = p.materia.carrera.institucion.codigo.lower()
     return (
-        f"planificaciones/{anio}/"
+        f"planificaciones/{anio}/{cod}/"
         f"carrera_{p.materia.carrera_id}/"
         f"materia_{p.materia_id}/"
-        f"prof_{p.profesor_id}_v{instance.numero}_{ts}.docx"
+        f"prof_{p.profesor_id}_v{instance.numero}{ext}"
     )
 
 
-class Planificacion(models.Model):
+class Planificacion(TimeStampedModel):
     """
     Agrupa todas las versiones de una planificación para una materia en una instancia.
     Hay una planificacion por (materia, profesor, instancia).
@@ -51,8 +62,7 @@ class Planificacion(models.Model):
         blank=True,
         related_name='es_oficial_de'
     )
-
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     class Meta:
         unique_together = ('materia', 'profesor', 'instancia')
@@ -77,7 +87,7 @@ class Planificacion(models.Model):
         return (ultima or 0) + 1
 
 
-class Version(models.Model):
+class Version(TimeStampedModel):
     """
     Una versión específica de una planificación.
     Usa django-fsm para controlar transiciones de estado.
@@ -108,8 +118,7 @@ class Version(models.Model):
     entrega_tardia = models.BooleanField(default=False)
     dias_atraso = models.PositiveSmallIntegerField(default=0)
 
-    # Timestamps
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    # Timestamps de flujo
     fecha_envio = models.DateTimeField(null=True, blank=True)
     fecha_aprobacion = models.DateTimeField(null=True, blank=True)
 
@@ -119,6 +128,7 @@ class Version(models.Model):
         blank=True,
         help_text='Lista de campos obligatorios faltantes'
     )
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ['-numero']

@@ -1,5 +1,5 @@
 """
-Vistas ABM para catálogos: Carrera, Profesor, Materia.
+Vistas ABM para catálogos: Carrera, Profesor, Materia, TipoPlanificacion.
 Accesibles solo para moderadora y admin.
 """
 from django.contrib import messages
@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.usuarios.decorators import gestores
-from apps.catalogos.models import Carrera, Profesor, Materia, Institucion
-from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, InstitucionForm, CoordinadorForm
+from apps.catalogos.models import Carrera, Profesor, Materia, Institucion, TipoPlanificacion
+from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, InstitucionForm, CoordinadorForm, TipoPlanificacionForm
 
 # ─────────────────────── Hub ────────────────────────────────────
 
@@ -16,6 +16,81 @@ from apps.catalogos.forms import CarreraForm, ProfesorForm, MateriaForm, Institu
 @gestores
 def catalogo_home(request):
     return render(request, 'catalogos/catalogo.html')
+
+# ──────────────────── Tipos de Planificación ────────────────────
+
+@login_required
+@gestores
+def tipo_planificacion_lista(request):
+    tipos = TipoPlanificacion.objects.all()
+    return render(request, 'catalogos/tipo_planificacion_lista.html', {'tipos': tipos})
+
+
+@login_required
+@gestores
+def tipo_planificacion_crear(request):
+    form = TipoPlanificacionForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Tipo de planificación creado correctamente.')
+        return redirect('catalogos:tipo_planificacion_lista')
+    return render(request, 'catalogos/tipo_planificacion_form.html',
+                  {'form': form, 'titulo': 'Nuevo tipo de planificación'})
+
+
+@login_required
+@gestores
+def tipo_planificacion_editar(request, pk):
+    tipo = get_object_or_404(TipoPlanificacion, pk=pk)
+    en_uso = tipo.en_uso
+    form = TipoPlanificacionForm(request.POST or None, instance=tipo)
+    if request.method == 'POST':
+        # Confirmar advertencia si está en uso
+        if en_uso and not request.POST.get('confirmar_edicion'):
+            # Mostrar advertencia antes de guardar
+            return render(request, 'catalogos/tipo_planificacion_form.html', {
+                'form': form,
+                'titulo': f'Editar: {tipo.titulo}',
+                'objeto': tipo,
+                'en_uso': en_uso,
+                'pedir_confirmacion': True,
+            })
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tipo de planificación actualizado.')
+            if en_uso:
+                messages.warning(
+                    request,
+                    f'Este tipo está asignado a {tipo.instancias.count()} instancia(s). '
+                    'Los cambios impactan en todas las instancias que lo usan.'
+                )
+            return redirect('catalogos:tipo_planificacion_lista')
+    return render(request, 'catalogos/tipo_planificacion_form.html', {
+        'form': form,
+        'titulo': f'Editar: {tipo.titulo}',
+        'objeto': tipo,
+        'en_uso': en_uso,
+    })
+
+
+@login_required
+@gestores
+def tipo_planificacion_eliminar(request, pk):
+    tipo = get_object_or_404(TipoPlanificacion, pk=pk)
+    en_uso = tipo.en_uso
+    if request.method == 'POST':
+        if en_uso:
+            messages.error(
+                request,
+                f'No se puede eliminar "{tipo.titulo}" porque está asignado a '
+                f'{tipo.instancias.count()} instancia(s). Reasigná o eliminá esas instancias primero.'
+            )
+            return redirect('catalogos:tipo_planificacion_lista')
+        tipo.delete()
+        messages.success(request, f'Tipo de planificación "{tipo.titulo}" eliminado.')
+        return redirect('catalogos:tipo_planificacion_lista')
+    return render(request, 'catalogos/tipo_planificacion_confirmar_eliminar.html',
+                  {'tipo': tipo, 'en_uso': en_uso})
 
 # ─────────────────────── Instituciones ─────────────────────────
 

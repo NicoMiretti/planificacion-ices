@@ -1,0 +1,53 @@
+# ─── docker-compose.prod.yml ─────────────────────────────────────────────────
+# Despliegue de producción.
+# El contenedor web se une a la red Docker donde ya vive el Postgres existente.
+# No se despliega base de datos — se reutiliza la ya corriendo.
+#
+# Uso:
+#   1. Averiguar la red del Postgres:
+#        docker inspect <nombre_contenedor_postgres> --format '{{json .NetworkSettings.Networks}}'
+#   2. Poner ese nombre en .env.prod → DOCKER_NETWORK=<nombre_red>
+#   3. docker compose -f docker-compose.prod.yml up -d --build
+
+services:
+  web:
+    build:
+      context: ./src
+      dockerfile: Dockerfile.prod
+    image: planificaciones-ices:latest
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    volumes:
+      # Volumen persistente para archivos Word (planificaciones, correcciones, plantillas)
+      - media_data:/app/media
+    env_file:
+      - .env.prod
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.docker
+    networks:
+      - docker_net    # misma red donde corre el Postgres existente
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/admin/login/')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  media_data:
+    name: planificaciones_media
+
+networks:
+  docker_net:
+    # Red existente donde ya corre el Postgres.
+    # Obtener el nombre con:
+    #   docker inspect <contenedor_postgres> --format '{{json .NetworkSettings.Networks}}'
+    # Y ponerlo en .env.prod como DOCKER_NETWORK=<nombre>
+    external: true
+    name: ${DOCKER_NETWORK:-bridge}

@@ -1,8 +1,51 @@
 """
-Formularios para el ABM de catálogos: Institucion, Carrera, Profesor, Materia.
+Formularios para el ABM de catálogos: Institucion, Carrera, Profesor, Materia, TipoPlanificacion.
 """
+import json
 from django import forms
-from apps.catalogos.models import Carrera, Profesor, Materia, Institucion
+from apps.catalogos.models import Carrera, Profesor, Materia, Institucion, TipoPlanificacion
+
+
+class TipoPlanificacionForm(forms.ModelForm):
+    """Formulario para crear/editar un TipoPlanificacion."""
+
+    # El widget real es un <input hidden> que el JS llena con JSON.
+    # El usuario interactúa con la UI de lista dinámica del template.
+    campos_obligatorios = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(attrs={'id': 'campos_obligatorios_json'}),
+        label='Campos obligatorios',
+    )
+
+    class Meta:
+        model = TipoPlanificacion
+        fields = ['titulo', 'descripcion', 'campos_obligatorios', 'link_documentacion']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'link_documentacion': forms.URLInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'https://...',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Serializar la lista actual a JSON para que el JS la cargue
+        if self.instance.pk and self.instance.campos_obligatorios:
+            self.initial['campos_obligatorios'] = json.dumps(
+                self.instance.campos_obligatorios, ensure_ascii=False
+            )
+
+    def clean_campos_obligatorios(self):
+        data = self.cleaned_data.get('campos_obligatorios', '')
+        if not data:
+            return []
+        try:
+            campos = json.loads(data)
+            return [str(c).strip() for c in campos if str(c).strip()]
+        except (json.JSONDecodeError, TypeError):
+            raise forms.ValidationError('Formato de campos inválido.')
 
 
 class InstitucionForm(forms.ModelForm):

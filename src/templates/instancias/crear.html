@@ -89,6 +89,35 @@
 
         <div class="ices-card mb-4">
             <div class="card-body p-4">
+                <h6 class="text-muted text-uppercase small fw-semibold mb-3">Tipo de planificación</h6>
+
+                <div class="mb-0">
+                    <label for="{{ form.tipo_planificacion.id_for_label }}" class="form-label fw-medium">
+                        {{ form.tipo_planificacion.label }} <span class="text-danger">*</span>
+                    </label>
+                    <select name="{{ form.tipo_planificacion.html_name }}"
+                            id="{{ form.tipo_planificacion.id_for_label }}"
+                            class="form-select {% if form.tipo_planificacion.errors %}is-invalid{% endif %}">
+                        <option value="">— Seleccioná un tipo —</option>
+                        {% for val, label in form.fields.tipo_planificacion.choices %}
+                        {% if val %}
+                        <option value="{{ val }}"
+                                {% if form.tipo_planificacion.value|stringformat:"s" == val|stringformat:"s" %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% for error in form.tipo_planificacion.errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
+                    <div class="form-text">{{ form.tipo_planificacion.help_text }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ices-card mb-4">
+            <div class="card-body p-4">
                 <h6 class="text-muted text-uppercase small fw-semibold mb-3">Fechas</h6>
                 <div class="row g-3">
                     <div class="col-sm-6">

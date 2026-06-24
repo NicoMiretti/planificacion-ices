@@ -1,12 +1,47 @@
 """
-Modelos de catálogos: Institución, Carrera, Materia, Profesor, Plantilla, MaterialApoyo.
+Modelos de catálogos: Institución, Carrera, Materia, Profesor, Plantilla, MaterialApoyo,
+TipoPlanificacion.
 """
 from django.db import models
 from django.conf import settings
+from simple_history.models import HistoricalRecords
 from apps.core.models import TimeStampedModel, ActivableModel
 
 
-class Institucion(models.Model):
+class TipoPlanificacion(TimeStampedModel):
+    """
+    Tipo de planificación académica (ej: Planificación ICES, Planificación UCSE).
+    Define el título, descripción, lista libre de secciones obligatorias que el
+    documento Word debe contener, y un link a documentación adicional.
+    """
+    titulo = models.CharField(max_length=200, unique=True)
+    descripcion = models.TextField(blank=True)
+    campos_obligatorios = models.JSONField(
+        default=list,
+        help_text='Lista de secciones/campos que el documento Word debe contener (texto libre).',
+    )
+    link_documentacion = models.URLField(
+        blank=True,
+        verbose_name='link a documentación',
+        help_text='URL a guía o documentación adicional para este tipo.',
+    )
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name = 'tipo de planificación'
+        verbose_name_plural = 'tipos de planificación'
+        ordering = ['titulo']
+
+    def __str__(self):
+        return self.titulo
+
+    @property
+    def en_uso(self):
+        """True si al menos una InstanciaPresentacion usa este tipo."""
+        return self.instancias.exists()
+
+
+class Institucion(TimeStampedModel):
     """
     Institución educativa: ICES o UCSE.
     Determina qué plantilla usa cada profesor.
@@ -17,6 +52,7 @@ class Institucion(models.Model):
         unique=True,
         help_text='Código corto (ICES, UCSE)'
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'institución'
@@ -46,6 +82,7 @@ class Carrera(TimeStampedModel, ActivableModel):
         related_name='carreras_coordinadas',
         help_text='Coordinador de la carrera (para doble aprobación)'
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'carrera'
@@ -73,6 +110,8 @@ class Profesor(TimeStampedModel, ActivableModel):
         related_name='profesores',
         help_text='Institución para notificaciones y plantilla'
     )
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'profesor'
@@ -125,6 +164,8 @@ class Materia(TimeStampedModel, ActivableModel):
         help_text='Profesor titular de la materia'
     )
 
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = 'materia'
         verbose_name_plural = 'materias'
@@ -140,8 +181,17 @@ class Materia(TimeStampedModel, ActivableModel):
 
 
 def plantilla_path(instance, filename):
-    """Path para archivos de plantilla."""
-    return f"plantillas/{instance.institucion.codigo}/{filename}"
+    """
+    Ruta estandarizada para plantillas Word:
+      plantillas/{institucion}/vigente_{fecha}.ext
+
+    Ejemplo:
+      plantillas/ices/vigente_2026-03-01.docx
+    """
+    import os
+    ext = os.path.splitext(filename)[1].lower() or '.docx'
+    cod = instance.institucion.codigo.lower()
+    return f"plantillas/{cod}/vigente_{instance.vigente_desde}{ext}"
 
 
 class Plantilla(TimeStampedModel, ActivableModel):
@@ -162,6 +212,7 @@ class Plantilla(TimeStampedModel, ActivableModel):
         verbose_name='vigente desde',
         help_text='Fecha desde la cual esta plantilla es la oficial'
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'plantilla'
@@ -183,8 +234,17 @@ class Plantilla(TimeStampedModel, ActivableModel):
 
 
 def material_path(instance, filename):
-    """Path para archivos de material de apoyo."""
-    return f"materiales/{instance.tipo}/{filename}"
+    """
+    Ruta estandarizada para materiales de apoyo:
+      materiales/{tipo}/{anio}/{id}.ext
+
+    Ejemplo:
+      materiales/reglamento/2026/5.pdf
+    """
+    import os
+    ext = os.path.splitext(filename)[1].lower()
+    pk  = instance.pk or 'nuevo'
+    return f"materiales/{instance.tipo}/{instance.anio_academico}/{pk}{ext}"
 
 
 class MaterialApoyo(TimeStampedModel, ActivableModel):
@@ -206,6 +266,7 @@ class MaterialApoyo(TimeStampedModel, ActivableModel):
         verbose_name='año académico',
         help_text='Año académico al que aplica (ej: 2026)'
     )
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'material de apoyo'

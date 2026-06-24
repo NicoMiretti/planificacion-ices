@@ -85,6 +85,7 @@ def cargar_planificacion(request, instancia_id, materia_id):
         'form': form,
         'versiones': planificacion.versiones.all() if planificacion else [],
         'borrador_existente': planificacion.versiones.filter(estado=Version.Estado.BORRADOR).first() if planificacion else None,
+        'tipo_planificacion': instancia.tipo_planificacion,
     }
     return render(request, 'planificaciones/cargar.html', context)
 
@@ -110,9 +111,14 @@ def enviar_planificacion(request, version_id):
         messages.error(request, 'Solo se pueden enviar versiones en borrador.')
         return redirect('planificaciones:detalle', pk=version.planificacion.pk)
 
-    # Validar documento
+    # Validar documento según los campos obligatorios del tipo de planificación
+    campos_requeridos = None
+    tipo = version.planificacion.instancia.tipo_planificacion
+    if tipo and tipo.campos_obligatorios:
+        campos_requeridos = tipo.campos_obligatorios
+
     version.archivo.seek(0)
-    es_valido, campos_faltantes = validar_documento_word(version.archivo)
+    es_valido, campos_faltantes = validar_documento_word(version.archivo, campos_requeridos)
 
     if not es_valido:
         version.rechazar_automaticamente(campos_faltantes)

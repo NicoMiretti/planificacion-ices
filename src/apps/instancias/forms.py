@@ -1,5 +1,5 @@
 from django import forms
-from apps.catalogos.models import Carrera, Materia
+from apps.catalogos.models import Carrera, Materia, TipoPlanificacion
 from .models import InstanciaPresentacion
 
 
@@ -13,15 +13,18 @@ class InstanciaForm(forms.ModelForm):
 
     class Meta:
         model = InstanciaPresentacion
-        fields = ['nombre', 'anio_academico', 'periodo', 'fecha_apertura', 'fecha_limite', 'carreras']
+        fields = ['nombre', 'anio_academico', 'periodo', 'tipo_planificacion',
+                  'fecha_apertura', 'fecha_limite', 'carreras']
         widgets = {
             'fecha_apertura': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
             'fecha_limite': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d'),
+            'tipo_planificacion': forms.Select(attrs={'class': 'form-select'}),
         }
         labels = {
             'nombre': 'Nombre',
             'anio_academico': 'Año académico',
             'periodo': 'Período',
+            'tipo_planificacion': 'Tipo de planificación',
             'fecha_apertura': 'Fecha de apertura',
             'fecha_limite': 'Fecha límite',
         }
@@ -30,6 +33,9 @@ class InstanciaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['fecha_apertura'].input_formats = ['%Y-%m-%d']
         self.fields['fecha_limite'].input_formats = ['%Y-%m-%d']
+        self.fields['tipo_planificacion'].queryset = TipoPlanificacion.objects.order_by('titulo')
+        self.fields['tipo_planificacion'].empty_label = '— Seleccioná un tipo —'
+        self.fields['tipo_planificacion'].required = True
 
     def clean(self):
         cleaned_data = super().clean()

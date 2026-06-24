@@ -5,8 +5,10 @@ Permite a la moderadora crear convocatorias para presentación de planificacione
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
-from apps.catalogos.models import Carrera, Materia, Institucion
+from apps.catalogos.models import Carrera, Materia, Institucion, TipoPlanificacion
+from apps.core.models import TimeStampedModel
 
 
 class InstanciaQuerySet(models.QuerySet):
@@ -88,7 +90,7 @@ class InstanciaManager(models.Manager):
         return self.get_queryset().para_profesor(usuario)
 
 
-class InstanciaPresentacion(models.Model):
+class InstanciaPresentacion(TimeStampedModel):
     """
     Una instancia de presentación es una convocatoria para que los profesores
     presenten sus planificaciones. Tiene fechas de apertura/cierre y define
@@ -154,6 +156,17 @@ class InstanciaPresentacion(models.Model):
         default=Estado.PROGRAMADA
     )
     
+    # Tipo de planificación que se debe presentar en esta instancia
+    tipo_planificacion = models.ForeignKey(
+        TipoPlanificacion,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name='instancias',
+        verbose_name='tipo de planificación',
+        help_text='Define los campos obligatorios y la documentación para esta convocatoria.',
+    )
+
     # Metadata
     creada_por = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -161,7 +174,7 @@ class InstanciaPresentacion(models.Model):
         null=True,
         related_name='instancias_creadas'
     )
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     objects = InstanciaManager()
 

@@ -41,6 +41,33 @@
     </div>
     {% endif %}
 
+    {% if tipo_planificacion %}
+    <div class="ices-card mb-4">
+        <div class="card-body p-4">
+            <h6 class="text-muted text-uppercase small fw-semibold mb-2">
+                <i class="bi bi-file-earmark-ruled me-1"></i>Tipo de planificación
+            </h6>
+            <div class="fw-semibold mb-1">{{ tipo_planificacion.titulo }}</div>
+            {% if tipo_planificacion.descripcion %}
+            <p class="text-muted small mb-2">{{ tipo_planificacion.descripcion }}</p>
+            {% endif %}
+            {% if tipo_planificacion.campos_obligatorios %}
+            <p class="small mb-1 fw-medium mt-3">Tu documento debe contener las siguientes secciones:</p>
+            <ul class="small mb-2">
+                {% for nombre in tipo_planificacion.campos_obligatorios %}
+                <li>{{ nombre }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if tipo_planificacion.link_documentacion %}
+            <a href="{{ tipo_planificacion.link_documentacion }}" target="_blank" class="btn btn-sm btn-ices-outline mt-1">
+                <i class="bi bi-box-arrow-up-right me-1"></i>Ver documentación adicional
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
     <div class="ices-card mb-4">
         <div class="card-body p-4">
             <form method="post" enctype="multipart/form-data" id="uploadForm">
@@ -105,22 +132,7 @@
     </script>
     {% endif %}
 
-    <div class="ices-card">
-        <div class="card-header">
-            <i class="bi bi-list-check me-2"></i>Campos obligatorios del documento
-        </div>
-        <div class="card-body p-3">
-            <ul class="mb-0" style="font-size:.875rem;color:var(--ices-text-muted)">
-                <li>Propósito</li>
-                <li>Fundamentación</li>
-                <li>Contenidos Mínimos</li>
-                <li>Metodología</li>
-                <li>Requisitos para regularizar y promocionar</li>
-                <li>Criterios y formatos de evaluación</li>
-                <li>Bibliografía</li>
-            </ul>
-        </div>
-    </div>
+
 
 </div>
 {% endblock %}
