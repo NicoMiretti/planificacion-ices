@@ -77,12 +77,13 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
 SECURE_HSTS_PRELOAD            = SECURE_HSTS_SECONDS > 0
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False').lower() in ('true', '1', 'yes')
 
-# Nginx termina SSL y reenvía X-Forwarded-Proto: https → Django debe saberlo
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Si nginx termina SSL y reenvía X-Forwarded-Proto: https, activar con HTTPS_PROXY=true en .env
+_proxy_https = os.getenv('HTTPS_PROXY', 'False').lower() in ('true', '1', 'yes')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https') if _proxy_https else None
 
 # Cookies seguras solo con HTTPS. Con HTTP puro deben ser False, de lo contrario
 # el browser nunca envía la CSRF cookie → Django rechaza formularios con 403.
-_https = SECURE_SSL_REDIRECT or SECURE_HSTS_SECONDS > 0 or (SECURE_PROXY_SSL_HEADER is not None)
+_https = SECURE_SSL_REDIRECT or SECURE_HSTS_SECONDS > 0 or _proxy_https
 SESSION_COOKIE_SECURE = _https
 CSRF_COOKIE_SECURE    = _https
 
