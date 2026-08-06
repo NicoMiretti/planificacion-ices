@@ -24,6 +24,11 @@
                 <dd class="col-sm-8">{{ user.date_joined|date:"d/m/Y" }}</dd>
             </dl>
         </div>
+        <div class="card-footer bg-transparent">
+            <a href="{% url 'usuarios:cambiar_password' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-key me-1"></i>Cambiar contraseña
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}
