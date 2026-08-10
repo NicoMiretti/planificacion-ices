@@ -214,15 +214,20 @@ class CoordinadorForm(forms.Form):
         qs = Usuario.objects.filter(email=email)
         if self.instance and self.instance.pk:
             qs = qs.exclude(pk=self.instance.pk)
-        if qs.exists():
-            raise forms.ValidationError('Ya existe un usuario con este email.')
+        existing = qs.first()
+        if existing:
+            if existing.rol == 'profesor':
+                self._usuario_existente = existing
+            else:
+                raise forms.ValidationError('Ya existe un usuario con este email.')
         return email
 
     def clean(self):
         cleaned = super().clean()
-        if not self.instance:
-            if not cleaned.get('password'):
-                self.add_error('password', 'La contraseña es obligatoria para un coordinador nuevo.')
+        es_nuevo = not self.instance
+        vinculando_existente = bool(getattr(self, '_usuario_existente', None))
+        if es_nuevo and not vinculando_existente and not cleaned.get('password'):
+            self.add_error('password', 'La contraseña es obligatoria para un coordinador nuevo.')
         return cleaned
 
     def save(self):
@@ -230,6 +235,7 @@ class CoordinadorForm(forms.Form):
         email = self.cleaned_data['email']
         nombre = self.cleaned_data['nombre_completo']
         password = self.cleaned_data.get('password')
+        usuario_existente = getattr(self, '_usuario_existente', None)
         if self.instance:
             self.instance.email = email
             self.instance.nombre_completo = nombre
@@ -237,14 +243,22 @@ class CoordinadorForm(forms.Form):
                 self.instance.set_password(password)
             self.instance.save()
             return self.instance
+        elif usuario_existente:
+            # Profesor que pasa a ser también coordinador
+            usuario_existente.rol = 'coordinador'
+            if nombre:
+                usuario_existente.nombre_completo = nombre
+            if password:
+                usuario_existente.set_password(password)
+            usuario_existente.save()
+            return usuario_existente
         else:
-            usuario = Usuario.objects.create_user(
+            return Usuario.objects.create_user(
                 email=email,
                 nombre_completo=nombre,
                 password=password,
                 rol='coordinador',
             )
-            return usuario
 
 
 class MateriaForm(forms.ModelForm):

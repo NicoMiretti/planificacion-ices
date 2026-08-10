@@ -333,8 +333,16 @@ def coordinador_eliminar(request, pk):
     coordinador = get_object_or_404(Usuario, pk=pk, rol='coordinador')
     if request.method == 'POST':
         try:
-            coordinador.delete()
-            messages.success(request, 'Coordinador eliminado.')
+            tiene_perfil_profesor = coordinador.es_profesor
+            if tiene_perfil_profesor:
+                # Revertir a profesor puro; limpiar asignaciones de coordinador en carreras
+                Carrera.objects.filter(coordinador=coordinador).update(coordinador=None)
+                coordinador.rol = 'profesor'
+                coordinador.save(update_fields=['rol'])
+                messages.success(request, 'Coordinador eliminado (conservado como profesor).')
+            else:
+                coordinador.delete()
+                messages.success(request, 'Coordinador eliminado.')
         except Exception:
             messages.error(request, 'No se puede eliminar: el coordinador tiene carreras asociadas.')
         return redirect('catalogos:coordinador_lista')
