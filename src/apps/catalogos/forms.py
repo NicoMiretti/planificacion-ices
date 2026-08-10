@@ -122,15 +122,21 @@ class ProfesorForm(forms.ModelForm):
         qs = Usuario.objects.filter(email=email)
         if self.instance_profesor and self.instance_profesor.pk:
             qs = qs.exclude(pk=self.instance_profesor.usuario_id)
-        if qs.exists():
-            raise forms.ValidationError('Ya existe un usuario con este email.')
+        existing = qs.first()
+        if existing:
+            if existing.rol == 'coordinador':
+                # Permitido: se vincula el perfil de profesor al coordinador existente
+                self._usuario_existente = existing
+            else:
+                raise forms.ValidationError('Ya existe un usuario con este email.')
         return email
 
     def clean(self):
         cleaned = super().clean()
-        if not self.instance_profesor or not self.instance_profesor.pk:
-            if not cleaned.get('password'):
-                self.add_error('password', 'La contraseña es obligatoria para un profesor nuevo.')
+        es_nuevo = not (self.instance_profesor and self.instance_profesor.pk)
+        vinculando_existente = bool(getattr(self, '_usuario_existente', None))
+        if es_nuevo and not vinculando_existente and not cleaned.get('password'):
+            self.add_error('password', 'La contraseña es obligatoria para un profesor nuevo.')
         return cleaned
 
     def save(self, commit=True):
@@ -140,6 +146,7 @@ class ProfesorForm(forms.ModelForm):
         email = self.cleaned_data['email']
         nombre = self.cleaned_data['nombre_completo']
         password = self.cleaned_data.get('password')
+        usuario_existente = getattr(self, '_usuario_existente', None)
 
         if profesor.pk:
             # Edición: actualizar usuario existente
@@ -150,6 +157,15 @@ class ProfesorForm(forms.ModelForm):
                 usuario.set_password(password)
             if commit:
                 usuario.save()
+        elif usuario_existente:
+            # Vinculación: el coordinador también será profesor
+            if nombre:
+                usuario_existente.nombre_completo = nombre
+            if password:
+                usuario_existente.set_password(password)
+            if commit:
+                usuario_existente.save()
+            profesor.usuario = usuario_existente
         else:
             # Creación: nuevo usuario con rol=profesor
             usuario = Usuario(email=email, nombre_completo=nombre, rol='profesor')

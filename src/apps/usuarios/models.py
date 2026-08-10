@@ -88,7 +88,14 @@ class Usuario(AbstractUser):
 
     @property
     def es_profesor(self):
-        return self.rol == self.Rol.PROFESOR
+        from django.core.exceptions import ObjectDoesNotExist
+        if self.rol == self.Rol.PROFESOR:
+            return True
+        # Coordinador que también tiene perfil de profesor
+        try:
+            return self.perfil_profesor is not None
+        except ObjectDoesNotExist:
+            return False
 
     @property
     def es_revisor(self):

@@ -230,7 +230,9 @@ def profesor_eliminar(request, pk):
         try:
             usuario = profesor.usuario
             profesor.delete()
-            usuario.delete()
+            # Si el usuario es coordinador, solo se desvincula el perfil de profesor, no se elimina
+            if usuario.rol == 'profesor':
+                usuario.delete()
             messages.success(request, 'Profesor eliminado.')
         except Exception:
             messages.error(request, 'No se puede eliminar: el profesor tiene planificaciones asociadas.')

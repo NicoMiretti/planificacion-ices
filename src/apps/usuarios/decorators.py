@@ -34,8 +34,15 @@ def solo_moderadora(view_func):
 
 
 def solo_profesor(view_func):
-    """Solo permite acceso a profesores."""
-    return rol_requerido('profesor')(view_func)
+    """Permite acceso a profesores y a coordinadores que también tienen perfil de profesor."""
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('usuarios:login')
+        if not request.user.is_superuser and not request.user.es_profesor:
+            raise PermissionDenied('No tienes permiso para acceder a esta página.')
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 
 def revisores(view_func):
